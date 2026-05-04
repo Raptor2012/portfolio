@@ -43,11 +43,6 @@
   .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
   .btn-outline:hover{background:rgba(0,229,255,0.07)}
   .section-wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:100px 64px}
-  .tech-marquee{position:relative;z-index:1;overflow:hidden;border-block:1px solid rgba(0,229,255,0.12);background:linear-gradient(90deg,rgba(0,229,255,0.06),rgba(255,122,26,0.04),rgba(0,229,255,0.06));mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-  .tech-track{display:flex;width:max-content;gap:34px;padding:16px 0;animation:marquee 26s linear infinite}
-  .tech-track span{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:rgba(232,234,240,0.68);text-transform:uppercase;white-space:nowrap}
-  .tech-track span:nth-child(3n){color:var(--accent)}
-  .tech-track span:nth-child(4n){color:var(--acid)}
   .section-label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
   h2.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,64px);letter-spacing:4px;margin-bottom:52px}
   .exp-item{display:grid;grid-template-columns:200px 1fr;gap:0 48px;padding:40px 0;border-top:1px solid var(--border)}
@@ -67,8 +62,6 @@
   .project-card:hover::after,.client-card:hover::after,.edu-card:hover::after,.accolade-item:hover::after{opacity:1}
   .card-thumb{height:210px;background:var(--surface2);position:relative;overflow:hidden}
   .card-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s}
-  .card-fallback{height:100%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,rgba(182,255,77,0.22),transparent 30%),radial-gradient(circle at 76% 70%,rgba(0,229,255,0.28),transparent 34%),linear-gradient(135deg,#111827,#071018);font-family:'Space Mono',monospace;color:rgba(232,234,240,0.86);letter-spacing:2px;text-align:center;text-transform:uppercase}
-  .card-fallback span{display:block;font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:0.95;letter-spacing:4px;color:var(--accent);text-shadow:0 0 28px rgba(0,229,255,0.35)}
   .project-card:hover .card-thumb img{transform:scale(1.04)}
   .play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.38);transition:background 0.25s}
   .play-btn svg{width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6));transition:transform 0.2s}
@@ -143,7 +136,6 @@
   @keyframes chromeText{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
   @keyframes orbitRing{from{transform:rotate(0deg) scale(1);border-radius:48% 52% 43% 57%}to{transform:rotate(360deg) scale(1.02);border-radius:57% 43% 52% 48%}}
   @keyframes floatAvatar{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--accent)}
   
   /* Updated Mobile Responsiveness */
@@ -182,13 +174,6 @@
     <img src="images/profile.png" alt="Sanket Das Profile">
   </div>
 
-</div>
-
-<div class="tech-marquee" aria-hidden="true">
-  <div class="tech-track">
-    <span>UNITY</span><span>UNREAL ENGINE 5</span><span>META QUEST 3</span><span>OPENAI GPT</span><span>CONVAI SDK</span><span>ELEVENLABS</span><span>READY PLAYER ME</span><span>BLENDER</span><span>C#</span><span>BLUEPRINTS</span><span>WEBXR</span><span>UPM ARCHITECTURE</span>
-    <span>UNITY</span><span>UNREAL ENGINE 5</span><span>META QUEST 3</span><span>OPENAI GPT</span><span>CONVAI SDK</span><span>ELEVENLABS</span><span>READY PLAYER ME</span><span>BLENDER</span><span>C#</span><span>BLUEPRINTS</span><span>WEBXR</span><span>UPM ARCHITECTURE</span>
-  </div>
 </div>
 
 <div id="experience" class="section-wrap">
@@ -282,13 +267,13 @@
       <!-- 2025 -->
       <div class="project-card" onclick="openModal('gpav')">
         <div class="card-thumb">
-          <div class="card-fallback">XR Hackathon<span>Give Patients<br>A Voice</span></div>
+          <img src="images/GivePatientsAVoice.png" alt="Give Patients a Voice VR companion">
           <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><rect width="68" height="48" rx="10" fill="rgba(0,0,0,0.7)"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
         </div>
         <div class="card-body">
-          <div class="card-cat">XR Hackathon · Medical AI</div>
+          <div class="card-cat">XRCC 2026 Hackathon · Medical AI</div>
           <div class="card-title">GIVE PATIENTS A VOICE (2025)</div>
-          <div class="card-desc">AI-powered VR patient companion application built for an XR hackathon — combining immersive narrative design, AI NPCs via Convai SDK, and Unity 6 URP to give patients an interactive voice in understanding their own healthcare journey.</div>
+          <div class="card-desc">AI-powered VR patient companion application built for the XRCC 2026 Hackathon — combining immersive narrative design, AI NPCs via Convai SDK, and Unity 6 URP to give patients an interactive voice in understanding their own healthcare journey.</div>
           <div class="card-tags"><span class="tag">Unity</span><span class="tag">Convai SDK</span><span class="tag">AI NPCs</span><span class="tag">XR</span><span class="tag">Medical</span></div>
         </div>
       </div>
@@ -499,7 +484,7 @@ const LK = (url, label, desc) => ({ type:'link', url, label, desc });
 
 const projects = {
   'mg': { cat:'onVR · Medical VR', title:'mG TREATMENT STORYTELLING VR (2024)', desc:'Role - I used body tracking as well as diagetic UI to bring uniqueness to this experience. I designed the UI as well as the platform that takes the player through a spline path along an abstract large scale human body to explain the disease and the treatment better. The experience also has a modular station based viewable content. Provides an avenue to inject more content as needed', slides:[DR('14ig2M_vNExWd_-i6A1NMGoeu-7uiYfQ0','mG Treatment VR — Demo')] },
-  'gpav': { cat:'XR Hackathon · Medical AI', title:'GIVE PATIENTS A VOICE (2025)', desc:'AI-powered VR patient companion built for an XR hackathon. Combines immersive narrative design, Convai SDK for conversational AI NPCs, and Unity 6 URP. The goal: give patients an interactive voice in understanding their own healthcare journey, enabling two-way dialogue with virtual clinicians and information agents instead of passive consumption of static content.', slides:[DR('1cbGBAhYEWE8jaSjWkQEX32E3CKhvk3nX','Give Patients a Voice — Demo')] },
+  'gpav': { cat:'XRCC 2026 Hackathon · Medical AI', title:'GIVE PATIENTS A VOICE (2025)', desc:'AI-powered VR patient companion built for the XRCC 2026 Hackathon. Combines immersive narrative design, Convai SDK for conversational AI NPCs, and Unity 6 URP. The goal: give patients an interactive voice in understanding their own healthcare journey, enabling two-way dialogue with virtual clinicians and information agents instead of passive consumption of static content.', slides:[DR('1cbGBAhYEWE8jaSjWkQEX32E3CKhvk3nX','Give Patients a Voice — Demo')] },
   'storytelling': { cat:'onliveline GmbH · VR Narrative', title:'STORYTELLING IN VR (2023)', desc:'VR medical storytelling application. ElevenLabs API for NPC voice, Unity Timeline + Blender for cinematic animations, Ready Player Me avatars.', slides:[YT('SZoYSgkR1AY','Storytelling in VR — Demo')] },
   'lupus': { cat:'onliveline GmbH · Medical VR', title:'LUPUS THERAPY VR (2023)', desc:'Role - As a solo developer, I translated the entire concept into a playable experience. Helped coming up with design solutions for first time VR user. Implemented ready player me characters with lip sync, blender animations, wrote VR specific shaders, used Meta Quest SDK to achieve a complete experience.', slides:[DR('1UlTJKfeCbBydOKRd_6XWsxM9rv-91ykY','Lupus Therapy VR — Gameplay'), YT('htAMSiW7nPo','Lupus Therapy VR — Marketing')] },
   'llm-ai': { cat:'onliveline GmbH · AI Character', title:'LLM AI CHARACTER WITH MOCAP (2024)', desc:'Role - I used gpt 3 API, convai and eleven labs to create an interactable AI based character in unity. We deployed it in webGL and VR. I also worked on scripted animator state machine in unity which we recorded using Rokoko vision mocap.', slides:[YT('lL47MWneEzI','LLM AI Character — Demo')] },
