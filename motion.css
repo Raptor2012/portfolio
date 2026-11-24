@@ -1,0 +1,67 @@
+/* Motion layer. Self-contained: delete this file and motion.js and the site works as before.
+   One curve (the site's --ease), three durations. Nothing here runs with reduced motion. */
+:root{--m-ease:var(--ease,cubic-bezier(.22,1,.36,1));--m-travel:cubic-bezier(.65,0,.25,1);--m-move:1s;--m-text:1.15s}
+
+/* ---- 1. page to page: cross-document view transitions ---- */
+/* The opt-in, @view-transition{navigation:auto;types:page}, is inline at the top of each page's <head>:
+   from this file it arrives too late on the incoming page about three times in four, and the transition is skipped. */
+/* the nav holds still while the page under it changes */
+html:active-view-transition-type(page) .nav{view-transition-name:nav}
+/* the page that arrives offers its hero footage as the landing spot for the clip that was clicked.
+   The page that leaves turns this off (html.m-out) and names the clicked clip instead, in motion.js. */
+html:active-view-transition-type(page):not(.m-out) :is(.hero .reel,.hero>.clip){view-transition-name:stage}
+/* the page dips through the background colour: the old one is gone before the new one starts, so text never double-exposes */
+::view-transition-old(root){animation:m-out .3s cubic-bezier(.4,0,1,1) both}
+::view-transition-new(root){animation:m-in .6s .3s ease-out both}
+/* travel uses an in-out curve: a clip that moves across the screen should leave gently and land gently */
+::view-transition-group(stage){animation-duration:var(--m-move);animation-timing-function:var(--m-travel)}
+::view-transition-image-pair(stage){overflow:clip}
+::view-transition-old(stage),::view-transition-new(stage){height:100%;object-fit:cover;animation-duration:var(--m-move);animation-timing-function:ease-in-out}
+::view-transition-group(nav){animation-duration:.4s}
+@keyframes m-out{to{opacity:0}}
+@keyframes m-in{from{opacity:0}}
+
+/* ---- 4. a project dialog grows out of the tile that opened it, and shrinks back into it ---- */
+html.m-vt .pd[open]{animation:none}
+/* the box that travels is solid, the colour of the dialog, so the move reads as one panel and never as two pictures */
+::view-transition-group(pd){animation-duration:.8s;animation-timing-function:var(--m-ease);background:#0b0b0c}
+::view-transition-image-pair(pd){overflow:clip}
+::view-transition-old(pd),::view-transition-new(pd){height:100%;object-fit:cover;object-position:50% 0}
+/* a text row is never stretched: it keeps its size at the panel's edge and fades */
+html.m-row::view-transition-old(pd),html.m-row::view-transition-new(pd){object-fit:none;object-position:0 50%}
+html:active-view-transition-type(pd-open)::view-transition-old(pd){animation:m-out .18s linear both}
+html:active-view-transition-type(pd-open)::view-transition-new(pd){height:auto;min-height:100%;object-fit:cover;object-position:50% 0;animation:m-in .4s .12s linear both}
+html:active-view-transition-type(pd-close)::view-transition-old(pd){animation:m-out .16s linear both}
+html:active-view-transition-type(pd-close)::view-transition-new(pd){animation:m-in .25s .45s linear both}
+/* the page under it does not cross-fade with itself: the dimmed or undimmed copy simply fades in on top */
+html:active-view-transition-type(pd-open)::view-transition-old(root),
+html:active-view-transition-type(pd-close)::view-transition-old(root){animation:none}
+html:active-view-transition-type(pd-open)::view-transition-new(root),
+html:active-view-transition-type(pd-close)::view-transition-new(root){animation:m-in .55s ease both}
+
+/* ---- 2. headings rise line by line from behind a mask ---- */
+/* motion.js wraps each word in .ml > .ml-i and gives every word its line number (--l).
+   The words of one line move together, so a line rises as one piece. */
+.ml{display:inline-block;vertical-align:baseline;overflow:clip;padding:.1em 0 .18em;margin:-.1em 0 -.18em}
+.ml-i{display:inline-block}
+@keyframes m-rise{from{transform:translateY(118%)}to{transform:none}}
+.m-lines .ml-i{transform:translateY(118%);animation:m-rise var(--m-text) var(--m-ease) both paused;animation-delay:calc(var(--l,0) * 130ms)}
+/* CSS scroll-triggered: a view() timeline on the heading starts the rise once it is well inside the window.
+   It plays on time, not on scroll position, so it never stalls half risen when the reader stops. */
+@supports (timeline-trigger:--t view()) and (animation-trigger:--t play-forwards){
+  .m-lines{timeline-trigger:--ml view() entry 60% exit 100%}
+  .m-lines .ml-i{animation-play-state:running;animation-trigger:--ml play-forwards}
+}
+/* fallback for browsers without scroll triggers: motion.js adds .ml-go from an IntersectionObserver */
+.m-lines.ml-go .ml-i{animation-play-state:running}
+
+/* ---- 3. the hero clip change: a WebGL ink dissolve drawn over the reel (motion-gl.js) ---- */
+/* no z-index: it sits over the clips and under the hero gradient and copy, in source order */
+.m-gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0}
+.m-gl.is-on{opacity:1}
+.reel.m-gl-on .clip{transition:none}
+
+@media (prefers-reduced-motion:reduce){
+  .m-lines .ml-i{transform:none;animation:none}
+  .m-gl{display:none}
+}

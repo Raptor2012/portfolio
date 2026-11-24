@@ -1,0 +1,52 @@
+WEBVTT
+
+1
+00:00.120 --> 00:03.550
+Dictate into a T3 Code thread, and I follow along.
+
+2
+00:03.640 --> 00:05.870
+When the agent answers, I read it to you,
+
+3
+00:05.920 --> 00:08.590
+and you hear the first sound
+in under a tenth of a second.
+
+4
+00:10.140 --> 00:11.530
+Nothing leaves your machine.
+
+5
+00:11.580 --> 00:13.930
+Sherpa-ONNX handles speech.
+
+6
+00:13.980 --> 00:17.170
+llama.cpp runs the cleanup on your graphics card,
+
+7
+00:17.220 --> 00:18.930
+and Phonon is my voice.
+
+8
+00:18.980 --> 00:21.390
+No cloud and no telemetry.
+
+9
+00:22.680 --> 00:26.070
+We tuned it on 400 of our own real dictations,
+
+10
+00:26.120 --> 00:31.550
+all measured on one gaming laptop,
+with a Core i9 and an RTX 4070.
+
+11
+00:31.940 --> 00:33.830
+Cleanup got noticeably more accurate,
+
+12
+00:33.880 --> 00:37.910
+and the hand-off to me dropped from up to a second
+to about 30 milliseconds.

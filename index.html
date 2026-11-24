@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanket Das · Portfolio</title>
 <meta name="description" content="Sanket Das, senior Unity XR and game developer. Third-person action games in Unreal Engine and Unity, and VR, mixed reality and WebGL apps. Open to roles and fixed-price projects.">
@@ -20,6 +21,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="motion.css">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
@@ -80,7 +82,7 @@
       <p class="body">VR, mixed reality and WebGL apps for client teams, built as lead developer since 2023.</p>
       <ul class="hl">
         <li><button class="hl-row open" type="button" data-open="p-amyloidosis" aria-haspopup="dialog"><span class="hl-t">Amyloidosis in mixed reality</span><span class="hl-m">Quest 3 · mixed reality · 2026 · Watch 2:33</span><span class="sr">: Amyloidosis in mixed reality</span></button></li>
-        <li><button class="hl-row open" type="button" data-open="p-cart" aria-haspopup="dialog"><span class="hl-t">CAR-T cell therapy story</span><span class="hl-m">Quest 3 · VR · 2025–2026 · Watch 1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button></li>
+        <li><button class="hl-row open" type="button" data-open="p-cart" aria-haspopup="dialog"><span class="hl-t">CAR-T cell therapy story</span><span class="hl-m">Quest 3 · VR · 2023–2026 · Watch 1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button></li>
         <li><button class="hl-row open" type="button" data-open="p-mg" aria-haspopup="dialog"><span class="hl-t">Myasthenia gravis in VR</span><span class="hl-m">Quest 3 · VR · 2024–2026 · Watch 3:12</span><span class="sr">: Myasthenia gravis in VR</span></button></li>
       </ul>
       <a class="more" href="xr/index.html">All XR work</a>
@@ -114,6 +116,29 @@
         </div>
       </article>
     </div>
+  </div>
+</section>
+
+<section class="section" id="tools" aria-labelledby="tools-h">
+  <div class="wrap">
+    <div class="cs-head">
+      <h2 class="display" id="tools-h">Tools</h2>
+      <p class="body">Tools I built for my own work, released on GitHub.</p>
+    </div>
+    <div class="cases cases--one" data-reveal>
+      <article class="case" aria-labelledby="t-maeve">
+        <div class="case-clip"><div class="clip" style="--pos:50% 50%"><img src="media/tools/tool-maeve-poster.webp" width="1280" height="720" alt="Maeve’s violet orb pulses under a reply panel, beside the headline Talk to your coding agent. Hear it answer." loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/tools/tool-maeve"></video></div></div>
+        <div class="case-copy">
+          <p class="meta">Windows · local speech · solo · 2026</p>
+          <h3 id="t-maeve">Maeve: local voice for a coding agent</h3>
+          <p class="body">A voice layer and speaking orb I built on two open-source apps. Replies start playing in 55–⁠90 ms.</p>
+          <p class="links"><button class="more open open--watch" type="button" data-open="p-maeve" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:20</span><span class="sr">: Maeve: local voice for a coding agent</span></button><a class="more" href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p>
+        </div>
+      </article>
+    </div>
+    <ul class="rows tool-rows" data-reveal>
+      <li><h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">Favorites Bar for Unity<span class="sr"> (opens in a new tab)</span></a></h3><div><p>Hold Alt over Unity’s Project window to open a paged bar of favorite assets, folders and scene objects.</p><p class="meta">Editor package · MIT · 2026</p></div></li>
+    </ul>
   </div>
 </section>
 
@@ -452,8 +477,8 @@ and Vetal cannot exist in our world.
 </div>
 </section>
 <div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy, made for a university hospital.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Meta SDK to OpenXR and XRI migration</li><li>All 19 scenes rebuilt on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
 <div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-indication"></video></div><figcaption class="slate slate--long">Choosing an indication</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-bacteria"></video></div><figcaption class="slate slate--long">A bacterium and its explanation card</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-lab"></video></div><figcaption class="slate slate--long">Making CAR-T cells in the lab</figcaption></figure></div>
 </dialog>
@@ -485,7 +510,134 @@ and Vetal cannot exist in our world.
 </div>
 <div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-body-entry"></video></div><figcaption class="slate slate--long">Riding into the body</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-nerve-terminal"></video></div><figcaption class="slate slate--long">A nerve signals the muscle</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-complement"></video></div><figcaption class="slate slate--long">Complement proteins on a cell</figcaption></figure></div>
 </dialog>
+<dialog class="pd" id="p-maeve" aria-labelledby="p-maeve-t">
+<div class="pd-bar"><p class="meta">Tool · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Maeve: local voice for a coding agent">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-maeve-dictation-poster.webp" aria-label="Dictation"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:40">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:40</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 1:20 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-maeve-dictation" data-webm="1" data-mobile="1" data-poster="media/key-sections/ks-maeve-dictation-poster.webp" data-dur="39.9" data-audio="1" data-vtt="media/key-sections/ks-maeve-dictation.vtt" data-cues="WEBVTT
+
+1
+00:00.500 --&gt; 00:06.590
+This is OpenWhispr Dictation, private voice typing
+for Windows that runs entirely on your own computer,
+
+2
+00:06.640 --&gt; 00:10.450
+and I’m Maeve. I read the replies back to you.
+
+3
+00:11.780 --&gt; 00:13.710
+Hold your hotkey and talk.
+
+4
+00:14.120 --&gt; 00:16.150
+Parakeet transcribes on your own processor,
+
+5
+00:16.200 --&gt; 00:19.130
+and a live preview shows the words as you speak.
+
+6
+00:20.420 --&gt; 00:24.110
+Let go, and a local Gemma model tidies it up.
+
+7
+00:24.220 --&gt; 00:25.810
+Fillers and stutters disappear,
+
+8
+00:25.860 --&gt; 00:29.250
+and punctuation and your project names come out right.
+
+9
+00:29.560 --&gt; 00:31.970
+Short lines skip the model completely.
+
+10
+00:33.400 --&gt; 00:35.730
+The clean text lands right at your cursor
+
+11
+00:35.780 --&gt; 00:38.310
+about two seconds after you stop talking.
+" data-title="Dictation" aria-current="true"><span class="w-n">01</span><span class="w-t">Dictation</span><span class="w-d">0:40</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-maeve-voice" data-webm="1" data-mobile="1" data-poster="media/key-sections/ks-maeve-voice-poster.webp" data-dur="39.5" data-audio="1" data-vtt="media/key-sections/ks-maeve-voice.vtt" data-cues="WEBVTT
+
+1
+00:00.120 --&gt; 00:03.550
+Dictate into a T3 Code thread, and I follow along.
+
+2
+00:03.640 --&gt; 00:05.870
+When the agent answers, I read it to you,
+
+3
+00:05.920 --&gt; 00:08.590
+and you hear the first sound
+in under a tenth of a second.
+
+4
+00:10.140 --&gt; 00:11.530
+Nothing leaves your machine.
+
+5
+00:11.580 --&gt; 00:13.930
+Sherpa-ONNX handles speech.
+
+6
+00:13.980 --&gt; 00:17.170
+llama.cpp runs the cleanup on your graphics card,
+
+7
+00:17.220 --&gt; 00:18.930
+and Phonon is my voice.
+
+8
+00:18.980 --&gt; 00:21.390
+No cloud and no telemetry.
+
+9
+00:22.680 --&gt; 00:26.070
+We tuned it on 400 of our own real dictations,
+
+10
+00:26.120 --&gt; 00:31.550
+all measured on one gaming laptop,
+with a Core i9 and an RTX 4070.
+
+11
+00:31.940 --&gt; 00:33.830
+Cleanup got noticeably more accurate,
+
+12
+00:33.880 --&gt; 00:37.910
+and the hand-off to me dropped from up to a second
+to about 30 milliseconds.
+" data-title="Maeve reads replies"><span class="w-n">02</span><span class="w-t">Maeve reads replies</span><span class="w-d">0:40</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-maeve-t">Maeve: local voice for a coding agent</h2><p>I built the voice layer and the orb on top of T3 Code and OpenWhispr, two open-source apps.</p><p class="play"><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Hold-to-talk dictation into agent threads</li><li>Click-through orb window on Windows</li><li>30 ms hand-off, 55–⁠90 ms to first audio</li></ul></dd></div><div><dt>Tech</dt><dd>Electron, sherpa-onnx with Parakeet, llama.cpp with Gemma, Phonon text-to-speech</dd></div><div><dt>Platforms</dt><dd>Windows</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+</div>
+
+</dialog>
 </div>
 <script src="site.js" defer></script>
+<script src="motion.js" defer></script>
 </body>
 </html>

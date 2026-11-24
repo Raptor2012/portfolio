@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanket Das · XR</title>
 <meta name="description" content="VR, mixed reality and WebGL apps by Sanket Das, lead developer on client projects since 2023. Quest, iPhone, Android and the browser. Freelance, fixed price.">
@@ -20,6 +21,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
 <link rel="stylesheet" href="../fonts.css">
 <link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../motion.css">
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
@@ -110,8 +112,8 @@
       <article class="project">
         <figure class="clip"><img src="../media/car-t/xr-tile-cart-vr-poster.webp" width="1280" height="720" alt="VR on Quest: inside a red blood vessel, CAR-T cells hit diseased B cells, which turn yellow and burst apart" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/xr-tile-cart-vr"></video></figure>
         <h3>CAR-T cell therapy story in VR</h3>
-        <p class="meta">Quest 3 · VR · 2025–2026</p>
-        <p class="body">A 19-scene VR story about CAR-T cell therapy. I moved it to OpenXR and rebuilt every scene.</p>
+        <p class="meta">Quest 3 · VR · 2023–2026</p>
+        <p class="body">A 19-scene VR story on CAR-T cell therapy. I built it in 2023, then moved it to OpenXR.</p>
         
         <button class="more open open--watch" type="button" data-open="p-cart" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button>
       </article>
@@ -155,6 +157,14 @@
         <p class="play"><a href="https://apps.apple.com/de/app/bone-eaters/id6744760236" target="_blank" rel="noopener">App Store<span class="sr"> (opens in a new tab)</span></a> <span class="play-i"><span aria-hidden="true">·</span><a href="https://play.google.com/store/apps/details?id=de.onxt.BoneEaters" target="_blank" rel="noopener">Google Play<span class="sr"> (opens in a new tab)</span></a></span> <span class="play-i"><span aria-hidden="true">·</span><a href="https://onliveline.github.io/UKER_BoneEaters_WebGL_Build/" target="_blank" rel="noopener">Play the web version<span class="sr"> (opens in a new tab)</span></a></span></p>
         <button class="more open open--watch" type="button" data-open="p-argame" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:13</span><span class="sr">: Bone Eaters</span></button>
       </article>
+      <article class="project project--wide">
+        <figure class="clip" style="--pos:50% 45%"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-asset-library"></video></figure>
+        <h3>Asset library</h3>
+        <p class="meta">Browser and Unity · 2026</p>
+        <p class="body">Every 3D model in the company’s repositories, searchable in the browser, tagged by a vision model.</p>
+        
+        <button class="more open open--watch" type="button" data-open="p-assetlib" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:34</span><span class="sr">: Asset library</span></button>
+      </article>
     </div>
   </div>
 </section>
@@ -185,8 +195,7 @@
       <h2 class="display" id="tools-h">Open‑source tools</h2>
       <div class="main" data-reveal>
         <ul class="rows">
-          <li><h3><a href="https://github.com/Raptor2012/t3code" target="_blank" rel="noopener">T3 Code voice fork<span class="sr"> (opens in a new tab)</span></a></h3><p>Voice for an AI coding app: a global hotkey, local speech recognition and spoken replies.</p></li>
-          <li><h3><a href="https://github.com/Raptor2012/OpenWhisprDictation" target="_blank" rel="noopener">OpenWhisprDictation<span class="sr"> (opens in a new tab)</span></a></h3><p>Dictation for Windows that runs entirely on your own machine.</p></li>
+          <li><h3><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Maeve<span class="sr"> (opens in a new tab)</span></a></h3><p>A voice layer and speaking orb I built on two open-source apps, T3 Code and OpenWhispr.</p></li>
           <li><h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">unity-favorites-bar<span class="sr"> (opens in a new tab)</span></a></h3><p>A Unity editor package: hold Alt over the Project window for a favorites bar.</p></li>
           <li><h3>Fork &amp; Rep</h3><p>An Android app for logging calories and strength training, with an on-device assistant.</p></li>
         </ul>
@@ -325,8 +334,8 @@
 </div>
 </section>
 <div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy, made for a university hospital.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Meta SDK to OpenXR and XRI migration</li><li>All 19 scenes rebuilt on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
 <div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-indication"></video></div><figcaption class="slate slate--long">Choosing an indication</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-bacteria"></video></div><figcaption class="slate slate--long">A bacterium and its explanation card</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-lab"></video></div><figcaption class="slate slate--long">Making CAR-T cells in the lab</figcaption></figure></div>
 </dialog>
@@ -470,7 +479,36 @@
 </div>
 <div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/xr-tile-argame-slingshot-poster.webp" width="1280" height="720" alt="Bone Eaters: a wooden slingshot aimed across a cave of bone struts at yellow Bone Eater creatures, with a counter and a timer at the top" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/xr-tile-argame-slingshot"></video></div><figcaption class="slate slate--long">Slingshot at the Bone Eaters</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/inline-argame-bacteria-poster.webp" width="1280" height="720" alt="Bone Eaters: rows of round blue bacteria on sandy ground under a Feed all Bacteria task box" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/inline-argame-bacteria"></video></div><figcaption class="slate slate--long">Feeding fibre to gut bacteria</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/inline-argame-reward-poster.webp" width="1280" height="720" alt="Bone Eaters: a cream bone section on a pale blue background, tilted to show a dark lattice inside" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/inline-argame-reward"></video></div><figcaption class="slate slate--long">The bone-section reward</figcaption></figure></div>
 </dialog>
+<dialog class="pd" id="p-assetlib" aria-labelledby="p-assetlib-t">
+<div class="pd-bar"><p class="meta">XR · internal tool</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Asset library">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-asset-library-browse-poster.webp" aria-label="Search and orbit"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:15">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:15</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 0:34 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-asset-library-browse" data-webm="1" data-mobile="1" data-poster="../media/key-sections/ks-asset-library-browse-poster.webp" data-dur="14.8" data-audio="" data-title="Search and orbit" aria-current="true"><span class="w-n">01</span><span class="w-t">Search and orbit</span><span class="w-d">0:15</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-asset-library-tags" data-webm="1" data-mobile="1" data-poster="../media/key-sections/ks-asset-library-tags-poster.webp" data-dur="19" data-audio="" data-title="Tags and review"><span class="w-n">02</span><span class="w-t">Tags and review</span><span class="w-d">0:19</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-assetlib-t">Asset library</h2><p>A web viewer and nightly catalogue that index every 3D model across the company’s repositories without cloning them.</p><a class="more" href="../xr/platform.html#assets">Read the deep dive</a></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Nightly scan of every branch, no cloning</li><li>Blender renders tagged by a vision model</li><li>Human review, one catalogue for web and Unity</li></ul></dd></div><div><dt>Tech</dt><dd>Python, GitHub Actions, headless Blender, a vision model, Unity editor window</dd></div><div><dt>Platforms</dt><dd>Desktop browsers, Unity Editor</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-asset-library"></video></div><figcaption class="slate slate--long">A heart model in the web viewer</figcaption></figure></div>
+</dialog>
 </div>
 <script src="../site.js" defer></script>
+<script src="../motion.js" defer></script>
 </body>
 </html>
