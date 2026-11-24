@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanket Das · Content warehouse deep dive</title>
+<meta name="description" content="Deep dive: the content warehouse Sanket Das led at a European medical XR company. Rooms, interactions and authoring tools that client projects are built from, with automated builds for Quest, Android, iOS and WebGL.">
+<link rel="preload" as="image" href="../media/amyloidosis/amy-heart-hands-poster.webp" fetchpriority="high">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanket Das · Content warehouse deep dive">
+<meta property="og:description" content="Deep dive: the content warehouse Sanket Das led at a European medical XR company. Rooms, interactions and authoring tools that client projects are built from, with automated builds for Quest, Android, iOS and WebGL."><meta property="og:url" content="https://raptor2012.github.io/portfolio/xr/platform.html">
+<meta property="og:image" content="https://raptor2012.github.io/portfolio/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap nav-in">
+    <a class="brand" href="../index.html">Sanket Das</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../games/index.html">Games</a>
+      <a href="../xr/index.html" aria-current="page">XR</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
+      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero hero--short" id="top">
+  <div class="clip" style="--pos:52% 50%"><img src="../media/amyloidosis/amy-heart-hands-poster.webp" width="1920" height="1080" alt="Mixed reality: two tracked hands hold a cut-open heart in a living room" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-heart-hands"></video></div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="kicker">Deep dive · 13 min read</p>
+      <h1 class="display">A content warehouse for building XR faster</h1>
+      <p class="lede">Rooms, interactions and authoring tools that a European medical XR company builds its client projects from. I led the work from 2025 to 2026.</p>
+      <p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
+    </div>
+    <p class="slate">A mixed-reality client app built with parts of the warehouse, 2026</p>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="section" aria-labelledby="covers-h">
+  <div class="wrap">
+    <div class="cols">
+      <h2 class="display" id="covers-h">What this deep dive covers</h2>
+      <div class="main" data-reveal>
+        <ul class="covers">
+          <li>The problem: every client app was built from scratch</li>
+          <li>The shared framework, and the warehouse of rooms, interactions and tools that projects draw from</li>
+          <li>How authoring changed from 2025 to 2026, from Articy:draft to a visual flow graph</li>
+          <li>The editor tools, the localization and voice pipeline, supported platforms, the architecture and CI/CD</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Scale">
+  <div class="wrap">
+    <ul class="facts" data-reveal>
+      <li><b>9</b><span>published packages</span></li>
+      <li><b>18+</b><span>project repositories use them</span></li>
+      <li><b>4</b><span>build targets: Quest, Android, iOS, WebGL</span></li>
+      <li><b>2,248</b><span>3D models in the asset library</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="why-h">
+  <div class="wrap">
+    <div class="label"><span>The problem</span><span>2023 to 2024</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="why-h">Every client app was built from scratch</h2>
+      <div class="main prose" data-reveal>
+        <p>In 2023 and 2024 I built client apps in Unity one at a time. Each had its own code for dialogue, interactions and teleporting, and the only way to reuse something was to copy it into the next project.</p>
+        <p>Most were mode-of-action stories for pharma clients and a university hospital: guided VR experiences that explain how a disease or a therapy works. Each one started from an empty Unity scene, and every content change needed a developer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="frame-h">
+  <div class="wrap">
+    <div class="label"><span>The shared framework</span><span>End of 2024</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="frame-h">The same structure in every app</h2>
+      <div class="main prose" data-reveal>
+        <p>At the end of 2024 the team saw that these story apps all followed one pattern. The user watches or hears something, is asked to do something, and the story continues once they have done it. The medical subject changed from client to client, but the structure did not, so it could be built once and reused.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="wh-h">
+  <div class="wrap">
+    <div class="label"><span>The warehouse</span><span>2025</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="wh-h">One repository that every project draws from</h2>
+      <div class="main prose" data-reveal>
+        <p>In 2025 we moved everything reusable into one mono-repo and treated it as a warehouse. It holds the rooms, the 3D assets, interactions such as grab, touch and teleport, the authoring tools and the support for each device. A new client project takes what it needs from it instead of starting empty.</p>
+        <p>In practice the warehouse is a set of Unity packages, a library of rooms and a project template that always has the current packages installed. I set these up in mid-2025. Nine published packages are now used by more than 18 project repositories.</p>
+      </div>
+    </div>
+    <ol class="why" data-reveal aria-label="From one app per client to one warehouse">
+      <li><svg viewBox="0 0 240 96" aria-hidden="true"><rect class="o" x="0.5" y="20.5" width="39" height="59"/><rect class="f" x="8" y="30" width="24" height="6"/><rect class="o" x="50.5" y="20.5" width="39" height="59"/><rect class="f" x="58" y="54" width="14" height="20"/><rect class="o" x="100.5" y="20.5" width="39" height="59"/><rect class="f" x="108" y="32" width="10" height="30"/><rect class="o" x="150.5" y="20.5" width="39" height="59"/><rect class="f" x="166" y="46" width="16" height="8"/><rect class="o" x="200.5" y="20.5" width="39" height="59"/><rect class="f" x="208" y="60" width="24" height="10"/></svg><p class="meta">2023 to 2024</p><p>One app per client, with nothing shared between them.</p></li>
+      <li><svg viewBox="0 0 240 96" aria-hidden="true"><rect class="o" x="0.5" y="20.5" width="39" height="59"/><rect class="r" x="8" y="28" width="24" height="12"/><rect class="f" x="8" y="66" width="24" height="6"/><rect class="o" x="50.5" y="20.5" width="39" height="59"/><rect class="r" x="58" y="28" width="24" height="12"/><rect class="f" x="58" y="66" width="14" height="6"/><rect class="o" x="100.5" y="20.5" width="39" height="59"/><rect class="r" x="108" y="28" width="24" height="12"/><rect class="f" x="122" y="66" width="10" height="6"/><rect class="o" x="150.5" y="20.5" width="39" height="59"/><rect class="r" x="158" y="28" width="24" height="12"/><rect class="f" x="158" y="48" width="16" height="4"/><rect class="o" x="200.5" y="20.5" width="39" height="59"/><rect class="r" x="208" y="28" width="24" height="12"/><rect class="f" x="208" y="66" width="24" height="6"/></svg><p class="meta">End of 2024</p><p>The same structure, marked in red, inside every app.</p></li>
+      <li><svg viewBox="0 0 240 96" aria-hidden="true"><rect class="r" x="1" y="1" width="238" height="34"/><rect class="f" x="10" y="10" width="37" height="16"/><rect class="f" x="55" y="10" width="37" height="16"/><rect class="f" x="100" y="10" width="37" height="16"/><rect class="f" x="145" y="10" width="37" height="16"/><rect class="f" x="190" y="10" width="37" height="16"/><line class="w" x1="20" y1="36" x2="20" y2="56"/><rect class="o" x="0.5" y="56.5" width="39" height="39"/><rect class="r" x="8" y="64" width="24" height="10"/><line class="w" x1="70" y1="36" x2="70" y2="56"/><rect class="o" x="50.5" y="56.5" width="39" height="39"/><rect class="r" x="58" y="64" width="24" height="10"/><line class="w" x1="120" y1="36" x2="120" y2="56"/><rect class="o" x="100.5" y="56.5" width="39" height="39"/><rect class="r" x="108" y="64" width="24" height="10"/><line class="w" x1="170" y1="36" x2="170" y2="56"/><rect class="o" x="150.5" y="56.5" width="39" height="39"/><rect class="r" x="158" y="64" width="24" height="10"/><line class="w" x1="220" y1="36" x2="220" y2="56"/><rect class="o" x="200.5" y="56.5" width="39" height="39"/><rect class="r" x="208" y="64" width="24" height="10"/></svg><p class="meta">2025</p><p>One warehouse, and every project takes what it needs from it.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="auth-h">
+  <div class="wrap">
+    <div class="label"><span>Authoring</span><span>2025 to 2026</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="auth-h">How authoring changed from 2025 to 2026</h2>
+      <div class="main prose" data-reveal>
+        <p>Authoring means deciding what happens in a scene and in what order. It changed twice in about a year: from a writing tool, to a list in code, to a visual graph.</p>
+        <h3>2025: stories written in Articy:draft</h3>
+        <p>Stories were first written in Articy:draft, a writing tool made for game dialogue. Writers laid out each story as a chain of dialogue fragments. In January 2025 I wrote the first Articy importer and driver for Unity: it brings a story into the project and plays its chain in the scene. A colleague later built the Designer plugin, which runs inside Articy itself.</p>
+      </div>
+    </div>
+    <figure class="shot figure--in" data-reveal><img src="../img/articy-flow.webp" width="1542" height="559" alt="Articy:draft: three dialogue fragments in a row, reading grab the trash, pick up the scanner, scan the brain" loading="lazy" decoding="async"><figcaption class="slate slate--long">A story in Articy:draft. Each box is one line of dialogue or one instruction to the user</figcaption></figure>
+    <div class="cols cols--prose" style="margin-top:var(--gap-block)">
+      <div class="main prose" data-reveal>
+        <h3 style="margin-top:0">Why Articy was dropped</h3>
+        <p>Articy stayed in use through 2025. Then the technical manager who had championed it left, and the team decided to build its own system instead. Articy was removed from the warehouse in March 2026.</p>
+        <h3>January 2026: a flow controller in code</h3>
+        <p>The first replacement was a flow controller written in code for a hospital VR project. A developer listed the steps of a scene in order, and each step was one of two kinds. A Moment is something the user witnesses, such as a line of dialogue. An Action is something the user does, such as grabbing an object. The controller could skip steps or start from any step, so a developer could test the end of a long scene without playing the start.</p>
+        <h3>March 2026: the visual flow graph</h3>
+        <p>In March 2026 I turned that controller into a visual flow graph editor inside Unity. The model stayed the same, Moments and Actions in order, but each step became a block and the order became wires between blocks. A runner plays the graph and a debugger shows which block is active. Because a scene is now data rather than code, people who are not developers can author one.</p>
+      </div>
+    </div>
+
+    <h3 class="sub" data-reveal>The same four steps in each authoring tool</h3>
+    <div class="model" data-reveal>
+      <div class="forms">
+        <div class="form"><p class="meta">2025</p><h3>Authored data</h3><ol class="seq seq--data" aria-label="Say, grab, say, scan"><li class="m">Say</li><li class="a">Grab</li><li class="m">Say</li><li class="a">Scan</li></ol><dl class="kv"><div><dt>Authored</dt><dd>By writers, in Articy</dd></div><div><dt>Run by</dt><dd>A driver script in Unity</dd></div></dl></div>
+        <div class="form"><p class="meta">January 2026</p><h3>A list in code</h3><ol class="seq seq--list" aria-label="Say, grab, say, scan"><li class="m">Say<i>Moment</i></li><li class="a">Grab<i>Action</i></li><li class="m">Say<i>Moment</i></li><li class="a">Scan<i>Action</i></li></ol><dl class="kv"><div><dt>Authored</dt><dd>By developers</dd></div><div><dt>Run by</dt><dd>A flow controller, with skip and start-at-step</dd></div></dl></div>
+        <div class="form form--key"><p class="meta">March 2026</p><h3>A visual graph</h3><ol class="seq seq--graph" aria-label="Say, grab, say, scan"><li class="m">Say<i>Moment</i></li><li class="a">Grab<i>Action</i></li><li class="m">Say<i>Moment</i></li><li class="a">Scan<i>Action</i></li></ol><dl class="kv"><div><dt>Authored</dt><dd>By anyone, in the Unity editor</dd></div><div><dt>Run by</dt><dd>A graph runner, with a debugger</dd></div></dl></div>
+      </div>
+      <p class="legend"><span><b>Moment</b> something the user witnesses</span><span><b>Action</b> something the user does</span></p>
+    </div>
+
+    <figure class="shot" data-reveal style="margin-top:var(--gap-block)"><div class="pan" tabindex="0" role="group" aria-label="Flow graph, scrolls sideways on small screens"><img src="../img/flow-graph.webp" width="1802" height="612" alt="The flow graph editor: ten blocks from Start through Intro dialogue, Grab the instrument, Place on tray and Placement feedback to a branch with two endings" loading="lazy" decoding="async"></div><figcaption class="slate slate--long">The flow graph editor with a ten-block graph for an instrument-handling task. Blue blocks are Moments, orange blocks are Actions, and the grey block branches on whether the user succeeded</figcaption></figure>
+
+    <div class="cols cols--prose" style="margin-top:var(--gap-block)">
+      <h3 class="display h3">The same task on three devices</h3>
+      <div class="main prose" data-reveal>
+        <p>A graph is authored once and runs on every supported device. Here one task from the demo runs in a desktop browser, on a phone and in a headset, and only the input changes: a click, a tap or a controller ray.</p>
+      </div>
+    </div>
+    <div class="trio" data-reveal>
+      <figure><img src="../img/task-web.webp" width="1049" height="590" alt="The task in a desktop browser: a prompt reads Click it above a cube on a table" loading="lazy" decoding="async"><figcaption class="slate">Browser, mouse</figcaption></figure>
+      <figure><img src="../img/task-mobile.webp" width="1049" height="590" alt="The same task on a phone: the prompt reads Tap it" loading="lazy" decoding="async"><figcaption class="slate">Phone, touch</figcaption></figure>
+      <figure><img src="../img/task-vr.webp" width="1049" height="590" alt="The same task in a headset: a controller ray points at the cube" loading="lazy" decoding="async"><figcaption class="slate">Headset, controllers</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="async-h">
+  <div class="wrap">
+    <div class="label"><span>Flow runtime</span><span>2026</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="async-h">How the flow runtime waits for the user</h2>
+      <div class="main prose" data-reveal>
+        <p>Each block in a flow graph runs as an asynchronous step built on UniTask, a library for async code in Unity. A step does its work, waits as long as it needs to, and then returns the output port the flow should follow next. The runner walks the whole graph this way, including branches and nested sub-flows, without coroutines.</p>
+        <p>Most steps wait on the user or the scene. A step can wait until the user teleports to a marked point, until any Unity event fires, until the thumbstick is turned, or until an animation reaches a set point in its timeline. Other steps play dialogue in time with animation segments, fade an audio source or fly an avatar along a path. Each of these is one block in the graph.</p>
+        <p>One cancellation token runs through the whole flow. When the user skips a moment or leaves the scene, or the debugger holds the flow, every running wait stops at once and cleans up after itself. Nothing is left running in the background.</p>
+        <p>Localised text and voice load the same way. A step looks up the active language, the line in the string table and its audio clip without holding up the frame.</p>
+        <p>We chose UniTask over coroutines and standard C# tasks. Unlike coroutines, it supports cancellation, return values and cleanup that always runs when a step ends early. It allocates almost no memory, which matters on Quest and phones, and it runs in WebGL builds, which have no background threads.</p>
+      </div>
+    </div>
+    <figure class="figure async" data-reveal>
+      <ol class="async-steps" aria-label="Four steps of a flow, each waiting before it returns the next port">
+        <li><span class="meta">Moment</span><b>Dialogue</b><i>Plays in time with the animation</i></li>
+        <li class="a"><span class="meta">Action</span><b>Teleport</b><i>Waits until the user reaches the marked point</i></li>
+        <li class="a"><span class="meta">Action</span><b>Turn</b><i>Waits for thumbstick input</i></li>
+        <li><span class="meta">Moment</span><b>Animation</b><i>Waits until the clip reaches a set time</i></li>
+      </ol>
+      <div class="async-token"><b>One cancellation token through the whole flow</b><span>A skip, leaving the scene or a debugger hold cancels every wait at once</span></div>
+      <figcaption class="slate slate--long">Each step waits, then returns the port to follow next. One token can stop all of them</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="mx-h">
+  <div class="wrap">
+    <div class="label"><span>Platforms</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="mx-h">Supported platforms and input</h2>
+      <div class="main prose" data-reveal>
+        <p>The warehouse builds for Quest, Android, iOS and WebGL. There is no native desktop build. On a desktop computer the WebGL build runs in the browser, with mouse and keyboard.</p>
+        <p>One 2026 client app adds passthrough with hand tracking, built with parts of the warehouse on a Meta XR hands rig.</p>
+        <p>The browser build also has to run on phones. One web build ran out of memory in Safari on an iPhone 13. I fixed it with a 384 MB initial heap and remote Addressables that keep the first download under 90 MiB.</p>
+      </div>
+    </div>
+    <table class="matrix" data-reveal>
+      <caption class="sr">Supported input per platform</caption>
+      <thead>
+        <tr><th scope="col"><span class="sr">Platform</span></th><th scope="col"><span>Controllers</span></th><th scope="col"><span>Hands</span></th><th scope="col"><span>Touch</span></th><th scope="col"><span>Mouse and keyboard</span></th><th scope="col"><span>Gyro look</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Meta Quest, VR</th><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td></tr>
+        <tr><th scope="row">Meta Quest, passthrough<small>Hands: in one client app</small></th><td><i class="dot wip"></i><span class="sr">In progress</span></td><td><i class="dot proj"></i><span class="sr">In one client app</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td></tr>
+        <tr><th scope="row">Android phone</th><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td></tr>
+        <tr><th scope="row">iPhone and iPad</th><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td></tr>
+        <tr><th scope="row">WebGL, desktop browser</th><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="nil"></i><span class="sr">No</span></td></tr>
+        <tr><th scope="row">WebGL, phone browser<small>Gyro falls back to drag</small></th><td><i class="nil"></i><span class="sr">No</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td><td><i class="nil"></i><span class="sr">No</span></td><td><i class="dot"></i><span class="sr">Yes</span></td></tr>
+      </tbody>
+    </table>
+    <p class="legend" aria-hidden="true"><span><i class="dot"></i>Supported</span><span><i class="dot wip"></i>In progress</span><span><i class="dot proj"></i>In one client app</span></p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="tool-h">
+  <div class="wrap">
+    <div class="label"><span>Tools</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="tool-h">Editor tools</h2>
+      <div class="main prose" data-reveal>
+        <p>Five tools, each a window in the Unity editor, let people find what is in the warehouse and use it.</p>
+      </div>
+    </div>
+
+    <article class="two two--top">
+      <figure class="shot shot--native" data-reveal><img src="../img/asset-library-heart-v2.webp" width="725" height="468" alt="The asset library window in Unity: the search field and filters, the six most recently added models and a 3D preview of a textured heart cross-section" loading="lazy" decoding="async"></figure>
+      <div class="side" data-reveal>
+        <h3>Asset library</h3>
+        <p class="body">A searchable catalogue of every 3D model the company has made, 2,248 so far. A nightly job scans the company’s repositories for models, removes duplicates and adds tags from a vision model, which people correct where needed.</p>
+        <p class="body">Artists and developers search it on the web or in this Unity window, filter by format, type or tag, and preview a model in 3D before using it.</p>
+      </div>
+    </article>
+
+    <article class="two two--small two--top">
+      <figure class="shot shot--stack" data-reveal><img src="../img/scene-filter.webp" width="692" height="26" alt="The folder filter of the scene importer, set to medical rooms" loading="lazy" decoding="async"><img src="../img/scene-preview.webp" width="384" height="290" alt="Preview of a room with a sculpted white and teal ceiling, image 1 of 4" loading="lazy" decoding="async"><figcaption class="slate slate--long">Filter rooms by tag, preview, import</figcaption></figure>
+      <div class="side" data-reveal>
+        <h3>Scene importer</h3>
+        <p class="body">The scene importer brings rooms from the shared room library into a project. A developer filters the library by folder tags, such as medical rooms, looks through a room’s preview images and imports the scene.</p>
+        <p class="body">A colleague redesigned its interface in 2026.</p>
+      </div>
+    </article>
+
+    <article class="two two--top">
+      <figure class="shot" data-reveal><img src="../img/character-creator-v2.webp" width="1600" height="803" alt="The character creator: hair options on the left and a full-body preview of a young man in a white T-shirt and black trousers" loading="lazy" decoding="async"></figure>
+      <div class="side" data-reveal>
+        <h3>Character creator</h3>
+        <p class="body">The character creator builds the people who appear in an experience. The author picks a base body, then a face, hair, clothes and colours, and saves a character that is ready to place in a scene.</p>
+        <p class="body">Lip sync can be added on save, so the character can speak dialogue lines.</p>
+      </div>
+    </article>
+
+    <article class="two two--top">
+      <figure class="shot" data-reveal><img src="../img/package-manager.webp" width="1080" height="574" alt="The package manager after a refresh: 12 packages up to date and 9 with updates. Six rows show Avatar System, Camera Effects, Core, Dialogue System, Flow System and Focus Interaction, each with its local and remote version, in green when current and amber when an update is available" loading="lazy" decoding="async"><figcaption class="slate slate--long">Taken before the October 2026 merge into nine packages, in a project with 21 packages installed. Green rows are up to date, amber rows have an update, and the summary counts 0 errors</figcaption></figure>
+      <div class="side" data-reveal>
+        <h3>Package manager</h3>
+        <p class="body">Projects install the warehouse as packages, so we built our own package manager window for Unity. It lists each package with its installed and available versions, and installs or updates it.</p>
+        <p class="body">In July 2026 each package moved to its own install branch. Until then, installing one package fetched the whole 438&nbsp;MB mirror. Now the core package is a 3.2&nbsp;MB fetch.</p>
+        <ul class="bars" aria-label="Download size when installing the core package" style="margin-top:24px">
+          <li><b>438 MB</b><span>Before: every install fetched the whole mirror</span><i></i></li>
+          <li><b>3.2 MB</b><span>After: each package installs from its own branch</span><i></i></li>
+        </ul>
+      </div>
+    </article>
+
+    <div class="cols cols--prose" style="margin-top:var(--gap-block)">
+      <h3 class="display h3">Localization and voice pipeline</h3>
+      <div class="main prose" data-reveal>
+        <p>Every dialogue line lives in one Google Sheet: the text in each language, an approval status and a reference to the voice recording generated for that line. The client reviews and approves lines directly in the sheet.</p>
+        <p>A sync window in Unity then pulls only the approved lines. It writes the text into Unity’s localization tables and downloads the matching ElevenLabs voice files, with separate variants for VR and mobile. At runtime the app plays the right text and voice for the active language.</p>
+        <p>Nobody copies text or audio into Unity by hand. That cut a large amount of time between a client reviewing dialogue and the change reaching the build, and iterations got faster.</p>
+      </div>
+    </div>
+    <figure data-reveal><div class="sheet" tabindex="0" role="group" aria-label="Dialogue sheet, scrolls sideways"><img src="../img/localization-sheet.webp" width="3504" height="454" alt="The dialogue sheet: columns for flow, scene, key, approval status, context, German text, German voice, audio status and English text, with four approved rows from a controls tutorial" loading="lazy" decoding="async"></div><figcaption class="slate slate--long">Approved lines, each with a generated voice file</figcaption></figure>
+    <ol class="pipe" data-reveal aria-label="From the sheet to the headset">
+      <li><h3>Sheet</h3><p>Every line, in each language</p></li>
+      <li><h3>Approval</h3><p>The client approves lines in the sheet</p></li>
+      <li><h3>ElevenLabs voice</h3><p>A voice file for each line</p></li>
+      <li><h3>Unity sync</h3><p>Approved text and audio are pulled into the project</p></li>
+      <li><h3>In-headset playback</h3><p>The active language plays, text and voice</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="arch-h">
+  <div class="wrap">
+    <div class="label"><span>Architecture</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="arch-h">Architecture of the warehouse</h2>
+      <div class="main prose" data-reveal>
+        <p>The warehouse has four layers. Content, such as flow graphs, localization sheets, rooms and models, is authored with the editor tools. Scenes built with those tools run on the runtime packages, and the runtime packages rest on a core package that handles devices and input. Below that is the platform layer, which turns one project into four builds.</p>
+        <p>Dependencies point downward only, and an automated layer check enforces that.</p>
+      </div>
+    </div>
+    <figure class="figure" data-reveal>
+<svg class="arch arch-d" viewBox="0 0 1200 538" role="img" aria-label="Architecture, top to bottom. Content: flow graph assets, localization sheets, room library, 3D asset library, avatar recipes. Flow graph and editor tools: flow graph editor with runner and debugger, scene importer, asset library window, character creator. Runtime packages: flow, interactions, feedback, activities and avatars, all resting on core. Platform layer: rig profiles for VR controllers, VR hands, phone touch and gyro, browser mouse and touch, then the build targets Quest, Android, iOS and WebGL."><line class="rule" x1="0" y1="1" x2="1200" y2="1"/><text class="bt" x="0" y="59" font-size="24">Content</text><rect class="n" x="288.0" y="29.0" width="172.8" height="48" rx="2"/><text class="t" x="374.4" y="58.4" text-anchor="middle" font-size="15">Flow graph assets</text><rect class="n" x="472.8" y="29.0" width="172.8" height="48" rx="2"/><text class="t" x="559.2" y="58.4" text-anchor="middle" font-size="15">Localization sheets</text><rect class="n" x="657.6" y="29.0" width="172.8" height="48" rx="2"/><text class="t" x="744.0" y="58.4" text-anchor="middle" font-size="15">Room library</text><rect class="n" x="842.4" y="29.0" width="172.8" height="48" rx="2"/><text class="t" x="928.8" y="58.4" text-anchor="middle" font-size="15">3D asset library</text><rect class="n" x="1027.2" y="29.0" width="172.8" height="48" rx="2"/><text class="t" x="1113.6" y="58.4" text-anchor="middle" font-size="15">Avatar recipes</text><line class="a" x1="470" y1="85" x2="470" y2="124"/><path class="ah" d="M466 118 L470 124 L474 118"/><line class="a" x1="744" y1="85" x2="744" y2="124"/><path class="ah" d="M740 118 L744 124 L748 118"/><line class="a" x1="1018" y1="85" x2="1018" y2="124"/><path class="ah" d="M1014 118 L1018 124 L1022 118"/><line class="rule" x1="0" y1="105" x2="1200" y2="105"/><text class="bt" x="0" y="153" font-size="24">Flow graph and</text><text class="bt" x="0" y="181" font-size="24">editor tools</text><rect class="n n-accent" x="288.0" y="133.0" width="304.7" height="48" rx="2"/><text class="t t-out" x="440.3" y="162.4" text-anchor="middle" font-size="15">Flow graph editor, runner, debugger</text><rect class="n" x="604.7" y="133.0" width="190.4" height="48" rx="2"/><text class="t" x="699.9" y="162.4" text-anchor="middle" font-size="15">Scene importer</text><rect class="n" x="807.1" y="133.0" width="190.4" height="48" rx="2"/><text class="t" x="902.3" y="162.4" text-anchor="middle" font-size="15">Asset library window</text><rect class="n" x="1009.6" y="133.0" width="190.4" height="48" rx="2"/><text class="t" x="1104.8" y="162.4" text-anchor="middle" font-size="15">Character creator</text><line class="a" x1="470" y1="189" x2="470" y2="228"/><path class="ah" d="M466 222 L470 228 L474 222"/><line class="a" x1="744" y1="189" x2="744" y2="228"/><path class="ah" d="M740 222 L744 228 L748 222"/><line class="a" x1="1018" y1="189" x2="1018" y2="228"/><path class="ah" d="M1014 222 L1018 228 L1022 222"/><line class="rule" x1="0" y1="209" x2="1200" y2="209"/><text class="bt" x="0" y="267" font-size="24">Runtime packages</text><rect class="n" x="288.0" y="237.0" width="172.8" height="48" rx="2"/><text class="t" x="374.4" y="266.4" text-anchor="middle" font-size="15">Flow</text><rect class="n" x="472.8" y="237.0" width="172.8" height="48" rx="2"/><text class="t" x="559.2" y="266.4" text-anchor="middle" font-size="15">Interactions</text><rect class="n" x="657.6" y="237.0" width="172.8" height="48" rx="2"/><text class="t" x="744.0" y="266.4" text-anchor="middle" font-size="15">Feedback</text><rect class="n" x="842.4" y="237.0" width="172.8" height="48" rx="2"/><text class="t" x="928.8" y="266.4" text-anchor="middle" font-size="15">Activities</text><rect class="n" x="1027.2" y="237.0" width="172.8" height="48" rx="2"/><text class="t" x="1113.6" y="266.4" text-anchor="middle" font-size="15">Avatars</text><rect class="n" x="288.0" y="297.0" width="912.0" height="48" rx="2"/><text class="t" x="744.0" y="326.4" text-anchor="middle" font-size="15">Core: contracts, capabilities, input providers</text><line class="a" x1="470" y1="353" x2="470" y2="392"/><path class="ah" d="M466 386 L470 392 L474 386"/><line class="a" x1="744" y1="353" x2="744" y2="392"/><path class="ah" d="M740 386 L744 392 L748 386"/><line class="a" x1="1018" y1="353" x2="1018" y2="392"/><path class="ah" d="M1014 386 L1018 392 L1022 386"/><line class="rule" x1="0" y1="373" x2="1200" y2="373"/><text class="bt" x="0" y="431" font-size="24">Platform layer</text><rect class="n" x="288.0" y="401.0" width="219.0" height="48" rx="2"/><text class="t" x="397.5" y="430.4" text-anchor="middle" font-size="15">VR controllers</text><rect class="n" x="519.0" y="401.0" width="219.0" height="48" rx="2"/><text class="t" x="628.5" y="430.4" text-anchor="middle" font-size="15">VR hands</text><rect class="n" x="750.0" y="401.0" width="219.0" height="48" rx="2"/><text class="t" x="859.5" y="430.4" text-anchor="middle" font-size="15">Phone touch and gyro</text><rect class="n" x="981.0" y="401.0" width="219.0" height="48" rx="2"/><text class="t" x="1090.5" y="430.4" text-anchor="middle" font-size="15">Browser mouse and touch</text><rect class="n n-out" x="288.0" y="461.0" width="219.0" height="48" rx="2"/><text class="t t-out" x="397.5" y="490.4" text-anchor="middle" font-size="15">Quest</text><rect class="n n-out" x="519.0" y="461.0" width="219.0" height="48" rx="2"/><text class="t t-out" x="628.5" y="490.4" text-anchor="middle" font-size="15">Android</text><rect class="n n-out" x="750.0" y="461.0" width="219.0" height="48" rx="2"/><text class="t t-out" x="859.5" y="490.4" text-anchor="middle" font-size="15">iOS</text><rect class="n n-out" x="981.0" y="461.0" width="219.0" height="48" rx="2"/><text class="t t-out" x="1090.5" y="490.4" text-anchor="middle" font-size="15">WebGL</text><text class="st" x="268" y="429.5" text-anchor="end" font-size="13">Rig profiles</text><text class="st" x="268" y="489.5" text-anchor="end" font-size="13">Build targets</text><line class="rule" x1="0" y1="537" x2="1200" y2="537"/></svg>
+<svg class="arch arch-m" viewBox="0 0 350 1018" role="img" aria-label="Architecture, top to bottom. Content: flow graph assets, localization sheets, room library, 3D asset library, avatar recipes. Flow graph and editor tools: flow graph editor with runner and debugger, scene importer, asset library window, character creator. Runtime packages: flow, interactions, feedback, activities and avatars, all resting on core. Platform layer: rig profiles for VR controllers, VR hands, phone touch and gyro, browser mouse and touch, then the build targets Quest, Android, iOS and WebGL."><line class="rule" x1="0" y1="1" x2="350" y2="1"/><text class="bt" x="0" y="37" font-size="21">Content</text><rect class="n" x="0.0" y="57.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="81.7" text-anchor="middle" font-size="13">Flow graph assets</text><rect class="n" x="179.0" y="57.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="81.7" text-anchor="middle" font-size="13">Localization sheets</text><rect class="n" x="0.0" y="105.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="129.7" text-anchor="middle" font-size="13">Room library</text><rect class="n" x="179.0" y="105.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="129.7" text-anchor="middle" font-size="13">3D asset library</text><rect class="n" x="0.0" y="153.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="177.7" text-anchor="middle" font-size="13">Avatar recipes</text><line class="a" x1="175" y1="201" x2="175" y2="232"/><path class="ah" d="M171 226 L175 232 L179 226"/><line class="rule" x1="0" y1="217" x2="350" y2="217"/><text class="bt" x="0" y="253" font-size="21">Flow graph and editor tools</text><rect class="n n-accent" x="0.0" y="273.0" width="350.0" height="40" rx="2"/><text class="t t-out" x="175.0" y="297.7" text-anchor="middle" font-size="13">Flow graph editor, runner, debugger</text><rect class="n" x="0.0" y="321.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="345.7" text-anchor="middle" font-size="13">Scene importer</text><rect class="n" x="179.0" y="321.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="345.7" text-anchor="middle" font-size="13">Asset library window</text><rect class="n" x="0.0" y="369.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="393.7" text-anchor="middle" font-size="13">Character creator</text><line class="a" x1="175" y1="417" x2="175" y2="448"/><path class="ah" d="M171 442 L175 448 L179 442"/><line class="rule" x1="0" y1="433" x2="350" y2="433"/><text class="bt" x="0" y="469" font-size="21">Runtime packages</text><rect class="n" x="0.0" y="489.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="513.7" text-anchor="middle" font-size="13">Flow</text><rect class="n" x="179.0" y="489.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="513.7" text-anchor="middle" font-size="13">Interactions</text><rect class="n" x="0.0" y="537.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="561.7" text-anchor="middle" font-size="13">Feedback</text><rect class="n" x="179.0" y="537.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="561.7" text-anchor="middle" font-size="13">Activities</text><rect class="n" x="0.0" y="585.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="609.7" text-anchor="middle" font-size="13">Avatars</text><rect class="n" x="0.0" y="637.0" width="350.0" height="40" rx="2"/><text class="t" x="175.0" y="661.7" text-anchor="middle" font-size="13">Core: contracts, capabilities, input providers</text><line class="a" x1="175" y1="685" x2="175" y2="716"/><path class="ah" d="M171 710 L175 716 L179 710"/><line class="rule" x1="0" y1="701" x2="350" y2="701"/><text class="bt" x="0" y="737" font-size="21">Platform layer</text><text class="st" x="0" y="769" font-size="12">Rig profiles</text><rect class="n" x="0.0" y="781.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="805.7" text-anchor="middle" font-size="13">VR controllers</text><rect class="n" x="179.0" y="781.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="805.7" text-anchor="middle" font-size="13">VR hands</text><rect class="n" x="0.0" y="829.0" width="171.0" height="40" rx="2"/><text class="t" x="85.5" y="853.7" text-anchor="middle" font-size="13">Phone touch and gyro</text><rect class="n" x="179.0" y="829.0" width="171.0" height="40" rx="2"/><text class="t" x="264.5" y="853.7" text-anchor="middle" font-size="13">Browser mouse and touch</text><text class="st" x="0" y="893" font-size="12">Build targets</text><rect class="n n-out" x="0.0" y="905.0" width="171.0" height="40" rx="2"/><text class="t t-out" x="85.5" y="929.7" text-anchor="middle" font-size="13">Quest</text><rect class="n n-out" x="179.0" y="905.0" width="171.0" height="40" rx="2"/><text class="t t-out" x="264.5" y="929.7" text-anchor="middle" font-size="13">Android</text><rect class="n n-out" x="0.0" y="953.0" width="171.0" height="40" rx="2"/><text class="t t-out" x="85.5" y="977.7" text-anchor="middle" font-size="13">iOS</text><rect class="n n-out" x="179.0" y="953.0" width="171.0" height="40" rx="2"/><text class="t t-out" x="264.5" y="977.7" text-anchor="middle" font-size="13">WebGL</text><line class="rule" x1="0" y1="1017" x2="350" y2="1017"/></svg>
+      <figcaption class="slate">The four layers, from content at the top to build targets at the bottom</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="ci-h">
+  <div class="wrap">
+    <div class="label"><span>CI/CD</span><span>December 2025 to now</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="ci-h">CI/CD: every workflow, grouped by job</h2>
+      <div class="main prose" data-reveal>
+        <p>The automation grew with the warehouse. It started in December 2025 with one build for one project and is now a pipeline that checks, publishes and distributes every change to the packages.</p>
+        <p>Below is the path a change takes, then every workflow that has existed, grouped by job, including the retired and moved ones.</p>
+      </div>
+    </div>
+    <ol class="pipe" data-reveal aria-label="The path from a commit to a build">
+      <li><h3>Gate</h3><p>Docs and version checked</p></li>
+      <li><h3>Publish</h3><p>Each package to its own install branch</p></li>
+      <li><h3>Propagate</h3><p>The project template updates itself</p></li>
+      <li><h3>Platform branches</h3><p>One generated branch per target</p></li>
+      <li><h3>Builds</h3>
+        <ul class="targets">
+          <li>Quest<span>APK</span></li>
+          <li>Android<span>signed</span></li>
+          <li>iOS<span>TestFlight</span></li>
+          <li>WebGL<span>hosted page</span></li>
+        </ul>
+      </li>
+    </ol>
+    <div class="jobs" data-reveal><article class="job"><h3>Checks before merge</h3><p>Commit and push hooks run on the developer’s machine. They stop a push to the main branch when a package’s documentation or version number does not match its code. The same check runs again on every pull request and blocks the merge if it fails.</p><ul><li>Commit and push hooks<span><i class="dot"></i>Live</span></li><li>Docs and version check<span><i class="dot"></i>Live</span></li></ul></article><article class="job"><h3>Publishing packages</h3><p>When a change is merged, a sync workflow copies each package to its own install branch and updates the index that the package manager reads. For two months a second workflow also published packages as release archives. It was retired in July 2026, when per-package branches made installs small.</p><ul><li>Package sync to install branches<span><i class="dot"></i>Live</span></li><li>Release archives<span><i class="nil"></i>Retired</span></li></ul></article><article class="job"><h3>Updating the project template</h3><p>After each publish, a workflow updates the project template. It adds any new package and points every package at the newly published version. New client projects are created from the template, so they start current and nobody edits a manifest by hand.</p><ul><li>Template sync<span><i class="dot"></i>Live</span></li></ul></article><article class="job"><h3>Tests, lint and audit</h3><p>In July 2026 the packages repository briefly ran its own tests, a lint of the per-platform settings and a reference audit. The tests and the lint moved to the project repositories, because scenes and platform settings live there. The audit became a check that runs locally. Since September 2026 a test package also lets coding agents play through a flow in the Unity editor with the input a user would give (mouse and keyboard, controllers or hands) and check each step.</p><ul><li>EditMode and PlayMode tests<span><i class="dot wip"></i>Moved to projects</span></li><li>Platform settings lint<span><i class="dot wip"></i>Moved to projects</span></li><li>Reference audit<span><i class="dot wip"></i>Now a local check</span></li></ul></article><article class="job"><h3>Platform branches and builds</h3><p>Quest, Android, iOS and WebGL need different project settings, and those settings conflict when they share a branch. A workflow generates one branch per platform by applying the committed settings, and it fails if anything else changed. A project switches it on when it needs it. The four-target build runs in the project repositories.</p><ul><li>Platform branches, one per target<span><i class="dot wip"></i>Opt-in per project</span></li><li>Four-target build<span><i class="dot wip"></i>Moved to projects</span></li></ul></article><article class="job"><h3>Delivery to devices</h3><p>The first automated builds were for a hospital VR project, all through Unity Cloud Build. Quest came in December 2025, then iOS with upload to TestFlight and Android in January 2026. They were retired in July 2026 in favour of the shared pipeline. Still live are a workflow that re-signs a stored iOS build and uploads it to TestFlight again, and WebGL builds published to a hosted page.</p><ul><li>Quest cloud build<span><i class="nil"></i>Retired</span></li><li>iOS cloud build to TestFlight<span><i class="nil"></i>Retired</span></li><li>Android cloud build<span><i class="nil"></i>Retired</span></li><li>TestFlight republish<span><i class="dot"></i>Live</span></li><li>WebGL to a hosted page<span><i class="dot"></i>Live</span></li></ul></article><article class="job"><h3>Asset library</h3><p>A nightly workflow scans every repository for 3D models and rebuilds the catalogue. A second workflow deploys the web viewer.</p><ul><li>Catalogue scan of every repository<span><i class="dot"></i>Live</span></li><li>Viewer deploy<span><i class="dot"></i>Live</span></li></ul></article></div>
+
+    <div class="two">
+      <figure class="shot" data-reveal><img src="../media/platform/docs-gate-pr-comment-1200.webp" width="1200" height="441" alt="A failed docs check on a pull request, with three numbered fix steps posted as a comment" loading="lazy" decoding="async"><figcaption class="slate slate--long">What the docs check posts on a blocked pull request</figcaption></figure>
+      <div class="side" data-reveal>
+        <p class="meta">April 2026</p>
+        <h3>The documentation gate</h3>
+        <p class="body">The warehouse then had more than twenty packages, used across many projects, and the documentation drifted away from the code. The count peaked at 23 before the October 2026 merge into nine. Since April 2026 a pull request cannot merge until the README and manual of each changed package match its code.</p>
+        <p class="body">A script rewrites version numbers, dependency tables and links. The written explanations are updated by a coding agent that works only from the code.</p>
+      </div>
+    </div>
+
+    <div class="cols cols--prose" style="margin-top:var(--gap-block)">
+      <h3 class="display h3">Versioning, and why it moved off the bot</h3>
+      <div class="main prose" data-reveal>
+        <p>At first a bot raised the version of every changed package on each sync. It did this even when nothing major had changed.</p>
+        <p>In July 2026 the automatic bump was removed. Developers now raise versions deliberately, and the documentation gate checks that they did. Since October 2026 the package manager also asks for confirmation before it applies a major version.</p>
+      </div>
+    </div>
+    <ol class="ver" data-reveal>
+      <li><time datetime="2026-01">Jan 2026</time>A bot bumps every changed package</li>
+      <li><time datetime="2026-06">Jun 2026</time>Docs-only changes stop bumping</li>
+      <li class="key"><time datetime="2026-07">Jul 2026</time>Developers bump, and the gate checks it</li>
+      <li><time datetime="2026-10">Oct 2026</time>A major bump asks for a migration confirmation</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="dec-h">
+  <div class="wrap">
+    <div class="label"><span>Decisions</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="dec-h">Key decisions and their reasons</h2>
+      <div class="main prose" data-reveal>
+        <p>The main decisions, in the order they were made. The three underlined in red changed direction: dropping Articy, moving to a visual graph and taking version numbers back from the bot.</p>
+      </div>
+    </div>
+    <table class="tbl dec" data-reveal>
+      <thead><tr><th scope="col">Decision</th><th scope="col">When</th><th scope="col">Reason</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" class="what">One mono-repo for every package</th><td class="when">2025</td><td>Every client app repeated the same structure</td></tr>
+        <tr><th scope="row" class="what">Git packages, not copied folders</th><td class="when">Jul 2025</td><td>Each project installs and updates by version</td></tr>
+        <tr class=key><th scope="row" class="what">Dropped Articy</th><td class="when">Jan to Mar 2026</td><td>The technical manager who championed it left, and the team chose to build its own system</td></tr>
+        <tr><th scope="row" class="what">Flow controller in code</th><td class="when">Jan 2026</td><td>Skip and start-at-step made iteration quick</td></tr>
+        <tr class=key><th scope="row" class="what">Visual flow graph</th><td class="when">Mar 2026</td><td>The same model as data, so non-developers and AI agents can author</td></tr>
+        <tr><th scope="row" class="what">Template sync</th><td class="when">Mar 2026</td><td>New projects start current, with no manifest edits</td></tr>
+        <tr><th scope="row" class="what">Docs gate on pull requests</th><td class="when">Apr 2026</td><td>Docs drifted across more than twenty packages</td></tr>
+        <tr><th scope="row" class="what">One install branch per package</th><td class="when">Jul 2026</td><td>Every install had fetched the whole 438 MB mirror</td></tr>
+        <tr class=key><th scope="row" class="what">Developers own version numbers</th><td class="when">Jul 2026</td><td>The bot bumped versions even when nothing major had changed</td></tr>
+        <tr><th scope="row" class="what">Tests and builds moved to projects</th><td class="when">Jul 2026</td><td>Scenes and platform settings live in the projects</td></tr>
+        <tr><th scope="row" class="what">Generated platform branches</th><td class="when">Jul 2026</td><td>Platform settings conflict when they share a branch</td></tr>
+        <tr><th scope="row" class="what">Agent-driven XR tests</th><td class="when">Sep 2026</td><td>Coding agents can run a flow through real input</td></tr>
+        <tr><th scope="row" class="what">23 packages merged into 9</th><td class="when">Oct 2026</td><td>Tangled dependencies and duplicates</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="res-h">
+  <div class="wrap">
+    <div class="label"><span>Result</span></div>
+    <div class="cols cols--prose">
+      <h2 class="display" id="res-h">The result</h2>
+      <div class="main prose" data-reveal>
+        <p>New client projects start from the template with the current packages installed, not from an empty scene. One project builds for Quest, Android, iOS and WebGL. Scenes are authored as flow graphs. Dialogue goes from the client’s review into the build through one sheet. Rooms, models and characters come from shared libraries.</p>
+        <p>I led the work from 2025 to 2026. One colleague built the Articy Designer plugin, and another worked on hand tracking, matchmaking and the scene importer interface.</p>
+        <p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="contact contact--plain" id="contact">
+  <div class="wrap contact-in">
+    <div data-reveal>
+      <h2>Email me for a quote</h2>
+      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
+    </div>
+    <div class="foot">
+      <ul>
+        <li><a href="index.html">All XR work</a></li>
+        <li><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
+        <li><a href="https://www.linkedin.com/in/sanket-das-929b11120/">LinkedIn</a></li>
+        <li><a href="https://github.com/Raptor2012">GitHub</a></li>
+        <li><a href="https://wa.me/918459328768">WhatsApp</a></li>
+      </ul>
+      <p>© 2026 Sanket Das</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../site.js" defer></script>
+</body>
+</html>

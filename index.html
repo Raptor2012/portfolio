@@ -1,698 +1,491 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sanket Das — VR Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-<style>
-  :root { --bg:#070a0f; --surface:#0d1117; --surface2:#131921; --accent:#00e5ff; --accent2:#ff7a1a; --acid:#b6ff4d; --text:#e8eaf0; --muted:#7a8090; --border:rgba(0,229,255,0.1); }
-  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:64px}
-  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.75;overflow-x:hidden}
-  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px),radial-gradient(circle at 20% 12%,rgba(255,122,26,0.1),transparent 28%),radial-gradient(circle at 84% 28%,rgba(0,229,255,0.12),transparent 34%);background-size:60px 60px,60px 60px,100% 100%,100% 100%;pointer-events:none;z-index:0;animation:gridDrift 24s linear infinite}
-  body::after{content:'';position:fixed;inset:0;background:linear-gradient(120deg,transparent 0%,rgba(182,255,77,0.035) 30%,transparent 58%,rgba(0,229,255,0.035) 78%,transparent 100%);mix-blend-mode:screen;pointer-events:none;z-index:0;animation:auroraSweep 18s ease-in-out infinite alternate}
-  #bg-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.9}
-  nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:0 56px;height:64px;background:rgba(7,10,15,0.78);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,0.22)}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;color:var(--accent);text-decoration:none}
-  .nav-links{display:flex;gap:32px;list-style:none}
-  .nav-links a{text-decoration:none;color:var(--muted);font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;transition:color 0.2s}
-  .nav-links a:hover{color:var(--accent)}
-  
-  /* Updated Hero CSS for layout */
-  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:space-between;gap:60px;padding:0 64px;padding-top:64px;isolation:isolate}
-  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 55% 42% at 62% 40%,rgba(0,229,255,0.11) 0%,transparent 65%),radial-gradient(ellipse 42% 28% at 18% 70%,rgba(255,122,26,0.12) 0%,transparent 70%);pointer-events:none;filter:saturate(1.2);animation:pulseField 7s ease-in-out infinite alternate}
-  .hero-content{position:relative;z-index:1;width:min(760px,100%);max-width:100%}
-  .hero-tag{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp 0.7s 0.1s forwards}
-  h1.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(88px,11vw,148px);line-height:0.88;letter-spacing:6px;text-shadow:0 0 40px rgba(0,229,255,0.08);opacity:0;animation:fadeUp 0.7s 0.25s forwards}
-  h1.hero-name span{color:var(--accent);background:linear-gradient(90deg,var(--accent),var(--acid),var(--accent));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:chromeText 5s ease-in-out infinite}
-  .hero-sub{font-family:'Space Mono',monospace;font-size:14px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:22px;margin-bottom:26px;opacity:0;animation:fadeUp 0.7s 0.4s forwards}
-  .hero-bio{font-size:20px;font-weight:300;color:rgba(232,234,240,0.65);max-width:560px;line-height:1.85;opacity:0;animation:fadeUp 0.7s 0.55s forwards}
-  .hero-actions{display:flex;gap:14px;margin-top:36px;opacity:0;animation:fadeUp 0.7s 0.7s forwards}
-  
-  /* New Image Wrap CSS */
-  .hero-image-wrap{position:relative;z-index:1;flex-shrink:0;width:100%;max-width:440px;opacity:0;animation:fadeUp 0.7s 0.8s forwards}
-  .hero-image-wrap::before,.hero-image-wrap::after{content:'';position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(0,229,255,0.18);animation:orbitRing 12s linear infinite;pointer-events:none}
-  .hero-image-wrap::after{inset:-34px;border-color:rgba(255,122,26,0.14);animation-duration:18s;animation-direction:reverse}
-  .hero-image-wrap img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:50%;border:2px solid rgba(0,229,255,0.22);box-shadow:0 0 60px rgba(0,229,255,0.12),0 24px 80px rgba(0,0,0,0.38);background:var(--surface2);animation:floatAvatar 6s ease-in-out infinite}
-
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all 0.2s;border:none;position:relative;overflow:hidden}
-  .btn::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.32),transparent);transform:translateX(-120%);transition:transform 0.55s}
-  .btn:hover::before{transform:translateX(120%)}
-  .btn-primary{background:var(--accent);color:var(--bg);font-weight:700}
-  .btn-primary:hover{background:#fff;box-shadow:0 0 30px rgba(0,229,255,0.35)}
-  .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-  .btn-outline:hover{background:rgba(0,229,255,0.07)}
-  .section-wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:100px 64px}
-  .section-label{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
-  h2.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,64px);letter-spacing:4px;margin-bottom:52px}
-  .exp-item{display:grid;grid-template-columns:200px 1fr;gap:0 48px;padding:40px 0;border-top:1px solid var(--border)}
-  .exp-item:last-child{border-bottom:1px solid var(--border)}
-  .exp-date{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--accent);text-transform:uppercase;padding-top:6px;line-height:1.6}
-  .exp-loc{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-top:6px}
-  .exp-company{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;margin-bottom:4px}
-  .exp-role{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
-  .exp-bullets{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .exp-bullets li{display:flex;gap:14px;font-size:17px;color:rgba(232,234,240,0.78);line-height:1.7}
-  .exp-bullets li strong{color:rgba(232,234,240,0.95);font-weight:500}
-  .exp-bullets li::before{content:'▸';color:var(--accent);flex-shrink:0;margin-top:4px}
-  .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:3px}
-  .project-card{background:linear-gradient(180deg,rgba(19,25,33,0.95),rgba(13,17,23,0.95));border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:border-color 0.25s,transform 0.25s,box-shadow 0.25s;position:relative}
-  .project-card::after,.client-card::after,.edu-card::after,.accolade-item::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,rgba(0,229,255,0.08) 44%,transparent 60%);opacity:0;transition:opacity 0.25s;pointer-events:none}
-  .project-card:hover{border-color:rgba(0,229,255,0.45);transform:translateY(-6px);box-shadow:0 24px 70px rgba(0,0,0,0.32),0 0 36px rgba(0,229,255,0.08)}
-  .project-card:hover::after,.client-card:hover::after,.edu-card:hover::after,.accolade-item:hover::after{opacity:1}
-  .card-thumb{height:210px;background:var(--surface2);position:relative;overflow:hidden}
-  .card-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s}
-  .project-card:hover .card-thumb img{transform:scale(1.04)}
-  .play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.38);transition:background 0.25s}
-  .play-btn svg{width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6));transition:transform 0.2s}
-  .project-card:hover .play-btn{background:rgba(0,229,255,0.12)}
-  .project-card:hover .play-btn svg{transform:scale(1.1)}
-  .card-body{padding:20px 24px}
-  .card-cat{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
-  .card-title{font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:2px;margin-bottom:10px}
-  .card-desc{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:14px}
-  .card-tags{display:flex;flex-wrap:wrap;gap:6px}
-  .tag{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);color:rgba(0,229,255,0.75);text-transform:uppercase;letter-spacing:0.5px}
-  .modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(7,10,15,0.96);backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:20px}
-  .modal.open{display:flex}
-  .modal-inner{width:100%;max-width:920px;max-height:92vh;overflow-y:auto;position:relative}
-  .modal-topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:16px}
-  .modal-close{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 18px;flex-shrink:0;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.2s}
-  .modal-close:hover{color:var(--accent);border-color:var(--accent)}
-  .modal-cat{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:4px}
-  .modal-title{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;line-height:1}
-  .slideshow{border:1px solid var(--border);background:#000}
-  .slide{display:none}
-  .slide.active{display:block}
-  .slide-video-wrap{position:relative;width:100%;padding-bottom:56.25%;background:#000;overflow:hidden}
-  .slide-video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-  .slide-linkcard{padding:56px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;background:var(--surface2);min-height:280px;cursor:pointer;transition:background 0.2s}
-  .slide-linkcard:hover{background:#1a2230}
-  .slide-linkcard .lc-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px}
-  .slide-linkcard .lc-desc{font-size:15px;color:var(--muted);max-width:480px}
-  .slide-linkcard a{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:11px 28px;transition:background 0.2s}
-  .slide-linkcard a:hover{background:rgba(0,229,255,0.09)}
-  .slide-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid var(--border);background:var(--surface)}
-  .slide-counter{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px}
-  .slide-nav-btn{background:none;border:1px solid var(--border);color:var(--muted);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all 0.2s}
-  .slide-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
-  .slide-dots{display:flex;gap:8px;align-items:center}
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);cursor:pointer;transition:all 0.2s}
-  .dot.active{background:var(--accent);width:20px;border-radius:4px}
-  .slide-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;padding:8px 14px;background:var(--surface);border-top:1px solid var(--border)}
-  .modal-desc{margin-top:16px;font-size:16px;color:rgba(232,234,240,0.6);line-height:1.8}
-  .skills-grid{display:flex;flex-wrap:wrap;gap:3px}
-  .clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-  .client-card{background:linear-gradient(180deg,rgba(19,25,33,0.9),rgba(13,17,23,0.95));border:1px solid var(--border);padding:36px 32px;transition:border-color 0.25s,transform 0.25s,box-shadow 0.25s;position:relative;overflow:hidden}
-  .client-card:hover{border-color:rgba(0,229,255,0.45);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.24)}
-  .client-icon{font-size:32px;margin-bottom:18px;line-height:1}
-  .client-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:14px;color:var(--accent)}
-  .client-desc{font-size:15px;color:rgba(232,234,240,0.72);line-height:1.7}
-  .skill-pill{background:var(--surface);border:1px solid var(--border);padding:13px 22px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1px;color:rgba(232,234,240,0.75);text-transform:uppercase;transition:border-color 0.2s,color 0.2s}
-  .skill-pill:hover{border-color:rgba(0,229,255,0.35);color:var(--accent)}
-  .accolade-item{border:1px solid var(--border);background:var(--surface);padding:20px 28px;display:flex;gap:18px;align-items:flex-start;margin-bottom:3px;position:relative;overflow:hidden}
-  .accolade-icon{font-size:20px;flex-shrink:0;margin-top:2px}
-  .accolade-text{font-size:17px;color:rgba(232,234,240,0.82);line-height:1.5}
-  .accolade-project{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
-  .edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-  .edu-card{background:var(--surface);border:1px solid var(--border);padding:32px;position:relative;overflow:hidden}
-  .edu-date{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:1px;margin-bottom:12px}
-  .edu-degree{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:6px}
-  .edu-school{font-size:16px;color:var(--muted)}
-  .contact-wrap{position:relative;z-index:1;text-align:center;padding:100px 64px;border-top:1px solid var(--border)}
-  .contact-email{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4vw,56px);letter-spacing:4px;color:var(--accent);text-decoration:none;display:block;margin:18px 0 32px;transition:text-shadow 0.3s}
-  .contact-email:hover{text-shadow:0 0 40px rgba(0,229,255,0.4)}
-  footer{position:relative;z-index:1;background:rgba(13,17,23,0.86);border-top:1px solid var(--border);padding:20px 64px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px)}
-  footer span{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)}
-  footer .footer-note{font-style:italic;opacity:0.75}
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.75s ease,transform 0.75s ease}
-  .reveal.in-view{opacity:1;transform:translateY(0)}
-  .projects-grid .reveal:nth-child(2n),.skills-grid .reveal:nth-child(2n){transition-delay:0.08s}
-  .projects-grid .reveal:nth-child(3n),.skills-grid .reveal:nth-child(3n),.clients-grid .reveal:nth-child(3n){transition-delay:0.16s}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes gridDrift{from{background-position:0 0,0 0,0 0,0 0}to{background-position:60px 60px,60px 60px,0 0,0 0}}
-  @keyframes auroraSweep{from{transform:translate3d(-6%,0,0) scale(1.05);opacity:0.5}to{transform:translate3d(6%,0,0) scale(1.12);opacity:0.9}}
-  @keyframes pulseField{from{opacity:0.65;transform:scale(1)}to{opacity:1;transform:scale(1.04)}}
-  @keyframes chromeText{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-  @keyframes orbitRing{from{transform:rotate(0deg) scale(1);border-radius:48% 52% 43% 57%}to{transform:rotate(360deg) scale(1.02);border-radius:57% 43% 52% 48%}}
-  @keyframes floatAvatar{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-  ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--accent)}
-  
-  /* Updated Mobile Responsiveness */
-  @media(max-width:768px){nav{padding:0 20px}.nav-links{display:none}.section-wrap{padding:64px 20px}.hero{flex-direction:column;align-items:flex-start;gap:50px;padding:100px 20px 40px}.hero-content{width:100%}.hero-bio{max-width:100%;font-size:18px}.hero-image-wrap{align-self:center;max-width:300px}.hero-actions{flex-direction:column;width:100%}.btn{justify-content:center}.projects-grid{grid-template-columns:1fr}.exp-item{grid-template-columns:1fr;gap:12px}.edu-grid{grid-template-columns:1fr}.clients-grid{grid-template-columns:1fr}footer{flex-direction:column;gap:8px;padding:16px 20px;text-align:center}}
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:0.001ms!important}.reveal{opacity:1;transform:none}#bg-canvas{display:none}}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanket Das · Portfolio</title>
+<meta name="description" content="Sanket Das, senior Unity XR and game developer. Third-person action games in Unreal Engine and Unity, and VR, mixed reality and WebGL apps. Open to roles and fixed-price projects.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sanket Das · Portfolio">
+<meta property="og:description" content="Sanket Das, senior Unity XR and game developer. Third-person action games in Unreal Engine and Unity, and VR, mixed reality and WebGL apps. Open to roles and fixed-price projects.">
+<meta property="og:url" content="https://raptor2012.github.io/portfolio/">
+<meta property="og:image" content="https://raptor2012.github.io/portfolio/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="media/amyloidosis/amy-hero-heart-section-poster.webp" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-<canvas id="bg-canvas" aria-hidden="true"></canvas>
-<nav>
-  <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#clients">Clients</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<script>document.documentElement.classList.add('js')</script>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html">Sanket Das</a>
+    <div class="nav-links">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="games/index.html">Games</a>
+      <a href="xr/index.html">XR</a>
+      <a href="index.html#about">About</a>
+      <a href="resume/Sanket_Das_Resume.pdf">Resume</a>
+      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
+    </div>
+  </div>
 </nav>
-
-<div id="top" class="hero"> 
-  <div class="hero-bg"></div>
-  
-  <div class="hero-content">
-    <div class="hero-tag">VR Developer &amp; Technical Lead</div>
-    <h1 class="hero-name">SANKET<br><span>DAS</span></h1>
-    <p class="hero-sub">Unreal Engine · Unity · XR · AI Integration</p>
-    <p class="hero-bio">VR &amp; AI Developer for Medical and Enterprise XR — 5+ years shipping production applications for the European healthcare and enterprise market.<br><br>Currently leading development as a consultant for onVR. Specialising in Unity, Unreal, AI-integrated XR, and multiplatform pipelines.</p>
-    <div class="hero-actions">
-      <a href="mailto:sanketdas@live.com" class="btn btn-primary">Get in Touch</a>
-      <a href="https://www.linkedin.com/in/sanket-das-929b11120/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+<header class="hero" id="top">
+  <div class="reel" data-reel>
+    <div class="clip is-active" style="--pos:50% 50%"><img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-hero-heart-section"></video></div>
+    <div class="clip" style="--pos:0% 50%"><img src="media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/hero-vetal-combat"></video></div>
+    <div class="clip" style="--pos:0% 50%"><img src="media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-dive-multikill" data-start="0.6"></video></div>
+  </div>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <h1 class="display">Sanket Das</h1>
+      <p class="lede">Senior Unity XR and game developer</p>
+      <div class="actions">
+        <a class="btn" href="mailto:sanketdas@live.com">Email me</a>
+        <a href="resume/Sanket_Das_Resume.pdf">Resume</a>
+      </div>
+    </div>
+    <div class="slates" aria-hidden="true">
+      <p class="slate is-active">Mixed reality on Quest 3, client work</p>
+      <p class="slate">VETAL 26, combat with Vetal’s powers</p>
+      <p class="slate">Do.Die, a dive into a group behind shield spheres</p>
     </div>
   </div>
+</header>
+<main id="main">
 
-  <div class="hero-image-wrap">
-    <img src="images/profile.png" alt="Sanket Das Profile">
-  </div>
-
-</div>
-
-<div id="experience" class="section-wrap">
-  <div class="section-label">Experience</div>
-  <h2 class="section-title">WORK HISTORY</h2>
-  <div class="exp-item">
-    <div><div class="exp-date">Jan 2025 — Present</div><div class="exp-loc">Düsseldorf / Remote</div></div>
-    <div>
-      <div class="exp-company">onVR</div>
-      <div class="exp-role">Senior VR Developer</div>
-      <ul class="exp-bullets">
-        <li><strong>Built a GDD-to-LLM–flow-controller graph pipeline that reads a Game Design Document, converts it to a flow graph and auto-wires a pre-built mechanics library — reducing time from concept to playable build from weeks to hours.</strong></li>
-        <li>Working on a multiplatform XR/Mobile component warehousing solution in Unity targeting Meta Quest, iOS, and Android simultaneously.</li>
-        <li>Architecting a modular Unity Package Manager system of reusable, multi-platform components.</li>
+<section class="section section--doors" aria-label="Work">
+  <div class="wrap doors">
+    <article class="door" data-reveal aria-labelledby="games-h">
+      <a class="door-clip" href="games/index.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:50% 50%"><img src="media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="VETAL 26: wrapped in Vetal, the player fires bow volleys at glowing spirit enemies in a night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/vetal-door-combat"></video></div></a>
+      <h2 class="display" id="games-h"><a href="games/index.html">Games</a></h2>
+      <p class="body">Third-person action games: combat, enemy AI, abilities and locomotion, in Unreal Engine and Unity.</p>
+      <ul class="hl">
+        <li><button class="hl-row open" type="button" data-open="p-vetal26" aria-haspopup="dialog"><span class="hl-t">VETAL 26</span><span class="hl-m">Unreal Engine · 2020–2025 · Watch 2:45</span><span class="sr">: VETAL 26</span></button></li>
+        <li><button class="hl-row open" type="button" data-open="p-dodie" aria-haspopup="dialog"><span class="hl-t">Do.Die</span><span class="hl-m">Unity · WebGL · 2026 · Watch 1:37</span><span class="sr">: Do.Die</span></button></li>
+        <li><button class="hl-row open" type="button" data-open="p-dos" aria-haspopup="dialog"><span class="hl-t">Department of Shapes</span><span class="hl-m">Unity · game jam · 2026 · Watch 2:17</span><span class="sr">: Department of Shapes</span></button></li>
       </ul>
-    </div>
-  </div>
-  <div class="exp-item">
-    <div><div class="exp-date">May 2023 — Jan 2025</div><div class="exp-loc">Cologne / Remote</div></div>
-    <div>
-      <div class="exp-company">onliveline GmbH</div>
-      <div class="exp-role">VR Developer</div>
-      <ul class="exp-bullets">
-        <li>Led all development on VR Medical Storytelling single-player applications.</li>
-        <li>Created in-engine cinematic animations using Unity's Timeline tool and Blender.</li>
-        <li>Integrated ElevenLabs API for generative NPC voice inside VR environments.</li>
-        <li>Built VR avatar NPCs with Ready Player Me SDK and Mixamo animations.</li>
-        <li>Worked on a GPT-based 3D AI character with context-driven mocap animation selection.</li>
+      <a class="more" href="games/index.html">All games</a>
+    </article>
+    <article class="door" data-reveal aria-labelledby="xr-h">
+      <a class="door-clip" href="xr/index.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:50% 50%"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-antibodies"></video></div></a>
+      <h2 class="display" id="xr-h"><a href="xr/index.html">XR for teams</a></h2>
+      <p class="body">VR, mixed reality and WebGL apps for client teams, built as lead developer since 2023.</p>
+      <ul class="hl">
+        <li><button class="hl-row open" type="button" data-open="p-amyloidosis" aria-haspopup="dialog"><span class="hl-t">Amyloidosis in mixed reality</span><span class="hl-m">Quest 3 · mixed reality · 2026 · Watch 2:33</span><span class="sr">: Amyloidosis in mixed reality</span></button></li>
+        <li><button class="hl-row open" type="button" data-open="p-cart" aria-haspopup="dialog"><span class="hl-t">CAR-T cell therapy story</span><span class="hl-m">Quest 3 · VR · 2025–2026 · Watch 1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button></li>
+        <li><button class="hl-row open" type="button" data-open="p-mg" aria-haspopup="dialog"><span class="hl-t">Myasthenia gravis in VR</span><span class="hl-m">Quest 3 · VR · 2024–2026 · Watch 3:12</span><span class="sr">: Myasthenia gravis in VR</span></button></li>
       </ul>
+      <a class="more" href="xr/index.html">All XR work</a>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="case-studies" aria-labelledby="cs-h">
+  <div class="wrap">
+    <div class="cs-head">
+      <h2 class="display" id="cs-h">Deep dives</h2>
+      <p class="body">Two longer write-ups, with footage and diagrams.</p>
+    </div>
+    <div class="cases" data-reveal>
+      <article class="case" aria-labelledby="cs-vetal26">
+        <a class="case-clip" href="games/project-mind.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:30% 50%"><img src="media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: the player runs through a misty night forest wrapped in a violet spirit" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/vetal-spirit-run"></video></div></a>
+        <div class="case-copy">
+          <p class="meta">Unreal Engine · 2020–2025 · 4 min read</p>
+          <h3 id="cs-vetal26"><a href="games/project-mind.html">VETAL 26: how a third-person action game grew over five years</a></h3>
+          <p class="body">Five years of one Unreal Engine game, from the first movement test to a playable level: combat, enemy AI and Vetal’s powers, all in Blueprints.</p>
+          <a class="more" href="games/project-mind.html">Read the deep dive</a>
+        </div>
+      </article>
+      <article class="case" aria-labelledby="cs-platform">
+        <a class="case-clip" href="xr/platform.html" tabindex="-1" aria-hidden="true"><div class="clip still"><img src="img/hands-grab-card.webp" width="1050" height="590" alt="" loading="lazy" decoding="async"></div></a>
+        <div class="case-copy">
+          <p class="meta">Unity · 2025–2026 · 13 min read</p>
+          <h3 id="cs-platform"><a href="xr/platform.html">The content warehouse: how a medical XR company builds client apps faster</a></h3>
+          <p class="body">Shared packages, a project template and authoring tools that build one Unity project for Quest, phones and the browser.</p>
+          <a class="more" href="xr/platform.html">Read the deep dive</a>
+        </div>
+      </article>
     </div>
   </div>
-  <div class="exp-item">
-    <div><div class="exp-date">May 2022 — May 2023</div><div class="exp-loc">Remote</div></div>
-    <div>
-      <div class="exp-company">Freelance VR Developer</div>
-      <div class="exp-role">Virtual Reality Developer</div>
-      <ul class="exp-bullets">
-        <li>Built a first aid VR training app for the German market, featuring driving simulations, emergency call interactions, AI pedestrians, accident animations, and object manipulation.</li>
-        <li>Created randomised scenario logic requiring users to respond according to first aid guidelines.</li>
-        <li>Ported PCVR applications to Meta Quest 2.</li>
-      </ul>
+</section>
+
+<section class="section" id="about" aria-labelledby="about-h">
+  <div class="wrap">
+    <div class="cols about">
+      <h2 class="display" id="about-h">About me</h2>
+      <figure class="about-pic" data-reveal><img src="img/profile.webp" srcset="img/profile.webp 640w, img/profile@2x.webp 1280w" sizes="(min-width: 961px) 420px, min(420px, 100vw)" width="640" height="439" alt="Sanket by a window in a conical straw hat that hides his face" loading="lazy" decoding="async"></figure>
+      <div class="main prose" data-reveal>
+        <p>I studied game design, learned programming along the way, and found my place in VR.</p>
+        <p>I work remotely as a Senior VR Developer and consultant for a European agency, building interactive experiences, mostly for healthcare, education and training.</p>
+        <p>I’ve always cared more about what I can make with technology than about any one technology. Most of what I know came from wanting to build something, not yet knowing how, and figuring it out.</p>
+        <p>Over the years I’ve worked on games, simulations, development tools and AI integrations.</p>
+        <p>I enjoy designing systems, trying out ideas and finding simpler ways to do complicated things. I work best with people who are just as invested in figuring something out, especially when the end result is still taking shape.</p>
+        <p>Outside work, I explore AI, study mathematics and C++, read about science and physics, play games and join the occasional game jam.</p>
+        <p>I like following an idea all the way down and turning simple ideas into ambitious personal projects. That’s how I’ve learned most of what I know.</p>
+      </div>
     </div>
   </div>
-  <div class="exp-item">
-    <div><div class="exp-date">Feb 2019 — Jan 2022</div><div class="exp-loc">Pune / Remote</div></div>
-    <div>
-      <div class="exp-company">Consultant / Self-Employed</div>
-      <div class="exp-role">Game Programmer</div>
-      <ul class="exp-bullets">
-        <li>Developed gamified apps for an NGO to teach modern fishery techniques to farmers in India.</li>
-        <li>Prototyped Facebook Instant Games in Unity.</li>
-        <li>Consulting for local studios, focusing on rapid prototyping, game design, and economy balancing.</li>
-        <li>Implemented Google Analytics backend instrumentation and optimised real-time performance for mid- and low-end Android devices.</li>
-      </ul>
+</section>
+
+<section class="section" id="services" aria-labelledby="svc-h">
+  <div class="wrap">
+    <div class="cols">
+      <h2 class="display" id="svc-h">Services</h2>
+      <div class="main" data-reveal>
+        <p class="terms">Fixed price, agreed before I start. Send the problem and you get a quote within 24 hours.</p>
+        <p class="terms terms--note">I’m also open to full-time and contract roles.</p>
+        <ul class="rows">
+          <li><h3>Gameplay programming</h3><p>Combat, enemy AI, abilities and locomotion for third-person games, in Unreal Engine or Unity.</p></li>
+          <li><h3>XR features and prototypes</h3><p>Hand tracking, mixed reality, grab and teleport, from a design document to a build on the headset.</p></li>
+          <li><h3>Performance and crashes</h3><p>Frame drops on Quest, out-of-memory crashes in iPhone Safari, builds that are too large to download.</p></li>
+          <li><h3>Ports and platform moves</h3><p>PCVR to Quest, Meta SDK to OpenXR, one Unity app to iOS, Android and WebGL.</p></li>
+          <li><h3>AI characters and voice</h3><p>Characters that listen and talk back, with speech recognition, text-to-speech and a language model.</p></li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="exp-item">
-    <div><div class="exp-date">May 2017 — Aug 2017</div><div class="exp-loc">Singapore</div></div>
-    <div>
-      <div class="exp-company">SUTD Gamelab</div>
-      <div class="exp-role">Game Designer — Intern</div>
-      <ul class="exp-bullets">
-        <li>Designed PvP combat levels for a multiplayer game shown at Game Start Asia 2017.</li>
-        <li>Wrote spec docs for an in-game editor balancing tool; balanced 1v1 asymmetric gameplay.</li>
-        <li>Shipped a MVP in 12 weeks.</li>
-      </ul>
-    </div>
-  </div>
-</div>
+</section>
 
-<div id="projects" style="background:rgba(0,229,255,0.012);position:relative;z-index:1;">
-  <div class="section-wrap">
-    <div class="section-label">Projects</div>
-    <h2 class="section-title">SHOWCASE</h2>
-    <div class="projects-grid">
-
-      <!-- 2024 -->
-      <div class="project-card" onclick="openModal('mg')">
-        <div class="card-thumb">
-          <img src="images/MG.png" alt="mG Treatment Storytelling VR">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><rect width="68" height="48" rx="10" fill="rgba(0,0,0,0.7)"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">onVR · Medical VR</div>
-          <div class="card-title">mG TREATMENT STORYTELLING VR (2024)</div>
-          <div class="card-desc">Immersive patient education experience for Myasthenia Gravis — replacing static clinical brochures with a narrative VR journey built for Meta Quest 3, designed to help patients understand their diagnosis and treatment path.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">XR</span><span class="tag">Medical</span></div>
-        </div>
-      </div>
-
-      <!-- 2025 -->
-      <div class="project-card" onclick="openModal('gpav')">
-        <div class="card-thumb">
-          <img src="images/GivePatientsAVoice.png" alt="Give Patients a Voice VR companion">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><rect width="68" height="48" rx="10" fill="rgba(0,0,0,0.7)"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">XRCC 2026 Hackathon · Medical AI</div>
-          <div class="card-title">GIVE PATIENTS A VOICE (2026)</div>
-          <div class="card-desc">AI-powered VR patient companion application built for the XRCC 2026 Hackathon — combining immersive narrative design, AI NPCs via Convai SDK, and Unity 6 URP to give patients an interactive voice in understanding their own healthcare journey.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">Convai SDK</span><span class="tag">AI NPCs</span><span class="tag">XR</span><span class="tag">Medical</span></div>
-        </div>
-      </div>
-
-      <div class="project-card" onclick="openModal('llm-ai')">
-        <div class="card-thumb">
-          <img src="https://img.youtube.com/vi/lL47MWneEzI/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/lL47MWneEzI/hqdefault.jpg'" alt="LLM AI Character">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">onliveline GmbH · AI</div>
-          <div class="card-title">LLM AI CHARACTER WITH MOCAP (2024)</div>
-          <div class="card-desc">LLM-powered 3D AI character that selects and blends mocap animations context-sensitively based on conversation content — enabling believable, responsive AI NPCs without hand-authored animation state machines.</div>
-          <div class="card-tags"><span class="tag">GPT API</span><span class="tag">Unity</span><span class="tag">MoCap</span></div>
-        </div>
-      </div>
-
-      <!-- 2023 -->
-      <div class="project-card" onclick="openModal('storytelling')">
-        <div class="card-thumb">
-          <img src="images/Storytelling In VR.png" alt="Storytelling VR">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">onliveline GmbH · VR Narrative</div>
-          <div class="card-title">STORYTELLING IN VR (2023)</div>
-          <div class="card-desc">End-to-end VR medical storytelling application featuring generative AI voice NPCs (ElevenLabs), cinematic Unity Timeline sequences, and lifelike Ready Player Me avatars — built to communicate complex medical narratives to patients in an accessible, engaging format.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">ElevenLabs</span><span class="tag">Blender</span></div>
-        </div>
-      </div>
-
-      <div class="project-card" onclick="openModal('lupus')">
-        <div class="card-thumb">
-          <img src="images/Lupus Therapy.png" alt="Lupus Therapy VR">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">onliveline GmbH · Medical VR</div>
-          <div class="card-title">LUPUS THERAPY VR (2023)</div>
-          <div class="card-desc">Patient-facing VR experience explaining the autoimmune disease lupus and its treatment journey — designed to reduce patient anxiety and improve treatment adherence through immersive storytelling.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">XR</span><span class="tag">Medical</span></div>
-        </div>
-      </div>
-
-      <!-- 2022 -->
-      <div class="project-card" onclick="openModal('firstaid')">
-        <div class="card-thumb">
-          <img src="images/First Aid In Traffic VR.png" alt="First Aid In Traffic VR">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><rect width="68" height="48" rx="10" fill="rgba(0,0,0,0.7)"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">Freelance · VR Simulation</div>
-          <div class="card-title">FIRST AID IN TRAFFIC VR (2022)</div>
-          <div class="card-desc">Standalone VR training simulator for the German first aid certification market — featuring AI pedestrians, driving simulations, and procedurally randomised accident scenarios to ensure no two training sessions are identical. Deployed on Meta Quest 2.</div>
-          <div class="card-tags"><span class="tag">Unreal Engine</span><span class="tag">Quest 2</span><span class="tag">AI NPCs</span></div>
-        </div>
-      </div>
-
-      <div class="project-card" onclick="openModal('ego')">
-        <div class="card-thumb">
-          <img src="https://img.youtube.com/vi/IpKqm6jshl4/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/IpKqm6jshl4/hqdefault.jpg'" alt="Project Ego">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">Consultant / Self-Employed · Action Adventure</div>
-          <div class="card-title">PROJECT EGO (2022)</div>
-          <div class="card-desc">3rd person action adventure demo built with UE5.</div>
-          <div class="card-tags"><span class="tag">Unreal Engine</span><span class="tag">Action</span><span class="tag">3rd Person</span></div>
-        </div>
-      </div>
-
-      <!-- 2017 -->
-      <div class="project-card" onclick="openModal('overpowered')">
-        <div class="card-thumb">
-          <img src="images/Overpowered.png" alt="Overpowered">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">SUTD Gamelab · PvP Combat</div>
-          <div class="card-title">OVERPOWERED (2017)</div>
-          <div class="card-desc">PC PvP combat game developed at SUTD Gamelab Singapore. Nominated — Taipei Game Show 2017.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">PC</span><span class="tag">PvP</span></div>
-        </div>
-      </div>
-
-      <div class="project-card" onclick="openModal('tremor')">
-        <div class="card-thumb">
-          <img src="images/Tremor.png" alt="Tremor">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">Consultant / Self-Employed · Mobile · 🏆 Award Winner</div>
-          <div class="card-title">TREMOR (2017)</div>
-          <div class="card-desc">Android hyper-casual game. Winner — Best Student Game (Indian &amp; International) FICCI BAF Awards 2017.</div>
-          <div class="card-tags"><span class="tag">Unity</span><span class="tag">Android</span><span class="tag">Hyper Casual</span></div>
-        </div>
-      </div>
-
-      <!-- 2016 -->
-      <div class="project-card" onclick="openModal('proximity')">
-        <div class="card-thumb">
-          <img src="images/Proximity.png" alt="Proximity">
-          <div class="play-btn"><svg viewBox="0 0 68 48" style="width:56px;height:56px;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.6))"><path d="M66.52,7.74C65.73,4.79,63.42,2.48,60.47,1.68C55.15,.33,34,0,34,0S12.85,.33,7.53,1.68C4.58,2.48,2.27,4.79,1.48,7.74C.13,13.06,0,24,0,24s.13,10.94,1.48,16.26c.79,2.95,3.1,5.26,6.05,6.06C12.85,47.67,34,48,34,48s21.15-.33,26.47-1.68c2.95-.8,5.26-3.11,6.05-6.06C67.87,34.94,68,24,68,24S67.87,13.06,66.52,7.74z" fill="#ff0000"/><path d="M27,34L45,24L27,14V34z" fill="white"/></svg></div>
-        </div>
-        <div class="card-body">
-          <div class="card-cat">Student Game · 🏆 Award Winner</div>
-          <div class="card-title">PROXIMITY (2016)</div>
-          <div class="card-desc">Award-winning couch co-op/multiplayer game. A spin on the classic game of hot potato. Built using Construct 2.</div>
-          <div class="card-tags"><span class="tag">Construct 2</span><span class="tag">Student Project</span></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<div id="clients" class="section-wrap">
-  <div class="section-label">Engagements</div>
-  <h2 class="section-title">WHO I WORK WITH</h2>
-  <div class="clients-grid">
-    <div class="client-card">
-      <div class="client-icon">🏥</div>
-      <div class="client-title">Medical &amp; Pharma</div>
-      <div class="client-desc">Pharma companies, hospitals, and medtech startups building patient education, clinical training, or therapy support applications in VR.</div>
-    </div>
-    <div class="client-card">
-      <div class="client-icon">🏢</div>
-      <div class="client-title">Enterprise XR Studios</div>
-      <div class="client-desc">European XR studios and product agencies needing a senior Unity / Unreal developer with a track record of shipping production-grade VR applications.</div>
-    </div>
-    <div class="client-card">
-      <div class="client-icon">🤖</div>
-      <div class="client-title">AI + XR Integrations</div>
-      <div class="client-desc">Teams integrating generative AI — LLMs, voice APIs, AI NPCs — into real-time 3D and XR environments.</div>
-    </div>
-  </div>
-</div>
-
-<div id="skills" class="section-wrap">
-  <div class="section-label">Skills</div>
-  <h2 class="section-title">TOOLS &amp; TECH</h2>
-  <div class="skills-grid">
-    <div class="skill-pill">Unity</div><div class="skill-pill">Unreal Engine</div><div class="skill-pill">C#</div><div class="skill-pill">UE Blueprints</div><div class="skill-pill">XR / VR Development</div><div class="skill-pill">Meta Quest</div><div class="skill-pill">GPT / AI Integration</div><div class="skill-pill">ElevenLabs API</div><div class="skill-pill">Ready Player Me SDK</div><div class="skill-pill">Blender 3D</div><div class="skill-pill">Unity Timeline</div><div class="skill-pill">Mixamo</div><div class="skill-pill">GitHub</div><div class="skill-pill">Perforce</div><div class="skill-pill">AWS</div><div class="skill-pill">JIRA</div><div class="skill-pill">Game Design</div><div class="skill-pill">Rapid Prototyping</div>
-  </div>
-</div>
-
-<div id="awards" class="section-wrap" style="padding-top:0;">
-  <div class="section-label">Recognition</div>
-  <h2 class="section-title">AWARDS</h2>
-  <div class="accolade-item"><div class="accolade-icon">🏆</div><div><div class="accolade-text">Winner — Student Game of the Year 2016, NGF Award (Nasscom GDC)</div><div class="accolade-project">Proximity</div></div></div>
-  <div class="accolade-item"><div class="accolade-icon">🏆</div><div><div class="accolade-text">Winner — Best Student Game (Indian &amp; International), FICCI BAF Awards 2017</div><div class="accolade-project">Tremor</div></div></div>
-  <div class="accolade-item"><div class="accolade-icon">🎖️</div><div><div class="accolade-text">Nominated — Indie Prize Showcase, Casual Connect San Francisco 2016</div><div class="accolade-project">Proximity</div></div></div>
-  <div class="accolade-item"><div class="accolade-icon">🎖️</div><div><div class="accolade-text">Nominated — Big Indie Pitch, Pocket Gamer's Connect Helsinki 2017</div><div class="accolade-project">No Monkey Business</div></div></div>
-  <div class="accolade-item"><div class="accolade-icon">🎖️</div><div><div class="accolade-text">Nominated — Taipei Game Show 2017</div><div class="accolade-project">Overpowered</div></div></div>
-  <div style="margin-top:60px;">
-    <div class="section-label">Education</div>
-    <h2 class="section-title">EDUCATION</h2>
-    <div class="edu-grid">
-      <div class="edu-card"><div class="edu-date">Sep 2017 — Sep 2018</div><div class="edu-degree">MA in Games Enterprise</div><div class="edu-school">University of South Wales, Cardiff</div></div>
-      <div class="edu-card"><div class="edu-date">Sep 2014 — Mar 2017</div><div class="edu-degree">Game Design &amp; Project Management</div><div class="edu-school">Rubika Supinfogame, Pune</div></div>
-    </div>
-  </div>
-</div>
-
-<div id="contact" class="contact-wrap">
-  <div class="section-label">Contact</div>
-  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4vw,56px);letter-spacing:4px;margin-top:8px;">GET IN TOUCH</h2>
-  <a href="mailto:sanketdas@live.com" class="contact-email">sanketdas@live.com</a>
-  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-    <a href="https://www.linkedin.com/in/sanket-das-929b11120/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
-    <a href="tel:+918459328768" class="btn btn-outline">+91 84593 28768</a>
-    <a href="https://wa.me/918459328768" target="_blank" class="btn btn-outline">WhatsApp ↗</a>
-  </div>
-</div>
-
-<footer>
-  <span>© 2026 Sanket Das · Built in Goa</span>
-  <span class="footer-note">When not in VR, I'm probably racing, exploring RPGs, or getting wrecked in a Roguelike.</span>
-</footer>
-
-<div class="modal" id="modal" onclick="closeOutside(event)">
-  <div class="modal-inner">
-    <div class="modal-topbar">
+<section class="section" id="record" aria-labelledby="rec-h">
+  <div class="wrap">
+    <h2 class="sr" id="rec-h">Record</h2>
+    <div class="record" data-reveal>
       <div>
-        <div class="modal-cat" id="modal-cat"></div>
-        <div class="modal-title" id="modal-title"></div>
+        <h3>Experience</h3>
+        <ul class="xp">
+          <li><span class="when">Jan 2025 to now</span><span><b>onVR</b>, Senior VR Developer, freelance contractor</span></li>
+          <li><span class="when">May 2023 to Jan 2025</span><span><b>onliveline GmbH</b>, VR Developer</span></li>
+          <li><span class="when">May 2022 to May 2023</span><span><b>Weltenmacher GmbH</b>, XR Developer, freelance</span></li>
+          <li><span class="when">2019 to 2022</span><span><b>Self-employed</b>, game programmer and consultant</span></li>
+          <li><span class="when">2017</span><span><b>SUTD Game Lab</b>, game design intern</span></li>
+        </ul>
       </div>
-      <button class="modal-close" onclick="closeModal()">✕ CLOSE</button>
-    </div>
-    <div class="slideshow">
-      <div id="slides-container"></div>
-      <div class="slide-label" id="slide-label-bar"></div>
-      <div class="slide-nav">
-        <button class="slide-nav-btn" onclick="prevSlide()">‹</button>
-        <div class="slide-dots" id="slide-dots"></div>
-        <span class="slide-counter" id="slide-counter"></span>
-        <button class="slide-nav-btn" onclick="nextSlide()">›</button>
+      <div>
+        <h3>Awards</h3>
+        <ul>
+          <li><b>Student Game of the Year</b>, Nasscom GDC 2016, for Proximity</li>
+          <li><b>Best Student Game</b>, FICCI BAF 2017, for Tremor</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Education</h3>
+        <ul>
+          <li><b>MA Games Enterprise</b>, University of South Wales, 2018</li>
+          <li><b>Game Design</b>, Rubika Supinfogame Pune, 2017</li>
+        </ul>
       </div>
     </div>
-    <p class="modal-desc" id="modal-desc"></p>
   </div>
+</section>
+
+</main>
+
+<footer class="contact contact--img" id="contact">
+  <div class="clip" style="--pos:74% 50%"><img src="media/dodie/dodie-red-sky-lg.webp" srcset="media/dodie/dodie-red-sky-sm.webp 1200w, media/dodie/dodie-red-sky-lg.webp 1954w" sizes="100vw" width="1954" height="814" alt="" loading="lazy" decoding="async"></div>
+  <div class="wrap contact-in">
+    <div data-reveal>
+      <h2>Email me about a role or a project</h2>
+      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
+    </div>
+    <div class="foot">
+      <ul>
+        <li><a href="resume/Sanket_Das_Resume.pdf">Resume</a></li>
+        <li><a href="https://www.linkedin.com/in/sanket-das-929b11120/">LinkedIn</a></li>
+        <li><a href="https://github.com/Raptor2012">GitHub</a></li>
+        <li><a href="https://wa.me/918459328768">WhatsApp</a></li>
+      </ul>
+      <p>© 2026 Sanket Das</p>
+    </div>
+  </div>
+</footer>
+<div class="dialogs">
+<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t">
+<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch VETAL 26">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-vetal-combat-poster.webp" aria-label="Combat with Vetal"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:40">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:40</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 2:45 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-vetal-combat" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-vetal-combat-poster.webp" data-dur="40.4" data-audio="1" data-vtt="media/key-sections/ks-vetal-combat.vtt" data-cues="WEBVTT
 
-<script>
-const YT = (id, label) => ({ type:'youtube', id, label });
-const DR = (id, label) => ({ type:'drive', id, label });
-const LK = (url, label, desc) => ({ type:'link', url, label, desc });
+1
+00:00.000 --&gt; 00:03.300
+Sharanga, the legendary bow of Lord Ram,
 
-const projects = {
-  'mg': { cat:'onVR · Medical VR', title:'mG TREATMENT STORYTELLING VR (2024)', desc:'Role - I used body tracking as well as diagetic UI to bring uniqueness to this experience. I designed the UI as well as the platform that takes the player through a spline path along an abstract large scale human body to explain the disease and the treatment better. The experience also has a modular station based viewable content. Provides an avenue to inject more content as needed', slides:[DR('14ig2M_vNExWd_-i6A1NMGoeu-7uiYfQ0','mG Treatment VR — Demo')] },
-  'gpav': { cat:'XRCC 2026 Hackathon · Medical AI', title:'GIVE PATIENTS A VOICE (2026)', desc:'AI-powered VR patient companion built for the XRCC 2026 Hackathon. Combines immersive narrative design, Convai SDK for conversational AI NPCs, and Unity 6 URP. The goal: give patients an interactive voice in understanding their own healthcare journey, enabling two-way dialogue with virtual clinicians and information agents instead of passive consumption of static content.', slides:[DR('1cbGBAhYEWE8jaSjWkQEX32E3CKhvk3nX','Give Patients a Voice — Demo')] },
-  'storytelling': { cat:'onliveline GmbH · VR Narrative', title:'STORYTELLING IN VR (2023)', desc:'VR medical storytelling application. ElevenLabs API for NPC voice, Unity Timeline + Blender for cinematic animations, Ready Player Me avatars.', slides:[YT('SZoYSgkR1AY','Storytelling in VR — Demo')] },
-  'lupus': { cat:'onliveline GmbH · Medical VR', title:'LUPUS THERAPY VR (2023)', desc:'Role - As a solo developer, I translated the entire concept into a playable experience. Helped coming up with design solutions for first time VR user. Implemented ready player me characters with lip sync, blender animations, wrote VR specific shaders, used Meta Quest SDK to achieve a complete experience.', slides:[DR('1UlTJKfeCbBydOKRd_6XWsxM9rv-91ykY','Lupus Therapy VR — Gameplay'), YT('htAMSiW7nPo','Lupus Therapy VR — Marketing')] },
-  'llm-ai': { cat:'onliveline GmbH · AI Character', title:'LLM AI CHARACTER WITH MOCAP (2024)', desc:'Role - I used gpt 3 API, convai and eleven labs to create an interactable AI based character in unity. We deployed it in webGL and VR. I also worked on scripted animator state machine in unity which we recorded using Rokoko vision mocap.', slides:[YT('lL47MWneEzI','LLM AI Character — Demo')] },
-  'firstaid': { cat:'Freelance · VR Simulation', title:'FIRST AID IN TRAFFIC VR (2022)', desc:'Role - This was the first commercial VR project as a deveoper. I prototyped the MVP using UE4 blueprints. I implemented randomized scenarios, Interactable NPCs, drivable car and physics based collision to make the simulation work.', slides:[DR('1tf7NH4ZUiXVIAokYzWborAXxzyDyxSHu','First Aid in Traffic — Demo'), DR('12jXN2_fnMwCB78-uhaL3nWFNTXhhCyz7','PC VR → Quest 2 Port — Firefighting Tutorial'), LK('https://weltenmacher.de/erste-hilfe-szenario/','Marketing Page','View the project on the Weltenmacher website.')] },
-  'ego': { cat:'Consultant / Self-Employed · Action Adventure', title:'PROJECT EGO (2022)', desc:'Role - As a solo developer, I used ALS and modified it to fit with combat animations. Designed combat, enemies, player interactions, player mechanics and also implemented them using blueprint for rapid prototype and iteration.', slides:[YT('IpKqm6jshl4','Project Ego — Gameplay'), YT('_8xMwmPSzR4','Project Ego — Combat Gameplay'), LK('https://www.gearoverclocked.com','Studio / Marketing Page','View the Gear Overclocked studio website.')] },
-  'tremor': { cat:'Consultant / Self-Employed · Mobile', title:'TREMOR (2017)', desc:'Award-winning Android hyper-casual game. Winner — Best Student Game (Indian & International) FICCI BAF Awards 2017.', slides:[YT('J0JlyC6GKeQ','Tremor — Gameplay'), DR('1IYSTTzGGr5tGxU5GALz1WDesVp7ADAQz','Ultra Star — Related Hyper Casual'), DR('18m47uGDmumOYPpT-fCmysG6fFPoZfe1W','Unity Consultancy Work')] },
-  'fbgame': { cat:'Consultant / Self-Employed · Casual', title:'FACEBOOK INSTANT GAME (2019)', desc:'Casual game for Facebook Instant Games, built in Unity/WebGL.', slides:[YT('trTnpCh1s4M','Facebook Instant Game — Demo')] },
-  'overpowered': { cat:'SUTD Gamelab · PvP Combat', title:'OVERPOWERED (2017)', desc:'PC PvP combat game developed at SUTD Gamelab Singapore for Game Start Asia 2017. Nominated — Taipei Game Show 2017.', slides:[YT('NlJb0i4hQ4I','Overpowered — Gameplay')] },
-  'proximity': { cat:'Student Game · Award Winner', title:'PROXIMITY (2016)', desc:'Role-  I worked as the game/level and UI designer for this project. Since we had no artists, we decided to go with minmalistic color and shapes to bring the game to life.', slides:[YT('euQ3nH93Hts','Proximity — Gameplay')] },
-};
+2
+00:03.400 --&gt; 00:06.940
+shoots arrows that seek out enemies on their own,
 
-let currentSlide = 0;
-let currentSlides = [];
+3
+00:07.100 --&gt; 00:09.900
+so nothing can hide in its wake.
 
-function openModal(key) {
-  const p = projects[key];
-  document.getElementById('modal-cat').textContent = p.cat;
-  document.getElementById('modal-title').textContent = p.title;
-  document.getElementById('modal-desc').textContent = p.desc;
-  currentSlides = p.slides;
-  currentSlide = 0;
-  renderSlides();
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+4
+00:11.060 --&gt; 00:15.500
+Vijaya, the weapon of the divine
+weaponsmith Vishwakarma,
 
-function closeModal() {
-  document.getElementById('slides-container').innerHTML = '';
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
+5
+00:15.800 --&gt; 00:18.300
+shoots multiple arrows in an arc,
 
-function closeOutside(e) {
-  if (e.target === document.getElementById('modal')) closeModal();
-}
+6
+00:18.700 --&gt; 00:22.700
+obliterating anything and everything in its path.
 
-function updateMeta() {
-  const s = currentSlides[currentSlide];
-  document.getElementById('slide-label-bar').textContent = s ? s.label : '';
-  document.getElementById('slide-counter').textContent = currentSlides.length > 1
-    ? `${currentSlide + 1} / ${currentSlides.length}` : '';
-}
+7
+00:23.800 --&gt; 00:26.380
+Once hailed as the harbinger of the end,
 
-function renderSlides() {
-  const container = document.getElementById('slides-container');
-  const dots = document.getElementById('slide-dots');
-  container.innerHTML = '';
-  dots.innerHTML = '';
+8
+00:26.450 --&gt; 00:29.640
+Pinaka, bow of Lord Shiv,
 
-  currentSlides.forEach((s, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'slide' + (i === currentSlide ? ' active' : '');
+9
+00:29.700 --&gt; 00:33.140
+can drown enemies in a hail of arrows
 
-    if (s.type === 'youtube') {
-      slide.innerHTML = `
-        <div class="slide-video-wrap">
-          <iframe
-            src="https://www.youtube.com/embed/${s.id}?rel=0&modestbranding=1"
-            title="${s.label}"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>`;
-    } else if (s.type === 'drive') {
-      slide.innerHTML = `
-        <div class="slide-video-wrap">
-          <iframe
-            src="https://drive.google.com/file/d/${s.id}/preview"
-            title="${s.label}"
-            allow="autoplay"
-            allowfullscreen>
-          </iframe>
-        </div>`;
-    } else {
-      slide.innerHTML = `
-        <div class="slide-linkcard" onclick="window.open('${s.url}','_blank')">
-          <div class="lc-title">${s.label}</div>
-          <div class="lc-desc">${s.desc || ''}</div>
-          <a href="${s.url}" target="_blank" onclick="event.stopPropagation()">Open Link ↗</a>
-        </div>`;
-    }
+10
+00:33.140 --&gt; 00:35.100
+in just a matter of seconds.
 
-    container.appendChild(slide); 
+11
+00:36.500 --&gt; 00:38.700
+The Indra shoots heavy arrows,
 
-    if (currentSlides.length > 1) {
-      const dot = document.createElement('div');
-      dot.className = 'dot' + (i === currentSlide ? ' active' : '');
-      dot.onclick = () => goToSlide(i);
-      dots.appendChild(dot);
-    }
-  });
+12
+00:38.750 --&gt; 00:40.400
+but its true strength…
+" data-title="Combat with Vetal" aria-current="true"><span class="w-n">01</span><span class="w-t">Combat with Vetal</span><span class="w-d">0:40</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-vetal-stories-boons" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-vetal-stories-boons-poster.webp" data-dur="25.38" data-audio="1" data-vtt="media/key-sections/ks-vetal-stories-boons.vtt" data-cues="WEBVTT
 
-  updateMeta();
-}
+1
+00:00.900 --&gt; 00:03.300
+…can Vikram earn his favor,
 
-function goToSlide(n) {
-  currentSlide = n;
-  document.querySelectorAll('#slides-container .slide').forEach((s, i) => s.classList.toggle('active', i === n));
-  document.querySelectorAll('#slide-dots .dot').forEach((d, i) => d.classList.toggle('active', i === n));
-  updateMeta();
-}
+2
+00:04.100 --&gt; 00:07.360
+rewarded with powerful ancient mantras
 
-function prevSlide() {
-  if (!currentSlides.length) return;
-  goToSlide((currentSlide - 1 + currentSlides.length) % currentSlides.length);
-}
+3
+00:07.400 --&gt; 00:09.600
+to turn the tide of battle.
 
-function nextSlide() {
-  if (!currentSlides.length) return;
-  goToSlide((currentSlide + 1) % currentSlides.length);
-}
+4
+00:12.740 --&gt; 00:15.060
+However, a half-finished story
 
-document.addEventListener('keydown', (e) => {
-  if (!document.getElementById('modal').classList.contains('open')) return;
-  if (e.key === 'Escape') closeModal();
-  else if (e.key === 'ArrowLeft') prevSlide();
-  else if (e.key === 'ArrowRight') nextSlide();
-});
+5
+00:15.060 --&gt; 00:17.700
+is what Vetal hates the most.
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+6
+00:18.320 --&gt; 00:20.800
+Complete the stories of these cultists,
 
-if (!reduceMotion) {
-  const revealItems = document.querySelectorAll('.section-wrap > *, .project-card, .client-card, .skill-pill, .accolade-item, .edu-card, .contact-wrap > *');
-  revealItems.forEach((item) => item.classList.add('reveal'));
+7
+00:20.900 --&gt; 00:25.300
+and Vetal will reward you with powerful boons.
+" data-title="Stories and boons"><span class="w-n">02</span><span class="w-t">Stories and boons</span><span class="w-d">0:25</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-vetal-traversal" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-vetal-traversal-poster.webp" data-dur="26" data-audio="1" data-vtt="media/key-sections/ks-vetal-traversal.vtt" data-cues="WEBVTT
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+1
+00:00.000 --&gt; 00:03.860
+Vikram, a police constable
+recently posted to the village,
 
-  revealItems.forEach((item) => revealObserver.observe(item));
+2
+00:03.900 --&gt; 00:07.500
+is desperately trying to find his way out.
 
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let width = 0;
-  let height = 0;
-  let nodes = [];
-  let frame = 0;
+3
+00:08.100 --&gt; 00:12.140
+It is in this twisted dimension
+that he encounters Vetal,
 
-  function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = Math.floor(width * dpr);
-    canvas.height = Math.floor(height * dpr);
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+4
+00:12.400 --&gt; 00:15.500
+a devious spirit from Hindu mythology,
 
-    const count = Math.min(58, Math.max(28, Math.floor(width / 28)));
-    nodes = Array.from({ length: count }, (_, i) => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.28,
-      vy: (Math.random() - 0.5) * 0.28,
-      pulse: Math.random() * Math.PI * 2,
-      hue: i % 5 === 0 ? '255,122,26' : i % 3 === 0 ? '182,255,77' : '0,229,255'
-    }));
-  }
+5
+00:15.940 --&gt; 00:18.400
+and they form a pact for survival
 
-  function drawBackground() {
-    frame += 0.006;
-    ctx.clearRect(0, 0, width, height);
+6
+00:18.600 --&gt; 00:21.900
+as Vikram cannot endure the Atman dimension
 
-    nodes.forEach((node, i) => {
-      node.x += node.vx + Math.sin(frame + node.pulse) * 0.05;
-      node.y += node.vy + Math.cos(frame + node.pulse) * 0.05;
-
-      if (node.x < -20) node.x = width + 20;
-      if (node.x > width + 20) node.x = -20;
-      if (node.y < -20) node.y = height + 20;
-      if (node.y > height + 20) node.y = -20;
-
-      for (let j = i + 1; j < nodes.length; j += 1) {
-        const other = nodes[j];
-        const dx = node.x - other.x;
-        const dy = node.y - other.y;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < 140) {
-          const alpha = (1 - dist / 140) * 0.18;
-          ctx.strokeStyle = `rgba(0,229,255,${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(node.x, node.y);
-          ctx.lineTo(other.x, other.y);
-          ctx.stroke();
-        }
-      }
-
-      const radius = 1.4 + Math.sin(frame * 2 + node.pulse) * 0.8;
-      ctx.fillStyle = `rgba(${node.hue},0.58)`;
-      ctx.beginPath();
-      ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    requestAnimationFrame(drawBackground);
-  }
-
-  resizeCanvas();
-  drawBackground();
-  window.addEventListener('resize', resizeCanvas);
-}
-</script>
+7
+00:22.260 --&gt; 00:25.400
+and Vetal cannot exist in our world.
+" data-title="Forest traversal"><span class="w-n">03</span><span class="w-t">Forest traversal</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-pm-arena-ai" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-pm-arena-ai-poster.webp" data-dur="32" data-audio="1" data-title="Arena AI"><span class="w-n">04</span><span class="w-t">Arena AI</span><span class="w-d">0:32</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="media/key-sections/ks-pm-evolution" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-pm-evolution-poster.webp" data-dur="41.83" data-audio="" data-title="2021 to 2025"><span class="w-n">05</span><span class="w-t">2021 to 2025</span><span class="w-d">0:42</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-vetal26-t">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="games/project-mind.html">Read the deep dive</a></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/hero-vetal-combat"></video></div><figcaption class="slate slate--long">Bow and lightning with Vetal, 2025</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/pm-gp-2024-arena-crowd"></video></div><figcaption class="slate slate--long">Attack tickets in a crowd, 2024</figcaption></figure><figure class="pd-fig"><div class="clip" style="--pos:50% 100%;aspect-ratio:1280/680"><img src="media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/pm-gp-2023-ticket-ai"></video></div><figcaption class="slate slate--long">Attack ticket test map, 2023</figcaption></figure></div>
+</dialog>
+<dialog class="pd" id="p-dodie" aria-labelledby="p-dodie-t">
+<div class="pd-bar"><p class="meta">Game · weekend jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Do.Die">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-dodie-boss-poster.webp" aria-label="Boss fight"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:45">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:45</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 1:37 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-dodie-boss" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-boss-poster.webp" data-dur="45" data-audio="1" data-title="Boss fight" aria-current="true"><span class="w-n">01</span><span class="w-t">Boss fight</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-dodie-combat-room" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-combat-room-poster.webp" data-dur="26" data-audio="1" data-title="Combat room"><span class="w-n">02</span><span class="w-t">Combat room</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-dodie-echo-shield" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-echo-shield-poster.webp" data-dur="26" data-audio="1" data-title="Echo dash and shield"><span class="w-n">03</span><span class="w-t">Echo dash and shield</span><span class="w-d">0:26</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-dodie-t">Do.Die</h2><p>A weekend-jam shooter inspired by Max Payne and Control, shipped to the browser with analytics on how people play.</p><p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Bullet time, echo dash, shield, boss fight</li><li>Player telemetry through a Cloudflare Worker</li><li>Data from 30+ playtests on itch.io</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-reel"></video></div><figcaption class="slate slate--long">Echo dash and boss fight</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-dive-multikill"></video></div><figcaption class="slate slate--long">A dive into a group</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1280/640"><img src="media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-boss-volley"></video></div><figcaption class="slate slate--long">Trading fire with the boss</figcaption></figure></div>
+</dialog>
+<dialog class="pd" id="p-dos" aria-labelledby="p-dos-t">
+<div class="pd-bar"><p class="meta">Game · game jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Department of Shapes">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-dos-opening-poster.webp" aria-label="The queue"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:29">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:29</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 2:17 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-dos-opening" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-opening-poster.webp" data-dur="29" data-audio="1" data-title="The queue" aria-current="true"><span class="w-n">01</span><span class="w-t">The queue</span><span class="w-d">0:29</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-dos-scanner" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-scanner-poster.webp" data-dur="38" data-audio="1" data-title="The scanner gate"><span class="w-n">02</span><span class="w-t">The scanner gate</span><span class="w-d">0:38</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-dos-rolling" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-rolling-poster.webp" data-dur="30" data-audio="1" data-title="Rolling"><span class="w-n">03</span><span class="w-t">Rolling</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-dos-floor" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-floor-poster.webp" data-dur="40" data-audio="1" data-title="A floor"><span class="w-n">04</span><span class="w-t">A floor</span><span class="w-d">0:40</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-dos-t">Department of Shapes</h2><p>A game-jam game, also called CircleJack, where shapes with more sides claim more status, much like a caste system.</p><p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Shape-shifting through molding machines</li><li>A unique attack for each shape</li><li>Rock-paper-scissors combat, hexagon boss</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/circlejack/dos-queue-hero-poster.webp" width="1920" height="1080" alt="Department of Shapes: the sphere character walks a queue toward a sign that reads 6 sides matched, move to floor 4" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-queue-hero"></video></div><figcaption class="slate slate--long">The queue to the scanner</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-roll"></video></div><figcaption class="slate slate--long">The sphere rolls in</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1080/1350"><img src="media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-scanner"></video></div><figcaption class="slate slate--long">The scanner gate</figcaption></figure></div>
+</dialog>
+<dialog class="pd" id="p-amyloidosis" aria-labelledby="p-amyloidosis-t">
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Amyloidosis in mixed reality">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-amy-marrow-poster.webp" aria-label="Bone marrow"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:45">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:45</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 2:33 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-amy-marrow" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-marrow-poster.webp" data-dur="44.93" data-audio="" data-title="Bone marrow" aria-current="true"><span class="w-n">01</span><span class="w-t">Bone marrow</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-amy-cells" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-cells-poster.webp" data-dur="22.97" data-audio="" data-title="Plasma cells"><span class="w-n">02</span><span class="w-t">Plasma cells</span><span class="w-d">0:23</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-amy-heart" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-heart-poster.webp" data-dur="44.93" data-audio="" data-title="Heart cross-section"><span class="w-n">03</span><span class="w-t">Heart cross-section</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-amy-bloodstream" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-bloodstream-poster.webp" data-dur="39.97" data-audio="" data-title="Into the bloodstream"><span class="w-n">04</span><span class="w-t">Into the bloodstream</span><span class="w-d">0:40</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-amyloidosis-t">Amyloidosis in mixed reality</h2><p>A mixed-reality app that shows patients how misfolded proteins build up and damage the heart.</p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Hand-tracked heart grab and cross-section cut</li><li>Plasma-cell and fibril animations</li><li>A mini-game and an ElevenLabs voice-over tool</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, passthrough, Meta XR hand tracking, parts of the content warehouse</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-hero-heart-section"></video></div><figcaption class="slate slate--long">The heart opens in your hands</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-antibodies"></video></div><figcaption class="slate slate--long">A plasma cell releases antibodies</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-portal-room"></video></div><figcaption class="slate slate--long">A tunnel into the bloodstream</figcaption></figure></div>
+</dialog>
+<dialog class="pd" id="p-cart" aria-labelledby="p-cart-t">
+<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch CAR-T cell therapy story in VR">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-cart-vr-start-poster.webp" aria-label="Onboarding"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:15">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:15</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 1:43 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-cart-vr-start" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-start-poster.webp" data-dur="15.17" data-audio="" data-title="Onboarding" aria-current="true"><span class="w-n">01</span><span class="w-t">Onboarding</span><span class="w-d">0:15</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-cart-vr-immune" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-immune-poster.webp" data-dur="39.17" data-audio="" data-title="Immune system"><span class="w-n">02</span><span class="w-t">Immune system</span><span class="w-d">0:39</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-cart-vr-lab" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-lab-poster.webp" data-dur="30.83" data-audio="" data-title="The lab"><span class="w-n">03</span><span class="w-t">The lab</span><span class="w-d">0:31</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-cart-vr-payoff" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-payoff-poster.webp" data-dur="17.73" data-audio="" data-title="CAR-T cells at work"><span class="w-n">04</span><span class="w-t">CAR-T cells at work</span><span class="w-d">0:18</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy, made for a university hospital.</p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Meta SDK to OpenXR and XRI migration</li><li>All 19 scenes rebuilt on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-indication"></video></div><figcaption class="slate slate--long">Choosing an indication</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-bacteria"></video></div><figcaption class="slate slate--long">A bacterium and its explanation card</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-lab"></video></div><figcaption class="slate slate--long">Making CAR-T cells in the lab</figcaption></figure></div>
+</dialog>
+<dialog class="pd" id="p-mg" aria-labelledby="p-mg-t">
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
+<section class="watch" data-watch aria-label="Watch Myasthenia gravis in VR">
+<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-mg-entry-poster.webp" aria-label="Entering the body"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:30">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:30</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+<div class="w-list">
+<p class="meta">Key sections · 3:12 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-mg-entry" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-entry-poster.webp" data-dur="29.97" data-audio="" data-title="Entering the body" aria-current="true"><span class="w-n">01</span><span class="w-t">Entering the body</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-mg-junction" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-junction-poster.webp" data-dur="39.97" data-audio="" data-title="The neuromuscular junction"><span class="w-n">02</span><span class="w-t">The neuromuscular junction</span><span class="w-d">0:40</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-mg-complement" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-complement-poster.webp" data-dur="41.93" data-audio="" data-title="Complement cascade"><span class="w-n">03</span><span class="w-t">Complement cascade</span><span class="w-d">0:42</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-mg-thymus" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-thymus-poster.webp" data-dur="43.93" data-audio="" data-title="The thymus"><span class="w-n">04</span><span class="w-t">The thymus</span><span class="w-d">0:44</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="media/key-sections/ks-mg-muscle" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-muscle-poster.webp" data-dur="35.93" data-audio="" data-title="At the muscle"><span class="w-n">05</span><span class="w-t">At the muscle</span><span class="w-d">0:36</span></button></li></ol>
+</div>
+</section>
+<div class="pd-body">
+<div class="pd-main"><h2 class="display" id="p-mg-t">Myasthenia gravis in VR</h2><p>Patient education about myasthenia gravis, a neuromuscular disease, on a ride through an abstract human body.</p></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Designed and built the UI</li><li>Spline-path ride with extensible content stations</li><li>Body tracking, onboarding, smartwatch UI, teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, body tracking</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2024–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+</div>
+<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-body-entry"></video></div><figcaption class="slate slate--long">Riding into the body</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-nerve-terminal"></video></div><figcaption class="slate slate--long">A nerve signals the muscle</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-complement"></video></div><figcaption class="slate slate--long">Complement proteins on a cell</figcaption></figure></div>
+</dialog>
+</div>
+<script src="site.js" defer></script>
 </body>
 </html>

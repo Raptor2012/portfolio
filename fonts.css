@@ -1,0 +1,3 @@
+/* Typefaces. The Mona Sans stylesheet is linked in each page's <head> (no @import, so the font request starts with the page).
+   To switch, change that link and the line below to one of the pairs listed in NOTES.md under "Typefaces". */
+:root{--font-display:"Mona Sans","Helvetica Neue",Arial,sans-serif;--display-stretch:112.5%;--display-track:-.035em;--font-text:"Mona Sans","Helvetica Neue",Arial,sans-serif}

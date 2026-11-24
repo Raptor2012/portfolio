@@ -1,0 +1,5 @@
+# Working folders. Only the files the site uses are committed (see design/portfolios/_build/deploy-files.txt, added with git add -f).
+design/
+media/
+images/
+resume/
