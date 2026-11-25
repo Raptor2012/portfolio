@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-media="media/" data-root="">
 <head>
 <meta charset="utf-8">
-<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanket Das · Portfolio</title>
 <meta name="description" content="Sanket Das, senior Unity XR and game developer. Third-person action games in Unreal Engine and Unity, and VR, mixed reality and WebGL apps. Open to roles and fixed-price projects.">
@@ -14,167 +13,153 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23060709'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece8e2' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
 <link rel="preload" as="image" href="media/amyloidosis/amy-hero-heart-section-poster.webp" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
-<link rel="stylesheet" href="fonts.css">
-<link rel="stylesheet" href="site.css">
-<link rel="stylesheet" href="motion.css">
+<link rel="preload" as="font" type="font/woff2" href="fonts/mona-sans.woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;d.classList.add(rm?'rm':'js');if(/[?&]capture/.test(location.search))d.classList.add('cap');})();</script>
 </head>
 <body>
-<script>document.documentElement.classList.add('js')</script>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav" aria-label="Main">
-  <div class="wrap nav-in">
-    <a class="brand" href="index.html">Sanket Das</a>
-    <div class="nav-links">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="games/index.html">Games</a>
-      <a href="xr/index.html">XR</a>
-      <a href="index.html#about">About</a>
-      <a href="resume/Sanket_Das_Resume.pdf">Resume</a>
-      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
-    </div>
-  </div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="vids" aria-hidden="true"></div>
+<nav class="top" aria-label="Main">
+  <a class="brand" href="./">Sanket Das</a>
+  <ul>
+    <li><a href="games/">Games</a></li>
+    <li><a href="xr/">XR</a></li>
+    <li class="n-about"><a href="#about">About</a></li>
+    <li class="n-res"><a href="resume/Sanket_Das_Resume.pdf">Resume</a></li>
+    <li><a href="mailto:sanketdas@live.com">Email</a></li>
+    <li><button class="snd" type="button" aria-pressed="false" aria-label="Sound" hidden><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="snd-l">Sound</span></button></li>
+  </ul>
 </nav>
-<header class="hero" id="top">
-  <div class="reel" data-reel>
-    <div class="clip is-active" style="--pos:50% 50%"><img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-hero-heart-section"></video></div>
-    <div class="clip" style="--pos:0% 50%"><img src="media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/hero-vetal-combat"></video></div>
-    <div class="clip" style="--pos:0% 50%"><img src="media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-dive-multikill" data-start="0.6"></video></div>
-  </div>
-  <div class="wrap hero-in">
+<header class="hero hero--pin" id="top">
+  <div class="stage">
+    <div class="screen screen--hero" id="hero-screen" data-reel="amyloidosis/amy-hero-heart-section|50% 50%|Mixed reality on Quest 3, client work;project-mind/hero-vetal-combat|35% 50%|VETAL 26, combat with Vetal’s powers;dodie/dodie-combat-reel|30% 50%|Do.Die, combat in the boss arena">
+      <img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" fetchpriority="high" decoding="async" style="object-position:50% 50%">
+    </div>
+    <div class="scrim" aria-hidden="true"></div>
     <div class="hero-copy">
-      <h1 class="display">Sanket Das</h1>
+      <h1 class="name" data-name data-w="118" data-w-phone="100" data-squeeze="38">Sanket Das</h1>
       <p class="lede">Senior Unity XR and game developer</p>
       <div class="actions">
         <a class="btn" href="mailto:sanketdas@live.com">Email me</a>
-        <a href="resume/Sanket_Das_Resume.pdf">Resume</a>
+        <a class="link" href="resume/Sanket_Das_Resume.pdf">Resume</a>
       </div>
     </div>
-    <div class="slates" aria-hidden="true">
-      <p class="slate is-active">Mixed reality on Quest 3, client work</p>
-      <p class="slate">VETAL 26, combat with Vetal’s powers</p>
-      <p class="slate">Do.Die, a dive into a group behind shield spheres</p>
+    <div class="slate" aria-hidden="true">
+      <span class="slate-n"><b>01</b> / 03</span>
+      <span class="slate-t">Mixed reality on Quest 3, client work</span>
+      <span class="slate-bar"><i></i></span>
     </div>
   </div>
 </header>
 <main id="main">
 
-<section class="section section--doors" aria-label="Work">
-  <div class="wrap doors">
-    <article class="door" data-reveal aria-labelledby="games-h">
-      <a class="door-clip" href="games/index.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:50% 50%"><img src="media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="VETAL 26: wrapped in Vetal, the player fires bow volleys at glowing spirit enemies in a night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/vetal-door-combat"></video></div></a>
-      <h2 class="display" id="games-h"><a href="games/index.html">Games</a></h2>
-      <p class="body">Third-person action games: combat, enemy AI, abilities and locomotion, in Unreal Engine and Unity.</p>
-      <ul class="hl">
-        <li><button class="hl-row open" type="button" data-open="p-vetal26" aria-haspopup="dialog"><span class="hl-t">VETAL 26</span><span class="hl-m">Unreal Engine · 2020–2025 · Watch 2:45</span><span class="sr">: VETAL 26</span></button></li>
-        <li><button class="hl-row open" type="button" data-open="p-dodie" aria-haspopup="dialog"><span class="hl-t">Do.Die</span><span class="hl-m">Unity · WebGL · 2026 · Watch 1:37</span><span class="sr">: Do.Die</span></button></li>
-        <li><button class="hl-row open" type="button" data-open="p-dos" aria-haspopup="dialog"><span class="hl-t">Department of Shapes</span><span class="hl-m">Unity · game jam · 2026 · Watch 2:17</span><span class="sr">: Department of Shapes</span></button></li>
+<section class="section doors" id="work" aria-label="Work">
+  <div class="wrap doors-grid">
+    <article class="door" aria-labelledby="games-h">
+      <a class="door-screen" href="games/" tabindex="-1" aria-hidden="true"><div class="screen" data-clip="project-mind/vetal-door-combat" data-pos="50% 50%" data-reflect=".2" data-glow="1" style="--ar:16/9"><img src="media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="VETAL 26: wrapped in Vetal, the player fires bow volleys at glowing spirit enemies in a night forest" loading="lazy" decoding="async" style="object-position:50% 50%"></div></a>
+      <h2 class="display" id="games-h"><a href="games/" data-k>Games</a></h2>
+      <p class="body" data-rise>Third-person action games: combat, enemy AI, abilities and locomotion, in Unreal Engine and Unity.</p>
+      <ul class="rows" data-rise>
+        <li><button data-swap="project-mind/vetal-door-combat|50% 50%" class="row is-on" type="button" data-open="p-vetal26" aria-haspopup="dialog"><span class="row-t">VETAL 26</span><span class="row-m">Unreal Engine · 2020–2025 · Watch 2:45</span><span class="row-i" aria-hidden="true"></span><span class="sr">: VETAL 26</span></button></li>
+        <li><button data-swap="dodie/dodie-combat-shield-blast|50% 50%" class="row" type="button" data-open="p-dodie" aria-haspopup="dialog"><span class="row-t">Do.Die</span><span class="row-m">Unity · WebGL · 2026 · Watch 1:37</span><span class="row-i" aria-hidden="true"></span><span class="sr">: Do.Die</span></button></li>
+        <li><button data-swap="circlejack/dos-roll|52% 50%" class="row" type="button" data-open="p-dos" aria-haspopup="dialog"><span class="row-t">Department of Shapes</span><span class="row-m">Unity · game jam · 2026 · Watch 2:17</span><span class="row-i" aria-hidden="true"></span><span class="sr">: Department of Shapes</span></button></li>
       </ul>
-      <a class="more" href="games/index.html">All games</a>
+      <a class="more" href="games/">All games</a>
     </article>
-    <article class="door" data-reveal aria-labelledby="xr-h">
-      <a class="door-clip" href="xr/index.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:50% 50%"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-antibodies"></video></div></a>
-      <h2 class="display" id="xr-h"><a href="xr/index.html">XR for teams</a></h2>
-      <p class="body">VR, mixed reality and WebGL apps for client teams, built as lead developer since 2023.</p>
-      <ul class="hl">
-        <li><button class="hl-row open" type="button" data-open="p-amyloidosis" aria-haspopup="dialog"><span class="hl-t">Amyloidosis in mixed reality</span><span class="hl-m">Quest 3 · mixed reality · 2026 · Watch 2:33</span><span class="sr">: Amyloidosis in mixed reality</span></button></li>
-        <li><button class="hl-row open" type="button" data-open="p-cart" aria-haspopup="dialog"><span class="hl-t">CAR-T cell therapy story</span><span class="hl-m">Quest 3 · VR · 2023–2026 · Watch 1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button></li>
-        <li><button class="hl-row open" type="button" data-open="p-mg" aria-haspopup="dialog"><span class="hl-t">Myasthenia gravis in VR</span><span class="hl-m">Quest 3 · VR · 2024–2026 · Watch 3:12</span><span class="sr">: Myasthenia gravis in VR</span></button></li>
+    <article class="door" aria-labelledby="xr-h">
+      <a class="door-screen" href="xr/" tabindex="-1" aria-hidden="true"><div class="screen" data-clip="amyloidosis/amy-antibodies" data-pos="50% 50%" data-reflect=".2" data-glow="1" style="--ar:16/9"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async" style="object-position:50% 50%"></div></a>
+      <h2 class="display" id="xr-h"><a href="xr/" data-k>XR for teams</a></h2>
+      <p class="body" data-rise>VR, mixed reality and WebGL apps for client teams, built as lead developer since 2023.</p>
+      <ul class="rows" data-rise>
+        <li><button data-swap="amyloidosis/amy-antibodies|50% 50%" class="row is-on" type="button" data-open="p-amyloidosis" aria-haspopup="dialog"><span class="row-t">Amyloidosis in mixed reality</span><span class="row-m">Quest 3 · mixed reality · 2026 · Watch 2:33</span><span class="row-i" aria-hidden="true"></span><span class="sr">: Amyloidosis in mixed reality</span></button></li>
+        <li><button data-swap="car-t/xr-tile-cart-vr|50% 50%" class="row" type="button" data-open="p-cart" aria-haspopup="dialog"><span class="row-t">CAR-T cell therapy story</span><span class="row-m">Quest 3 · VR · 2023–2026 · Watch 1:43</span><span class="row-i" aria-hidden="true"></span><span class="sr">: CAR-T cell therapy story in VR</span></button></li>
+        <li><button data-swap="neuromuscular/mg-vessel-ride|50% 50%" class="row" type="button" data-open="p-mg" aria-haspopup="dialog"><span class="row-t">Myasthenia gravis in VR</span><span class="row-m">Quest 3 · VR · 2024–2026 · Watch 3:12</span><span class="row-i" aria-hidden="true"></span><span class="sr">: Myasthenia gravis in VR</span></button></li>
       </ul>
-      <a class="more" href="xr/index.html">All XR work</a>
+      <a class="more" href="xr/">All XR work</a>
     </article>
   </div>
 </section>
 
-<section class="section" id="case-studies" aria-labelledby="cs-h">
+<section class="section" id="deep" aria-labelledby="cs-h">
   <div class="wrap">
-    <div class="cs-head">
-      <h2 class="display" id="cs-h">Deep dives</h2>
-      <p class="body">Two longer write-ups, with footage and diagrams.</p>
-    </div>
-    <div class="cases" data-reveal>
-      <article class="case" aria-labelledby="cs-vetal26">
-        <a class="case-clip" href="games/project-mind.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:30% 50%"><img src="media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: the player runs through a misty night forest wrapped in a violet spirit" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/vetal-spirit-run"></video></div></a>
-        <div class="case-copy">
-          <p class="meta">Unreal Engine · 2020–2025 · 4 min read</p>
-          <h3 id="cs-vetal26"><a href="games/project-mind.html">VETAL 26: how a third-person action game grew over five years</a></h3>
-          <p class="body">Five years of one Unreal Engine game, from the first movement test to a playable level: combat, enemy AI and Vetal’s powers, all in Blueprints.</p>
-          <a class="more" href="games/project-mind.html">Read the deep dive</a>
-        </div>
-      </article>
-      <article class="case" aria-labelledby="cs-platform">
-        <a class="case-clip" href="xr/platform.html" tabindex="-1" aria-hidden="true"><div class="clip still"><img src="img/hands-grab-card.webp" width="1050" height="590" alt="" loading="lazy" decoding="async"></div></a>
-        <div class="case-copy">
-          <p class="meta">Unity · 2025–2026 · 13 min read</p>
-          <h3 id="cs-platform"><a href="xr/platform.html">The content warehouse: how a medical XR company builds client apps faster</a></h3>
-          <p class="body">Shared packages, a project template and authoring tools that build one Unity project for Quest, phones and the browser.</p>
-          <a class="more" href="xr/platform.html">Read the deep dive</a>
-        </div>
-      </article>
-    </div>
+    <div class="head"><h2 class="display" id="cs-h" data-k>Deep dives</h2></div>
+    <article class="case" aria-labelledby="cs-vetal26">
+      <a class="case-screen" href="games/project-mind.html" tabindex="-1" aria-hidden="true"><div class="screen" data-clip="project-mind/vetal-spirit-run" data-pos="30% 50%" data-reflect=".14" style="--ar:1920/800"><img src="media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: the player runs through a misty night forest wrapped in a violet spirit" loading="lazy" decoding="async" style="object-position:30% 50%"></div></a>
+      <div class="case-copy" data-rise>
+        <p class="meta">Unreal Engine · 2020–2025 · 4 min read</p>
+        <h3 id="cs-vetal26"><a href="games/project-mind.html">VETAL 26: how a third-person action game grew over five years</a></h3>
+        <p class="body">Five years of one Unreal Engine game, from the first movement test to a playable level: combat, enemy AI and Vetal’s powers, all in Blueprints.</p>
+        <p class="links"><a class="more" href="games/project-mind.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-vetal26" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:45</span><span class="sr">: VETAL 26</span></button></p>
+      </div>
+    </article>
+    <article class="case case--flip" aria-labelledby="cs-platform">
+      <a class="case-screen" href="xr/platform.html" tabindex="-1" aria-hidden="true"><div class="screen" data-clip="xr-tiles/xr-tile-platform-guide" data-pos="50% 50%" data-reflect=".14" style="--ar:1280/720"><img src="media/xr-tiles/xr-tile-platform-guide-poster.webp" width="1280" height="720" alt="Browser demo: a guide avatar in a lab coat waves inside a hexagonal glass dome" loading="lazy" decoding="async" style="object-position:50% 50%"></div></a>
+      <div class="case-copy" data-rise>
+        <p class="meta">Unity · 2025–2026 · 13 min read</p>
+        <h3 id="cs-platform"><a href="xr/platform.html">The content warehouse: how a medical XR company builds client apps faster</a></h3>
+        <p class="body">Shared packages, a project template and authoring tools that build one Unity project for Quest, phones and the browser.</p>
+        <p class="links"><a class="more" href="xr/platform.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-platform" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:39</span><span class="sr">: Content warehouse demo</span></button></p>
+      </div>
+    </article>
   </div>
 </section>
 
 <section class="section" id="tools" aria-labelledby="tools-h">
   <div class="wrap">
-    <div class="cs-head">
-      <h2 class="display" id="tools-h">Tools</h2>
-      <p class="body">Tools I built for my own work, released on GitHub.</p>
+    <div class="head"><h2 class="display" id="tools-h" data-k>Tools</h2></div>
+    <article class="case" aria-labelledby="t-maeve">
+      <div class="screen" data-clip="tools/tool-maeve" data-pos="0% 50%" data-reflect=".14" style="--ar:1280/720"><img src="media/tools/tool-maeve-poster.webp" width="1280" height="720" alt="Maeve’s violet orb pulses under a reply panel, beside the headline Talk to your coding agent. Hear it answer." loading="lazy" decoding="async" style="object-position:0% 50%"></div>
+      <div class="case-copy" data-rise>
+        <p class="meta">Windows · local speech · solo · 2026</p>
+        <h3 id="t-maeve">Maeve: local voice for a coding agent</h3>
+        <p class="body">A voice layer and speaking orb I built on two open-source apps. Replies start playing in 55–⁠90 ms.</p>
+        <p class="links"><button class="more open open--watch" type="button" data-open="p-maeve" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:20</span><span class="sr">: Maeve: local voice for a coding agent</span></button><a class="more" href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p>
+      </div>
+    </article>
+    <div class="tool-row" data-rise>
+      <h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">Favorites Bar for Unity<span class="sr"> (opens in a new tab)</span></a></h3>
+      <div><p>Hold Alt over Unity’s Project window to open a paged bar of favorite assets, folders and scene objects.</p><p class="meta">Editor package · MIT · 2026</p></div>
     </div>
-    <div class="cases cases--one" data-reveal>
-      <article class="case" aria-labelledby="t-maeve">
-        <div class="case-clip"><div class="clip" style="--pos:50% 50%"><img src="media/tools/tool-maeve-poster.webp" width="1280" height="720" alt="Maeve’s violet orb pulses under a reply panel, beside the headline Talk to your coding agent. Hear it answer." loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/tools/tool-maeve"></video></div></div>
-        <div class="case-copy">
-          <p class="meta">Windows · local speech · solo · 2026</p>
-          <h3 id="t-maeve">Maeve: local voice for a coding agent</h3>
-          <p class="body">A voice layer and speaking orb I built on two open-source apps. Replies start playing in 55–⁠90 ms.</p>
-          <p class="links"><button class="more open open--watch" type="button" data-open="p-maeve" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:20</span><span class="sr">: Maeve: local voice for a coding agent</span></button><a class="more" href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p>
-        </div>
-      </article>
-    </div>
-    <ul class="rows tool-rows" data-reveal>
-      <li><h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">Favorites Bar for Unity<span class="sr"> (opens in a new tab)</span></a></h3><div><p>Hold Alt over Unity’s Project window to open a paged bar of favorite assets, folders and scene objects.</p><p class="meta">Editor package · MIT · 2026</p></div></li>
-    </ul>
   </div>
 </section>
 
 <section class="section" id="about" aria-labelledby="about-h">
-  <div class="wrap">
-    <div class="cols about">
-      <h2 class="display" id="about-h">About me</h2>
-      <figure class="about-pic" data-reveal><img src="img/profile.webp" srcset="img/profile.webp 640w, img/profile@2x.webp 1280w" sizes="(min-width: 961px) 420px, min(420px, 100vw)" width="640" height="439" alt="Sanket by a window in a conical straw hat that hides his face" loading="lazy" decoding="async"></figure>
-      <div class="main prose" data-reveal>
-        <p>I studied game design, learned programming along the way, and found my place in VR.</p>
-        <p>I work remotely as a Senior VR Developer and consultant for a European agency, building interactive experiences, mostly for healthcare, education and training.</p>
-        <p>I’ve always cared more about what I can make with technology than about any one technology. Most of what I know came from wanting to build something, not yet knowing how, and figuring it out.</p>
-        <p>Over the years I’ve worked on games, simulations, development tools and AI integrations.</p>
-        <p>I enjoy designing systems, trying out ideas and finding simpler ways to do complicated things. I work best with people who are just as invested in figuring something out, especially when the end result is still taking shape.</p>
-        <p>Outside work, I explore AI, study mathematics and C++, read about science and physics, play games and join the occasional game jam.</p>
-        <p>I like following an idea all the way down and turning simple ideas into ambitious personal projects. That’s how I’ve learned most of what I know.</p>
-      </div>
+  <div class="wrap about-grid">
+    <div class="about-side">
+      <h2 class="display" id="about-h" data-k>About me</h2>
+      <figure class="about-pic" data-rise><div class="screen" data-still="img/profile@2x.webp" data-glow=".55" style="--ar:1280/879"><img src="img/profile@2x.webp" width="1280" height="879" alt="Sanket by a window in a conical straw hat that hides his face" loading="lazy" decoding="async"></div></figure>
+    </div>
+    <div class="about-copy">
+      <p data-lit>I studied game design, learned programming along the way, and found my place in VR.</p>
+      <p data-lit>I work remotely as a Senior VR Developer and consultant for a European agency, building interactive experiences, mostly for healthcare, education and training.</p>
+      <p data-lit>I’ve always cared more about what I can make with technology than about any one technology. Most of what I know came from wanting to build something, not yet knowing how, and figuring it out.</p>
+      <p data-lit>Over the years I’ve worked on games, simulations, development tools and AI integrations.</p>
+      <p data-lit>I enjoy designing systems, trying out ideas and finding simpler ways to do complicated things. I work best with people who are just as invested in figuring something out, especially when the end result is still taking shape.</p>
+      <p data-lit>Outside work, I explore AI, study mathematics and C++, read about science and physics, play games and join the occasional game jam.</p>
+      <p data-lit>I like following an idea all the way down and turning simple ideas into ambitious personal projects. That’s how I’ve learned most of what I know.</p>
     </div>
   </div>
 </section>
 
 <section class="section" id="services" aria-labelledby="svc-h">
   <div class="wrap">
-    <div class="cols">
-      <h2 class="display" id="svc-h">Services</h2>
-      <div class="main" data-reveal>
+    <div class="head"><h2 class="display" id="svc-h" data-k>Services</h2></div>
+    <div class="svc">
+      <div data-rise>
         <p class="terms">Fixed price, agreed before I start. Send the problem and you get a quote within 24 hours.</p>
-        <p class="terms terms--note">I’m also open to full-time and contract roles.</p>
-        <ul class="rows">
-          <li><h3>Gameplay programming</h3><p>Combat, enemy AI, abilities and locomotion for third-person games, in Unreal Engine or Unity.</p></li>
-          <li><h3>XR features and prototypes</h3><p>Hand tracking, mixed reality, grab and teleport, from a design document to a build on the headset.</p></li>
-          <li><h3>Performance and crashes</h3><p>Frame drops on Quest, out-of-memory crashes in iPhone Safari, builds that are too large to download.</p></li>
-          <li><h3>Ports and platform moves</h3><p>PCVR to Quest, Meta SDK to OpenXR, one Unity app to iOS, Android and WebGL.</p></li>
-          <li><h3>AI characters and voice</h3><p>Characters that listen and talk back, with speech recognition, text-to-speech and a language model.</p></li>
-        </ul>
+        <p class="terms">I’m also open to full-time and contract roles.</p>
       </div>
+      <ul class="list" data-rise>
+        <li><h3>Gameplay programming</h3><p>Combat, enemy AI, abilities and locomotion for third-person games, in Unreal Engine or Unity.</p></li>
+        <li><h3>XR features and prototypes</h3><p>Hand tracking, mixed reality, grab and teleport, from a design document to a build on the headset.</p></li>
+        <li><h3>Performance and crashes</h3><p>Frame drops on Quest, out-of-memory crashes in iPhone Safari, builds that are too large to download.</p></li>
+        <li><h3>Ports and platform moves</h3><p>PCVR to Quest, Meta SDK to OpenXR, one Unity app to iOS, Android and WebGL.</p></li>
+        <li><h3>AI characters and voice</h3><p>Characters that listen and talk back, with speech recognition, text-to-speech and a language model.</p></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -182,15 +167,15 @@
 <section class="section" id="record" aria-labelledby="rec-h">
   <div class="wrap">
     <h2 class="sr" id="rec-h">Record</h2>
-    <div class="record" data-reveal>
+    <div class="record" data-rise>
       <div>
         <h3>Experience</h3>
-        <ul class="xp">
-          <li><span class="when">Jan 2025 to now</span><span><b>onVR</b>, Senior VR Developer, freelance contractor</span></li>
-          <li><span class="when">May 2023 to Jan 2025</span><span><b>onliveline GmbH</b>, VR Developer</span></li>
-          <li><span class="when">May 2022 to May 2023</span><span><b>Weltenmacher GmbH</b>, XR Developer, freelance</span></li>
-          <li><span class="when">2019 to 2022</span><span><b>Self-employed</b>, game programmer and consultant</span></li>
-          <li><span class="when">2017</span><span><b>SUTD Game Lab</b>, game design intern</span></li>
+        <ul>
+          <li><span class="when">Jan 2025 to now</span><b>onVR</b>, Senior VR Developer, freelance contractor</li>
+          <li><span class="when">May 2023 to Jan 2025</span><b>onliveline GmbH</b>, VR Developer</li>
+          <li><span class="when">May 2022 to May 2023</span><b>Weltenmacher GmbH</b>, XR Developer, freelance</li>
+          <li><span class="when">2019 to 2022</span><b>Self-employed</b>, game programmer and consultant</li>
+          <li><span class="when">2017</span><b>SUTD Game Lab</b>, game design intern</li>
         </ul>
       </div>
       <div>
@@ -213,13 +198,11 @@
 
 </main>
 
-<footer class="contact contact--img" id="contact">
-  <div class="clip" style="--pos:74% 50%"><img src="media/dodie/dodie-red-sky-lg.webp" srcset="media/dodie/dodie-red-sky-sm.webp 1200w, media/dodie/dodie-red-sky-lg.webp 1954w" sizes="100vw" width="1954" height="814" alt="" loading="lazy" decoding="async"></div>
-  <div class="wrap contact-in">
-    <div data-reveal>
-      <h2>Email me about a role or a project</h2>
-      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
-    </div>
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <div class="screen contact-screen" data-still="media/dodie/dodie-red-sky-lg.webp" data-pos="74% 50%" data-reflect=".32"><img src="media/dodie/dodie-red-sky-lg.webp" width="1954" height="814" alt="" loading="lazy" decoding="async" style="object-position:74% 50%"></div>
+    <h2 class="contact-h" data-rise>Email me about a role or a project</h2>
+    <a class="mail" href="mailto:sanketdas@live.com"><span class="mail-t">sanketdas@live.com</span></a>
     <div class="foot">
       <ul>
         <li><a href="resume/Sanket_Das_Resume.pdf">Resume</a></li>
@@ -232,10 +215,11 @@
   </div>
 </footer>
 <div class="dialogs">
-<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t">
-<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch VETAL 26">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-vetal-combat-poster.webp" aria-label="Combat with Vetal"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -249,7 +233,10 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-vetal26-t" data-k data-w="112">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="games/project-mind.html">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of VETAL 26" role="group">
 <p class="meta">Key sections · 2:45 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-vetal-combat" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-vetal-combat-poster.webp" data-dur="40.4" data-audio="1" data-vtt="media/key-sections/ks-vetal-combat.vtt" data-cues="WEBVTT
 
@@ -363,17 +350,16 @@ as Vikram cannot endure the Atman dimension
 and Vetal cannot exist in our world.
 " data-title="Forest traversal"><span class="w-n">03</span><span class="w-t">Forest traversal</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-pm-arena-ai" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-pm-arena-ai-poster.webp" data-dur="32" data-audio="1" data-title="Arena AI"><span class="w-n">04</span><span class="w-t">Arena AI</span><span class="w-d">0:32</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="media/key-sections/ks-pm-evolution" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-pm-evolution-poster.webp" data-dur="41.83" data-audio="" data-title="2021 to 2025"><span class="w-n">05</span><span class="w-t">2021 to 2025</span><span class="w-d">0:42</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-vetal26-t">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="games/project-mind.html">Read the deep dive</a></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/hero-vetal-combat"></video></div><figcaption class="slate slate--long">Bow and lightning with Vetal, 2025</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/pm-gp-2024-arena-crowd"></video></div><figcaption class="slate slate--long">Attack tickets in a crowd, 2024</figcaption></figure><figure class="pd-fig"><div class="clip" style="--pos:50% 100%;aspect-ratio:1280/680"><img src="media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/project-mind/pm-gp-2023-ticket-ai"></video></div><figcaption class="slate slate--long">Attack ticket test map, 2023</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="project-mind/hero-vetal-combat" style="--ar:1920/800"><img src="media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"></div><figcaption class="cap">Bow and lightning with Vetal, 2025</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2024-arena-crowd" style="--ar:1280/720"><img src="media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"></div><figcaption class="cap">Attack tickets in a crowd, 2024</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2023-ticket-ai" data-pos="50% 100%" style="--ar:1280/680"><img src="media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async" style="object-position:50% 100%"></div><figcaption class="cap">Attack ticket test map, 2023</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-dodie" aria-labelledby="p-dodie-t">
-<div class="pd-bar"><p class="meta">Game · weekend jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Do.Die">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-dodie" aria-labelledby="p-dodie-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · weekend jam · solo</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-dodie-boss-poster.webp" aria-label="Boss fight"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -387,21 +373,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-dodie-t" data-k data-w="112">Do.Die</h2><p>A weekend-jam shooter inspired by Max Payne and Control, shipped to the browser with analytics on how people play.</p><p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<div class="w-list" aria-label="Key sections of Do.Die" role="group">
 <p class="meta">Key sections · 1:37 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-dodie-boss" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-boss-poster.webp" data-dur="45" data-audio="1" data-title="Boss fight" aria-current="true"><span class="w-n">01</span><span class="w-t">Boss fight</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-dodie-combat-room" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-combat-room-poster.webp" data-dur="26" data-audio="1" data-title="Combat room"><span class="w-n">02</span><span class="w-t">Combat room</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-dodie-echo-shield" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dodie-echo-shield-poster.webp" data-dur="26" data-audio="1" data-title="Echo dash and shield"><span class="w-n">03</span><span class="w-t">Echo dash and shield</span><span class="w-d">0:26</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-dodie-t">Do.Die</h2><p>A weekend-jam shooter inspired by Max Payne and Control, shipped to the browser with analytics on how people play.</p><p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Bullet time, echo dash, shield, boss fight</li><li>Player telemetry through a Cloudflare Worker</li><li>Data from 30+ playtests on itch.io</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-reel"></video></div><figcaption class="slate slate--long">Echo dash and boss fight</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-dive-multikill"></video></div><figcaption class="slate slate--long">A dive into a group</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1280/640"><img src="media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/dodie/dodie-combat-boss-volley"></video></div><figcaption class="slate slate--long">Trading fire with the boss</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Bullet time, echo dash, shield, boss fight</li><li>Player telemetry through a Cloudflare Worker</li><li>Data from 30+ playtests on itch.io</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="dodie/dodie-combat-reel" style="--ar:1920/960"><img src="media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"></div><figcaption class="cap">Echo dash and boss fight</figcaption></figure><figure><div class="screen" data-clip="dodie/dodie-combat-dive-multikill" style="--ar:1920/960"><img src="media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"></div><figcaption class="cap">A dive into a group</figcaption></figure><figure><div class="screen" data-clip="dodie/dodie-combat-boss-volley" style="--ar:1280/640"><img src="media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"></div><figcaption class="cap">Trading fire with the boss</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-dos" aria-labelledby="p-dos-t">
-<div class="pd-bar"><p class="meta">Game · game jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Department of Shapes">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-dos" aria-labelledby="p-dos-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · game jam · solo</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-dos-opening-poster.webp" aria-label="The queue"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -415,21 +403,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-dos-t" data-k data-w="112">Department of Shapes</h2><p>A game-jam game, also called CircleJack, where shapes with more sides claim more status, much like a caste system.</p><p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<div class="w-list" aria-label="Key sections of Department of Shapes" role="group">
 <p class="meta">Key sections · 2:17 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-dos-opening" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-opening-poster.webp" data-dur="29" data-audio="1" data-title="The queue" aria-current="true"><span class="w-n">01</span><span class="w-t">The queue</span><span class="w-d">0:29</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-dos-scanner" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-scanner-poster.webp" data-dur="38" data-audio="1" data-title="The scanner gate"><span class="w-n">02</span><span class="w-t">The scanner gate</span><span class="w-d">0:38</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-dos-rolling" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-rolling-poster.webp" data-dur="30" data-audio="1" data-title="Rolling"><span class="w-n">03</span><span class="w-t">Rolling</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-dos-floor" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-dos-floor-poster.webp" data-dur="40" data-audio="1" data-title="A floor"><span class="w-n">04</span><span class="w-t">A floor</span><span class="w-d">0:40</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-dos-t">Department of Shapes</h2><p>A game-jam game, also called CircleJack, where shapes with more sides claim more status, much like a caste system.</p><p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Shape-shifting through molding machines</li><li>A unique attack for each shape</li><li>Rock-paper-scissors combat, hexagon boss</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/circlejack/dos-queue-hero-poster.webp" width="1920" height="1080" alt="Department of Shapes: the sphere character walks a queue toward a sign that reads 6 sides matched, move to floor 4" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-queue-hero"></video></div><figcaption class="slate slate--long">The queue to the scanner</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-roll"></video></div><figcaption class="slate slate--long">The sphere rolls in</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1080/1350"><img src="media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/circlejack/dos-scanner"></video></div><figcaption class="slate slate--long">The scanner gate</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Shape-shifting through molding machines</li><li>A unique attack for each shape</li><li>Rock-paper-scissors combat, hexagon boss</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="circlejack/dos-queue-hero" style="--ar:1920/1080"><img src="media/circlejack/dos-queue-hero-poster.webp" width="1920" height="1080" alt="Department of Shapes: the sphere character walks a queue toward a sign that reads 6 sides matched, move to floor 4" loading="lazy" decoding="async"></div><figcaption class="cap">The queue to the scanner</figcaption></figure><figure><div class="screen" data-clip="circlejack/dos-roll" style="--ar:1920/800"><img src="media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"></div><figcaption class="cap">The sphere rolls in</figcaption></figure><figure><div class="screen" data-clip="circlejack/dos-scanner" style="--ar:1080/1350"><img src="media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"></div><figcaption class="cap">The scanner gate</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-amyloidosis" aria-labelledby="p-amyloidosis-t">
-<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Amyloidosis in mixed reality">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-amyloidosis" aria-labelledby="p-amyloidosis-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-amy-marrow-poster.webp" aria-label="Bone marrow"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -443,21 +433,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-amyloidosis-t" data-k data-w="112">Amyloidosis in mixed reality</h2><p>A mixed-reality app that shows patients how misfolded proteins build up and damage the heart.</p></div>
+<div class="w-list" aria-label="Key sections of Amyloidosis in mixed reality" role="group">
 <p class="meta">Key sections · 2:33 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-amy-marrow" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-marrow-poster.webp" data-dur="44.93" data-audio="" data-title="Bone marrow" aria-current="true"><span class="w-n">01</span><span class="w-t">Bone marrow</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-amy-cells" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-cells-poster.webp" data-dur="22.97" data-audio="" data-title="Plasma cells"><span class="w-n">02</span><span class="w-t">Plasma cells</span><span class="w-d">0:23</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-amy-heart" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-heart-poster.webp" data-dur="44.93" data-audio="" data-title="Heart cross-section"><span class="w-n">03</span><span class="w-t">Heart cross-section</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-amy-bloodstream" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-amy-bloodstream-poster.webp" data-dur="39.97" data-audio="" data-title="Into the bloodstream"><span class="w-n">04</span><span class="w-t">Into the bloodstream</span><span class="w-d">0:40</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-amyloidosis-t">Amyloidosis in mixed reality</h2><p>A mixed-reality app that shows patients how misfolded proteins build up and damage the heart.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Hand-tracked heart grab and cross-section cut</li><li>Plasma-cell and fibril animations</li><li>A mini-game and an ElevenLabs voice-over tool</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, passthrough, Meta XR hand tracking, parts of the content warehouse</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-hero-heart-section"></video></div><figcaption class="slate slate--long">The heart opens in your hands</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-antibodies"></video></div><figcaption class="slate slate--long">A plasma cell releases antibodies</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/amyloidosis/amy-portal-room"></video></div><figcaption class="slate slate--long">A tunnel into the bloodstream</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Hand-tracked heart grab and cross-section cut</li><li>Plasma-cell and fibril animations</li><li>A mini-game and an ElevenLabs voice-over tool</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, passthrough, Meta XR hand tracking, parts of the content warehouse</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="amyloidosis/amy-hero-heart-section" style="--ar:1920/1080"><img src="media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" loading="lazy" decoding="async"></div><figcaption class="cap">The heart opens in your hands</figcaption></figure><figure><div class="screen" data-clip="amyloidosis/amy-antibodies" style="--ar:1920/1080"><img src="media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"></div><figcaption class="cap">A plasma cell releases antibodies</figcaption></figure><figure><div class="screen" data-clip="amyloidosis/amy-portal-room" style="--ar:1280/720"><img src="media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"></div><figcaption class="cap">A tunnel into the bloodstream</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-cart" aria-labelledby="p-cart-t">
-<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch CAR-T cell therapy story in VR">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-cart" aria-labelledby="p-cart-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-cart-vr-start-poster.webp" aria-label="Onboarding"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -471,21 +463,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-cart-t" data-k data-w="112">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
+<div class="w-list" aria-label="Key sections of CAR-T cell therapy story in VR" role="group">
 <p class="meta">Key sections · 1:43 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-cart-vr-start" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-start-poster.webp" data-dur="15.17" data-audio="" data-title="Onboarding" aria-current="true"><span class="w-n">01</span><span class="w-t">Onboarding</span><span class="w-d">0:15</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-cart-vr-immune" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-immune-poster.webp" data-dur="39.17" data-audio="" data-title="Immune system"><span class="w-n">02</span><span class="w-t">Immune system</span><span class="w-d">0:39</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-cart-vr-lab" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-lab-poster.webp" data-dur="30.83" data-audio="" data-title="The lab"><span class="w-n">03</span><span class="w-t">The lab</span><span class="w-d">0:31</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-cart-vr-payoff" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-cart-vr-payoff-poster.webp" data-dur="17.73" data-audio="" data-title="CAR-T cells at work"><span class="w-n">04</span><span class="w-t">CAR-T cells at work</span><span class="w-d">0:18</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-indication"></video></div><figcaption class="slate slate--long">Choosing an indication</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-bacteria"></video></div><figcaption class="slate slate--long">A bacterium and its explanation card</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/car-t/cart-vr-lab"></video></div><figcaption class="slate slate--long">Making CAR-T cells in the lab</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="car-t/cart-vr-indication" style="--ar:1280/720"><img src="media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"></div><figcaption class="cap">Choosing an indication</figcaption></figure><figure><div class="screen" data-clip="car-t/cart-vr-bacteria" style="--ar:1280/720"><img src="media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"></div><figcaption class="cap">A bacterium and its explanation card</figcaption></figure><figure><div class="screen" data-clip="car-t/cart-vr-lab" style="--ar:1280/720"><img src="media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"></div><figcaption class="cap">Making CAR-T cells in the lab</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-mg" aria-labelledby="p-mg-t">
-<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Myasthenia gravis in VR">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-mg" aria-labelledby="p-mg-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-mg-entry-poster.webp" aria-label="Entering the body"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -499,21 +493,53 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-mg-t" data-k data-w="112">Myasthenia gravis in VR</h2><p>Patient education about myasthenia gravis, a neuromuscular disease, on a ride through an abstract human body.</p></div>
+<div class="w-list" aria-label="Key sections of Myasthenia gravis in VR" role="group">
 <p class="meta">Key sections · 3:12 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-mg-entry" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-entry-poster.webp" data-dur="29.97" data-audio="" data-title="Entering the body" aria-current="true"><span class="w-n">01</span><span class="w-t">Entering the body</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="media/key-sections/ks-mg-junction" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-junction-poster.webp" data-dur="39.97" data-audio="" data-title="The neuromuscular junction"><span class="w-n">02</span><span class="w-t">The neuromuscular junction</span><span class="w-d">0:40</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="media/key-sections/ks-mg-complement" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-complement-poster.webp" data-dur="41.93" data-audio="" data-title="Complement cascade"><span class="w-n">03</span><span class="w-t">Complement cascade</span><span class="w-d">0:42</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="media/key-sections/ks-mg-thymus" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-thymus-poster.webp" data-dur="43.93" data-audio="" data-title="The thymus"><span class="w-n">04</span><span class="w-t">The thymus</span><span class="w-d">0:44</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="media/key-sections/ks-mg-muscle" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-mg-muscle-poster.webp" data-dur="35.93" data-audio="" data-title="At the muscle"><span class="w-n">05</span><span class="w-t">At the muscle</span><span class="w-d">0:36</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-mg-t">Myasthenia gravis in VR</h2><p>Patient education about myasthenia gravis, a neuromuscular disease, on a ride through an abstract human body.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Designed and built the UI</li><li>Spline-path ride with extensible content stations</li><li>Body tracking, onboarding, smartwatch UI, teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, body tracking</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2024–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-body-entry"></video></div><figcaption class="slate slate--long">Riding into the body</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-nerve-terminal"></video></div><figcaption class="slate slate--long">A nerve signals the muscle</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="media/neuromuscular/mg-complement"></video></div><figcaption class="slate slate--long">Complement proteins on a cell</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Designed and built the UI</li><li>Spline-path ride with extensible content stations</li><li>Body tracking, onboarding, smartwatch UI, teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, body tracking</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2024–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="neuromuscular/mg-body-entry" style="--ar:1920/1080"><img src="media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"></div><figcaption class="cap">Riding into the body</figcaption></figure><figure><div class="screen" data-clip="neuromuscular/mg-nerve-terminal" style="--ar:1920/1080"><img src="media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"></div><figcaption class="cap">A nerve signals the muscle</figcaption></figure><figure><div class="screen" data-clip="neuromuscular/mg-complement" style="--ar:1920/1080"><img src="media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"></div><figcaption class="cap">Complement proteins on a cell</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-maeve" aria-labelledby="p-maeve-t">
-<div class="pd-bar"><p class="meta">Tool · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Maeve: local voice for a coding agent">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-platform" aria-labelledby="p-platform-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · content warehouse, deep dive</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-platform-b-poster.webp" aria-label="Guided onboarding"></video>
+<div class="w-cc" aria-hidden="true"></div>
+<button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+<div class="w-bar">
+<button class="w-btn w-play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z"/></svg></button>
+<input class="w-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Position in the video" aria-valuetext="0:00 of 0:39">
+<span class="w-time"><span class="w-cur">0:00</span> / <span class="w-len">0:39</span></span>
+<button class="w-btn w-replay" type="button" aria-label="Replay from the start"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.5H8"/></svg></button>
+<button class="w-btn w-mute" type="button" aria-pressed="false" aria-label="Sound" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM16 9.5l5 5M21 9.5l-5 5"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4zM15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+<button class="w-btn w-ccb" type="button" aria-pressed="true" aria-label="Captions" hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="3.5" y="6" width="17" height="12" rx="1.5"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg></button>
+<button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+</div>
+</div>
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-platform-t" data-k data-w="112">Content warehouse demo</h2><p>A browser demo of the content warehouse: rooms, interactions and tools for building client XR apps faster.</p><p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p><a class="more" href="xr/platform.html">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of Content warehouse demo" role="group">
+<p class="meta">Key sections · 0:39 in total</p>
+<ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-platform-b" data-webm="" data-mobile="1" data-poster="media/key-sections/ks-platform-b-poster.webp" data-dur="39.47" data-audio="" data-title="Guided onboarding" aria-current="true"><span class="w-n">01</span><span class="w-t">Guided onboarding</span><span class="w-d">0:39</span></button></li></ol>
+</div>
+</div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer, from 2025</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Shared packages and project template</li><li>Visual flow graph editor, runner, debugger</li><li>Localization and voice pipeline</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Unity packages, OpenXR, XR Interaction Toolkit, GitHub Actions</dd></div><div><dt>Platforms</dt><dd>Meta Quest, Android, iOS, WebGL</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-platform-guide" style="--ar:1280/720"><img src="media/xr-tiles/xr-tile-platform-guide-poster.webp" width="1280" height="720" alt="Browser demo: a guide avatar in a lab coat waves inside a hexagonal glass dome" loading="lazy" decoding="async"></div><figcaption class="cap">The guide in the glass dome</figcaption></figure></div>
+</div>
+</dialog>
+<dialog class="pd" id="p-maeve" aria-labelledby="p-maeve-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Tool · solo</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="media/key-sections/ks-maeve-dictation-poster.webp" aria-label="Dictation"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -527,7 +553,10 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-maeve-t" data-k data-w="112">Maeve: local voice for a coding agent</h2><p>I built the voice layer and the orb on top of T3 Code and OpenWhispr, two open-source apps.</p><p class="play"><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p></div>
+<div class="w-list" aria-label="Key sections of Maeve: local voice for a coding agent" role="group">
 <p class="meta">Key sections · 1:20 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="media/key-sections/ks-maeve-dictation" data-webm="1" data-mobile="1" data-poster="media/key-sections/ks-maeve-dictation-poster.webp" data-dur="39.9" data-audio="1" data-vtt="media/key-sections/ks-maeve-dictation.vtt" data-cues="WEBVTT
 
@@ -629,15 +658,13 @@ and the hand-off to me dropped from up to a second
 to about 30 milliseconds.
 " data-title="Maeve reads replies"><span class="w-n">02</span><span class="w-t">Maeve reads replies</span><span class="w-d">0:40</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-maeve-t">Maeve: local voice for a coding agent</h2><p>I built the voice layer and the orb on top of T3 Code and OpenWhispr, two open-source apps.</p><p class="play"><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Releases on GitHub<span class="sr"> (opens in a new tab)</span></a></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Hold-to-talk dictation into agent threads</li><li>Click-through orb window on Windows</li><li>30 ms hand-off, 55–⁠90 ms to first audio</li></ul></dd></div><div><dt>Tech</dt><dd>Electron, sherpa-onnx with Parakeet, llama.cpp with Gemma, Phonon text-to-speech</dd></div><div><dt>Platforms</dt><dd>Windows</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Hold-to-talk dictation into agent threads</li><li>Click-through orb window on Windows</li><li>30 ms hand-off, 55–⁠90 ms to first audio</li></ul></dd></div><div><dt>Tech</dt><dd>Electron, sherpa-onnx with Parakeet, llama.cpp with Gemma, Phonon text-to-speech</dd></div><div><dt>Platforms</dt><dd>Windows</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 
+</div>
 </dialog>
 </div>
-<script src="site.js" defer></script>
-<script src="motion.js" defer></script>
+<script src="ui.js" defer></script>
+<script src="engine.js" defer></script>
 </body>
 </html>

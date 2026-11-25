@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-media="../media/" data-root="../">
 <head>
 <meta charset="utf-8">
-<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanket Das · XR</title>
 <meta name="description" content="VR, mixed reality and WebGL apps by Sanket Das, lead developer on client projects since 2023. Quest, iPhone, Android and the browser. Freelance, fixed price.">
@@ -14,50 +13,45 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23060709'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece8e2' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
 <link rel="preload" as="image" href="../media/amyloidosis/amy-hero-heart-section-poster.webp" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
-<link rel="stylesheet" href="../fonts.css">
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../motion.css">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/mona-sans.woff2" crossorigin>
+<link rel="stylesheet" href="../style.css">
+<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;d.classList.add(rm?'rm':'js');if(/[?&]capture/.test(location.search))d.classList.add('cap');})();</script>
 </head>
 <body>
-<script>document.documentElement.classList.add('js')</script>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav" aria-label="Main">
-  <div class="wrap nav-in">
-    <a class="brand" href="../index.html">Sanket Das</a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="../games/index.html">Games</a>
-      <a href="../xr/index.html" aria-current="page">XR</a>
-      <a href="../index.html#about">About</a>
-      <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
-      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
-    </div>
-  </div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="vids" aria-hidden="true"></div>
+<nav class="top" aria-label="Main">
+  <a class="brand" href="../">Sanket Das</a>
+  <ul>
+    <li><a href="../games/">Games</a></li>
+    <li><a href="../xr/" aria-current="page">XR</a></li>
+    <li class="n-about"><a href="../#about">About</a></li>
+    <li class="n-res"><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
+    <li><a href="mailto:sanketdas@live.com">Email</a></li>
+    <li><button class="snd" type="button" aria-pressed="false" aria-label="Sound" hidden><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="snd-l">Sound</span></button></li>
+  </ul>
 </nav>
-<header class="hero" id="top">
-  <div class="reel" data-reel>
-    <div class="clip is-active" style="--pos:50% 50%"><img src="../media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-hero-heart-section"></video></div>
-    <div class="clip" style="--pos:50% 50%"><img src="../media/amyloidosis/amy-hero-marrow-build-poster.webp" width="1920" height="1080" alt="Mixed reality: particles build porous bone-marrow columns around the user in a real room" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-hero-marrow-build"></video></div>
-    <div class="clip" style="--pos:50% 50%"><img src="../media/amyloidosis/amy-plasma-grab-poster.webp" width="1920" height="1080" alt="Mixed reality: a real hand reaches for a translucent plasma cell floating between marrow columns" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-plasma-grab"></video></div>
-  </div>
-  <div class="wrap hero-in">
+<header class="hero hero--pin hero--sub" id="top">
+  <div class="stage">
+    <div class="screen screen--hero" id="hero-screen" data-reel="amyloidosis/amy-hero-heart-section|50% 50%|The heart opens in the user’s hands, mixed reality on Quest 3;amyloidosis/amy-hero-marrow-build|50% 50%|Bone marrow builds itself around the user;amyloidosis/amy-plasma-grab|50% 50%|Reaching for a plasma cell with a real hand">
+      <img src="../media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" fetchpriority="high" decoding="async" style="object-position:50% 50%">
+    </div>
+    <div class="scrim" aria-hidden="true"></div>
     <div class="hero-copy">
-      <h1 class="display"><span class="h1-name">Sanket Das</span> <span class="h1-sec"><span class="h1-dot">· </span>XR work</span></h1>
+      <h1 class="name" data-name data-w="116" data-w-phone="100" data-squeeze="30">XR work</h1>
       <p class="lede">VR and mixed reality apps built in Unity for Quest, mobile and web</p>
       <div class="actions">
         <a class="btn" href="mailto:sanketdas@live.com">Email me</a>
-        <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
+        <a class="link" href="../resume/Sanket_Das_Resume.pdf">Resume</a>
       </div>
     </div>
-    <div class="slates" aria-hidden="true">
-      <p class="slate is-active">The heart opens in the user’s hands, mixed reality on Quest 3</p>
-      <p class="slate">Bone marrow builds itself around the user</p>
-      <p class="slate">Reaching for a plasma cell with a real hand</p>
+    <div class="slate" aria-hidden="true">
+      <span class="slate-n"><b>01</b> / 03</span>
+      <span class="slate-t">The heart opens in the user’s hands, mixed reality on Quest 3</span>
+      <span class="slate-bar"><i></i></span>
     </div>
   </div>
 </header>
@@ -66,19 +60,19 @@
 <section class="section" aria-labelledby="f-h">
   <div class="wrap">
     <div class="label"><span>Featured project</span></div>
-    <div class="plate-row" style="margin-top:clamp(40px,4.4vw,64px)">
-      <figure data-reveal class="clip" style="--pos:50% 50%"><img src="../media/amyloidosis/amy-heart-deposits-poster.webp" width="1920" height="1080" alt="Mixed reality: two highlighted virtual hands hold and turn a full heart in a real room" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-heart-deposits"></video></figure>
-      <div class="side" data-reveal>
+    <div class="feature">
+      <div class="screen" data-clip="amyloidosis/amy-heart-deposits" data-pos="50% 50%" data-reflect=".16" data-glow="1" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-heart-deposits-poster.webp" width="1920" height="1080" alt="Mixed reality: two highlighted virtual hands hold and turn a full heart in a real room" loading="lazy" decoding="async" style="object-position:50% 50%"></div>
+      <div data-rise>
         <p class="meta">Quest 3 · mixed reality · hand tracking · 2026</p>
         <h2 class="display" id="f-h">Amyloidosis in mixed reality</h2>
         <p class="body">Patient education in mixed reality: you pick up a heart with both hands and open it.</p>
         <p class="links"><button class="more open open--watch" type="button" data-open="p-amyloidosis" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:33</span><span class="sr">: Amyloidosis in mixed reality</span></button></p>
       </div>
     </div>
-    <div class="three" data-reveal style="margin-top:var(--gap-block)">
-      <figure><div class="clip"><img src="../media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-antibodies"></video></div><figcaption class="slate">A plasma cell releases antibodies into the marrow</figcaption></figure>
-      <figure><div class="clip"><img src="../media/amyloidosis/amy-cells-fibrils-poster.webp" width="1920" height="1080" alt="Mixed reality: the user pulls a green plasma cell close with a real hand" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-cells-fibrils"></video></div><figcaption class="slate">Pulling a plasma cell close with a real hand</figcaption></figure>
-      <figure><div class="clip"><img src="../media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-portal-room"></video></div><figcaption class="slate">A tunnel in the room leads into the bloodstream</figcaption></figure>
+    <div class="strip" style="--n:3" data-rise>
+      <figure><div class="screen" data-clip="amyloidosis/amy-antibodies" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"></div><figcaption class="cap">A plasma cell releases antibodies into the marrow</figcaption></figure>
+      <figure><div class="screen" data-clip="amyloidosis/amy-cells-fibrils" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-cells-fibrils-poster.webp" width="1920" height="1080" alt="Mixed reality: the user pulls a green plasma cell close with a real hand" loading="lazy" decoding="async"></div><figcaption class="cap">Pulling a plasma cell close with a real hand</figcaption></figure>
+      <figure><div class="screen" data-clip="amyloidosis/amy-portal-room" style="--ar:1280/720"><img src="../media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"></div><figcaption class="cap">A tunnel in the room leads into the bloodstream</figcaption></figure>
     </div>
   </div>
 </section>
@@ -86,21 +80,19 @@
 <section class="section" id="platform" aria-labelledby="pl-h">
   <div class="wrap">
     <div class="label"><h2 id="pl-h">Deep dive</h2><span>The content warehouse</span></div>
-    <div class="cases cases--one" data-reveal>
-      <article class="case" aria-labelledby="cs-platform">
-        <a class="case-clip" href="../xr/platform.html" tabindex="-1" aria-hidden="true"><div class="clip still"><img src="../img/flow-graph-card.webp" width="900" height="506" alt="" loading="lazy" decoding="async"></div></a>
-        <div class="case-copy">
-          <p class="meta">Unity · 2025–2026 · 13 min read</p>
-          <h3 id="cs-platform"><a href="../xr/platform.html">The content warehouse: how a medical XR company builds client apps faster</a></h3>
-          <p class="body">Shared packages, a project template and authoring tools that build one Unity project for Quest, phones and the browser.</p>
-          <p class="links"><a class="more" href="../xr/platform.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-platform" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:39</span><span class="sr">: Content warehouse demo</span></button></p><p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
-        </div>
-      </article>
-    </div>
-    <div class="trio" data-reveal>
-      <figure><img src="../img/task-web.webp" width="1049" height="590" alt="The task in a desktop browser: a prompt reads Click it above a cube on a table" loading="lazy" decoding="async"><figcaption class="slate">Browser, mouse</figcaption></figure>
-      <figure><img src="../img/task-mobile.webp" width="1049" height="590" alt="The same task on a phone: the prompt reads Tap it" loading="lazy" decoding="async"><figcaption class="slate">Phone, touch</figcaption></figure>
-      <figure><img src="../img/task-vr.webp" width="1049" height="590" alt="The same task in a headset: a controller ray points at the cube" loading="lazy" decoding="async"><figcaption class="slate">Headset, controllers</figcaption></figure>
+    <article class="case" aria-labelledby="cs-platform">
+      <a class="case-screen" href="../xr/platform.html" tabindex="-1" aria-hidden="true"><div class="screen" data-still="../img/flow-graph-card.webp" data-pos="50% 50%" data-reflect=".14" style="--ar:900/506"><img src="../img/flow-graph-card.webp" width="900" height="506" alt="The flow graph editor with blocks for an instrument-handling task" loading="lazy" decoding="async" style="object-position:50% 50%"></div></a>
+      <div class="case-copy" data-rise>
+        <p class="meta">Unity · 2025–2026 · 13 min read</p>
+        <h3 id="cs-platform"><a href="../xr/platform.html">The content warehouse: how a medical XR company builds client apps faster</a></h3>
+        <p class="body">Shared packages, a project template and authoring tools that build one Unity project for Quest, phones and the browser.</p>
+        <p class="links"><a class="more" href="../xr/platform.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-platform" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:39</span><span class="sr">: Content warehouse demo</span></button></p><p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
+      </div>
+    </article>
+    <div class="strip" style="--n:3" data-rise>
+      <figure><div class="screen" data-still="../img/task-web.webp" style="--ar:1049/590"><img src="../img/task-web.webp" width="1049" height="590" alt="The task in a desktop browser: a prompt reads Click it above a cube on a table" loading="lazy" decoding="async"></div><figcaption class="cap">Browser, mouse</figcaption></figure>
+      <figure><div class="screen" data-still="../img/task-mobile.webp" style="--ar:1049/590"><img src="../img/task-mobile.webp" width="1049" height="590" alt="The same task on a phone: the prompt reads Tap it" loading="lazy" decoding="async"></div><figcaption class="cap">Phone, touch</figcaption></figure>
+      <figure><div class="screen" data-still="../img/task-vr.webp" style="--ar:1049/590"><img src="../img/task-vr.webp" width="1049" height="590" alt="The same task in a headset: a controller ray points at the cube" loading="lazy" decoding="async"></div><figcaption class="cap">Headset, controllers</figcaption></figure>
     </div>
   </div>
 </section>
@@ -108,57 +100,57 @@
 <section class="section" id="work" aria-labelledby="w-h">
   <div class="wrap">
     <div class="label"><h2 id="w-h">More projects</h2></div>
-    <div class="projects" data-reveal>
-      <article class="project">
-        <figure class="clip"><img src="../media/car-t/xr-tile-cart-vr-poster.webp" width="1280" height="720" alt="VR on Quest: inside a red blood vessel, CAR-T cells hit diseased B cells, which turn yellow and burst apart" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/xr-tile-cart-vr"></video></figure>
+    <div class="tiles">
+      <article class="tile">
+        <div class="screen" data-clip="car-t/xr-tile-cart-vr" style="--ar:16/9"><img src="../media/car-t/xr-tile-cart-vr-poster.webp" width="1280" height="720" alt="VR on Quest: inside a red blood vessel, CAR-T cells hit diseased B cells, which turn yellow and burst apart" loading="lazy" decoding="async"></div>
         <h3>CAR-T cell therapy story in VR</h3>
         <p class="meta">Quest 3 · VR · 2023–2026</p>
         <p class="body">A 19-scene VR story on CAR-T cell therapy. I built it in 2023, then moved it to OpenXR.</p>
         
         <button class="more open open--watch" type="button" data-open="p-cart" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:43</span><span class="sr">: CAR-T cell therapy story in VR</span></button>
       </article>
-      <article class="project">
-        <figure class="clip"><img src="../media/xr-tiles/xr-tile-carT-web-poster.webp" width="960" height="540" alt="Browser build: inside a blood vessel, CAR-T cells hit diseased B cells, which burst into yellow fragments" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-carT-web"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="xr-tiles/xr-tile-carT-web" style="--ar:16/9"><img src="../media/xr-tiles/xr-tile-carT-web-poster.webp" width="960" height="540" alt="Browser build: inside a blood vessel, CAR-T cells hit diseased B cells, which burst into yellow fragments" loading="lazy" decoding="async"></div>
         <h3>CAR-T cell therapy story, web build</h3>
         <p class="meta">WebGL · desktop and phone browsers · 2026</p>
         <p class="body">The CAR-T cell therapy story in the browser, for people without a headset.</p>
         
         <button class="more open open--watch" type="button" data-open="p-cartweb" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:24</span><span class="sr">: CAR-T cell therapy story, web build</span></button>
       </article>
-      <article class="project">
-        <figure class="clip"><img src="../media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/neuromuscular/mg-body-entry"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="neuromuscular/mg-body-entry" style="--ar:16/9"><img src="../media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"></div>
         <h3>Myasthenia gravis in VR</h3>
         <p class="meta">Quest 3 · VR · 2024–2026</p>
         <p class="body">Patient education about a neuromuscular disease: the player rides a platform through a giant human body.</p>
         
         <button class="more open open--watch" type="button" data-open="p-mg" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">3:12</span><span class="sr">: Myasthenia gravis in VR</span></button>
       </article>
-      <article class="project">
-        <figure class="clip"><img src="../media/xr-tiles/xr-tile-first-aid-help-poster.webp" width="1280" height="720" alt="VR training: a bystander kneels over an injured man lying at a roadside bus shelter" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-first-aid-help"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="xr-tiles/xr-tile-first-aid-help" style="--ar:16/9"><img src="../media/xr-tiles/xr-tile-first-aid-help-poster.webp" width="1280" height="720" alt="VR training: a bystander kneels over an injured man lying at a roadside bus shelter" loading="lazy" decoding="async"></div>
         <h3>First aid in traffic</h3>
         <p class="meta">PCVR, then Quest 2 · VR training · 2022</p>
         <p class="body">VR first-aid training for the German certification market. Prototyped in Unreal Engine, then ported to Quest 2.</p>
         
         <button class="more open open--watch" type="button" data-open="p-firstaid" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:21</span><span class="sr">: First aid in traffic</span></button>
       </article>
-      <article class="project">
-        <figure class="clip"><img src="../media/xr-tiles/xr-tile-booth-chair-poster.webp" width="1280" height="720" alt="Mixed reality: a chair in a blue bounding box stands on a virtual booth carpet, with a yellow rotation ring around it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-booth-chair"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="xr-tiles/xr-tile-booth-chair" style="--ar:16/9"><img src="../media/xr-tiles/xr-tile-booth-chair-poster.webp" width="1280" height="720" alt="Mixed reality: a chair in a blue bounding box stands on a virtual booth carpet, with a yellow rotation ring around it" loading="lazy" decoding="async"></div>
         <h3>Trade-fair booth planner in mixed reality</h3>
         <p class="meta">Quest · mixed reality · 2026</p>
         <p class="body">Plan a trade-fair booth in your own room: place, move and turn a carpet and animated exhibits.</p>
         
         <button class="more open open--watch" type="button" data-open="p-boothmr" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:53</span><span class="sr">: Trade-fair booth planner in mixed reality</span></button>
       </article>
-      <article class="project">
-        <figure class="clip"><img src="../media/argame/xr-tile-argame-slingshot-poster.webp" width="1280" height="720" alt="Bone Eaters: a wooden slingshot aimed across a cave of bone struts at yellow Bone Eater creatures, with a counter and a timer at the top" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/xr-tile-argame-slingshot"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="argame/xr-tile-argame-slingshot" style="--ar:16/9"><img src="../media/argame/xr-tile-argame-slingshot-poster.webp" width="1280" height="720" alt="Bone Eaters: a wooden slingshot aimed across a cave of bone struts at yellow Bone Eater creatures, with a counter and a timer at the top" loading="lazy" decoding="async"></div>
         <h3>Bone Eaters</h3>
         <p class="meta">iOS, Android and WebGL · released 2025 · web version 2026</p>
         <p class="body">An osteoporosis game for a university hospital, released on the App Store and Google Play in 2025.</p>
         <p class="play"><a href="https://apps.apple.com/de/app/bone-eaters/id6744760236" target="_blank" rel="noopener">App Store<span class="sr"> (opens in a new tab)</span></a> <span class="play-i"><span aria-hidden="true">·</span><a href="https://play.google.com/store/apps/details?id=de.onxt.BoneEaters" target="_blank" rel="noopener">Google Play<span class="sr"> (opens in a new tab)</span></a></span> <span class="play-i"><span aria-hidden="true">·</span><a href="https://onliveline.github.io/UKER_BoneEaters_WebGL_Build/" target="_blank" rel="noopener">Play the web version<span class="sr"> (opens in a new tab)</span></a></span></p>
         <button class="more open open--watch" type="button" data-open="p-argame" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:13</span><span class="sr">: Bone Eaters</span></button>
       </article>
-      <article class="project project--wide">
-        <figure class="clip" style="--pos:50% 45%"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-asset-library"></video></figure>
+      <article class="tile tile--wide">
+        <div class="screen" data-clip="xr-tiles/xr-tile-asset-library" data-pos="50% 45%" style="--ar:2.4/1"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async" style="object-position:50% 45%"></div>
         <h3>Asset library</h3>
         <p class="meta">Browser and Unity · 2026</p>
         <p class="body">Every 3D model in the company’s repositories, searchable in the browser, tagged by a vision model.</p>
@@ -169,52 +161,47 @@
   </div>
 </section>
 
-
 <section class="section" id="services" aria-labelledby="svc-h">
   <div class="wrap">
-    <div class="cols">
-      <h2 class="display" id="svc-h">Services</h2>
-      <div class="main" data-reveal>
+    <div class="head"><h2 class="display" id="svc-h" data-k>Services</h2></div>
+    <div class="svc">
+      <div data-rise>
         <p class="terms">Fixed price, agreed before I start. Send the problem and you get a quote within 24 hours.</p>
-        <p class="terms terms--note">I’m also open to full-time and contract roles.</p>
-        <ul class="rows">
-          <li><h3>Gameplay programming</h3><p>Combat, enemy AI, abilities and locomotion for third-person games, in Unreal Engine or Unity.</p></li>
-          <li><h3>XR features and prototypes</h3><p>Hand tracking, mixed reality, grab and teleport, from a design document to a build on the headset.</p></li>
-          <li><h3>Performance and crashes</h3><p>Frame drops on Quest, out-of-memory crashes in iPhone Safari, builds that are too large to download.</p></li>
-          <li><h3>Ports and platform moves</h3><p>PCVR to Quest, Meta SDK to OpenXR, one Unity app to iOS, Android and WebGL.</p></li>
-          <li><h3>AI characters and voice</h3><p>Characters that listen and talk back, with speech recognition, text-to-speech and a language model.</p></li>
-        </ul>
+        <p class="terms">I’m also open to full-time and contract roles.</p>
       </div>
+      <ul class="list" data-rise>
+        <li><h3>Gameplay programming</h3><p>Combat, enemy AI, abilities and locomotion for third-person games, in Unreal Engine or Unity.</p></li>
+        <li><h3>XR features and prototypes</h3><p>Hand tracking, mixed reality, grab and teleport, from a design document to a build on the headset.</p></li>
+        <li><h3>Performance and crashes</h3><p>Frame drops on Quest, out-of-memory crashes in iPhone Safari, builds that are too large to download.</p></li>
+        <li><h3>Ports and platform moves</h3><p>PCVR to Quest, Meta SDK to OpenXR, one Unity app to iOS, Android and WebGL.</p></li>
+        <li><h3>AI characters and voice</h3><p>Characters that listen and talk back, with speech recognition, text-to-speech and a language model.</p></li>
+      </ul>
     </div>
   </div>
 </section>
 
 <section class="section" id="tools" aria-labelledby="tools-h">
   <div class="wrap">
-    <div class="cols">
-      <h2 class="display" id="tools-h">Open‑source tools</h2>
-      <div class="main" data-reveal>
-        <ul class="rows">
-          <li><h3><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Maeve<span class="sr"> (opens in a new tab)</span></a></h3><p>A voice layer and speaking orb I built on two open-source apps, T3 Code and OpenWhispr.</p></li>
-          <li><h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">unity-favorites-bar<span class="sr"> (opens in a new tab)</span></a></h3><p>A Unity editor package: hold Alt over the Project window for a favorites bar.</p></li>
-          <li><h3>Fork &amp; Rep</h3><p>An Android app for logging calories and strength training, with an on-device assistant.</p></li>
-        </ul>
-      </div>
-    </div>
+    <div class="head"><h2 class="display" id="tools-h" data-k>Open‑source tools</h2></div>
+    <ul class="list" data-rise>
+      <li><h3><a href="https://github.com/Raptor2012/t3code/releases" target="_blank" rel="noopener">Maeve<span class="sr"> (opens in a new tab)</span></a></h3><p>A voice layer and speaking orb I built on two open-source apps, T3 Code and OpenWhispr.</p></li>
+      <li><h3><a href="https://github.com/Raptor2012/unity-favorites-bar" target="_blank" rel="noopener">unity-favorites-bar<span class="sr"> (opens in a new tab)</span></a></h3><p>A Unity editor package: hold Alt over the Project window for a favorites bar.</p></li>
+      <li><h3>Fork &amp; Rep</h3><p>An Android app for logging calories and strength training, with an on-device assistant.</p></li>
+    </ul>
   </div>
 </section>
 <section class="section" id="record" aria-labelledby="rec-h">
   <div class="wrap">
     <h2 class="sr" id="rec-h">Record</h2>
-    <div class="record" data-reveal>
+    <div class="record" data-rise>
       <div>
         <h3>Experience</h3>
-        <ul class="xp">
-          <li><span class="when">Jan 2025 to now</span><span><b>onVR</b>, Senior VR Developer, freelance contractor</span></li>
-          <li><span class="when">May 2023 to Jan 2025</span><span><b>onliveline GmbH</b>, VR Developer</span></li>
-          <li><span class="when">May 2022 to May 2023</span><span><b>Weltenmacher GmbH</b>, XR Developer, freelance</span></li>
-          <li><span class="when">2019 to 2022</span><span><b>Self-employed</b>, game programmer and consultant</span></li>
-          <li><span class="when">2017</span><span><b>SUTD Game Lab</b>, game design intern</span></li>
+        <ul>
+          <li><span class="when">Jan 2025 to now</span><b>onVR</b>, Senior VR Developer, freelance contractor</li>
+          <li><span class="when">May 2023 to Jan 2025</span><b>onliveline GmbH</b>, VR Developer</li>
+          <li><span class="when">May 2022 to May 2023</span><b>Weltenmacher GmbH</b>, XR Developer, freelance</li>
+          <li><span class="when">2019 to 2022</span><b>Self-employed</b>, game programmer and consultant</li>
+          <li><span class="when">2017</span><b>SUTD Game Lab</b>, game design intern</li>
         </ul>
       </div>
       <div>
@@ -238,11 +225,9 @@
 </main>
 
 <footer class="contact contact--plain" id="contact">
-  <div class="wrap contact-in">
-    <div data-reveal>
-      <h2>Email me for a quote</h2>
-      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
-    </div>
+  <div class="wrap">
+    <h2 class="contact-h" data-rise>Email me for a quote</h2>
+    <a class="mail" href="mailto:sanketdas@live.com"><span class="mail-t">sanketdas@live.com</span></a>
     <div class="foot">
       <ul>
         <li><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
@@ -255,10 +240,11 @@
   </div>
 </footer>
 <div class="dialogs">
-<dialog class="pd" id="p-amyloidosis" aria-labelledby="p-amyloidosis-t">
-<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Amyloidosis in mixed reality">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-amyloidosis" aria-labelledby="p-amyloidosis-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-amy-marrow-poster.webp" aria-label="Bone marrow"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -272,21 +258,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-amyloidosis-t" data-k data-w="112">Amyloidosis in mixed reality</h2><p>A mixed-reality app that shows patients how misfolded proteins build up and damage the heart.</p></div>
+<div class="w-list" aria-label="Key sections of Amyloidosis in mixed reality" role="group">
 <p class="meta">Key sections · 2:33 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-amy-marrow" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-amy-marrow-poster.webp" data-dur="44.93" data-audio="" data-title="Bone marrow" aria-current="true"><span class="w-n">01</span><span class="w-t">Bone marrow</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-amy-cells" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-amy-cells-poster.webp" data-dur="22.97" data-audio="" data-title="Plasma cells"><span class="w-n">02</span><span class="w-t">Plasma cells</span><span class="w-d">0:23</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/key-sections/ks-amy-heart" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-amy-heart-poster.webp" data-dur="44.93" data-audio="" data-title="Heart cross-section"><span class="w-n">03</span><span class="w-t">Heart cross-section</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-amy-bloodstream" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-amy-bloodstream-poster.webp" data-dur="39.97" data-audio="" data-title="Into the bloodstream"><span class="w-n">04</span><span class="w-t">Into the bloodstream</span><span class="w-d">0:40</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-amyloidosis-t">Amyloidosis in mixed reality</h2><p>A mixed-reality app that shows patients how misfolded proteins build up and damage the heart.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Hand-tracked heart grab and cross-section cut</li><li>Plasma-cell and fibril animations</li><li>A mini-game and an ElevenLabs voice-over tool</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, passthrough, Meta XR hand tracking, parts of the content warehouse</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-hero-heart-section"></video></div><figcaption class="slate slate--long">The heart opens in your hands</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-antibodies"></video></div><figcaption class="slate slate--long">A plasma cell releases antibodies</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/amyloidosis/amy-portal-room"></video></div><figcaption class="slate slate--long">A tunnel into the bloodstream</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Hand-tracked heart grab and cross-section cut</li><li>Plasma-cell and fibril animations</li><li>A mini-game and an ElevenLabs voice-over tool</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, passthrough, Meta XR hand tracking, parts of the content warehouse</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="amyloidosis/amy-hero-heart-section" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-hero-heart-section-poster.webp" width="1920" height="1080" alt="Mixed reality: real hands hold a heart that opens into its cross-section in a living room" loading="lazy" decoding="async"></div><figcaption class="cap">The heart opens in your hands</figcaption></figure><figure><div class="screen" data-clip="amyloidosis/amy-antibodies" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-antibodies-poster.webp" width="1920" height="1080" alt="Mixed reality: a plasma cell releases Y-shaped antibodies that drift through the marrow" loading="lazy" decoding="async"></div><figcaption class="cap">A plasma cell releases antibodies</figcaption></figure><figure><div class="screen" data-clip="amyloidosis/amy-portal-room" style="--ar:1280/720"><img src="../media/amyloidosis/amy-portal-room-poster.webp" width="1280" height="720" alt="Mixed reality: a wireframe tunnel opens in a living room and its mouth turns red as it leads into the bloodstream" loading="lazy" decoding="async"></div><figcaption class="cap">A tunnel into the bloodstream</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-platform" aria-labelledby="p-platform-t">
-<div class="pd-bar"><p class="meta">XR · content warehouse, deep dive</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Content warehouse demo">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-platform" aria-labelledby="p-platform-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · content warehouse, deep dive</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-platform-b-poster.webp" aria-label="Guided onboarding"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -300,21 +288,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-platform-t" data-k data-w="112">Content warehouse demo</h2><p>A browser demo of the content warehouse: rooms, interactions and tools for building client XR apps faster.</p><p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p><a class="more" href="../xr/platform.html">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of Content warehouse demo" role="group">
 <p class="meta">Key sections · 0:39 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-platform-b" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-platform-b-poster.webp" data-dur="39.47" data-audio="" data-title="Guided onboarding" aria-current="true"><span class="w-n">01</span><span class="w-t">Guided onboarding</span><span class="w-d">0:39</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-platform-t">Content warehouse demo</h2><p>A browser demo of the content warehouse: rooms, interactions and tools for building client XR apps faster.</p><p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p><a class="more" href="../xr/platform.html">Read the deep dive</a></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer, from 2025</dd></div><div><dt>What I did</dt><dd><ul><li>Shared packages and project template</li><li>Visual flow graph editor, runner, debugger</li><li>Localization and voice pipeline</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Unity packages, OpenXR, XR Interaction Toolkit, GitHub Actions</dd></div><div><dt>Platforms</dt><dd>Meta Quest, Android, iOS, WebGL</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/xr-tiles/xr-tile-platform-guide-poster.webp" width="1280" height="720" alt="Browser demo: a guide avatar in a lab coat waves inside a hexagonal glass dome" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-platform-guide"></video></div><figcaption class="slate slate--long">The guide in the glass dome</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer, from 2025</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Shared packages and project template</li><li>Visual flow graph editor, runner, debugger</li><li>Localization and voice pipeline</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Unity packages, OpenXR, XR Interaction Toolkit, GitHub Actions</dd></div><div><dt>Platforms</dt><dd>Meta Quest, Android, iOS, WebGL</dd></div><div><dt>Year</dt><dd>2025–2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-platform-guide" style="--ar:1280/720"><img src="../media/xr-tiles/xr-tile-platform-guide-poster.webp" width="1280" height="720" alt="Browser demo: a guide avatar in a lab coat waves inside a hexagonal glass dome" loading="lazy" decoding="async"></div><figcaption class="cap">The guide in the glass dome</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-cart" aria-labelledby="p-cart-t">
-<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch CAR-T cell therapy story in VR">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-cart" aria-labelledby="p-cart-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-cart-vr-start-poster.webp" aria-label="Onboarding"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -328,21 +318,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-cart-t" data-k data-w="112">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
+<div class="w-list" aria-label="Key sections of CAR-T cell therapy story in VR" role="group">
 <p class="meta">Key sections · 1:43 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-cart-vr-start" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-cart-vr-start-poster.webp" data-dur="15.17" data-audio="" data-title="Onboarding" aria-current="true"><span class="w-n">01</span><span class="w-t">Onboarding</span><span class="w-d">0:15</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-cart-vr-immune" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-cart-vr-immune-poster.webp" data-dur="39.17" data-audio="" data-title="Immune system"><span class="w-n">02</span><span class="w-t">Immune system</span><span class="w-d">0:39</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/key-sections/ks-cart-vr-lab" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-cart-vr-lab-poster.webp" data-dur="30.83" data-audio="" data-title="The lab"><span class="w-n">03</span><span class="w-t">The lab</span><span class="w-d">0:31</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-cart-vr-payoff" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-cart-vr-payoff-poster.webp" data-dur="17.73" data-audio="" data-title="CAR-T cells at work"><span class="w-n">04</span><span class="w-t">CAR-T cells at work</span><span class="w-d">0:18</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-cart-t">CAR-T cell therapy story in VR</h2><p>A 19-scene VR story that explains CAR-T cell therapy for a university hospital, first built in 2023.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-indication"></video></div><figcaption class="slate slate--long">Choosing an indication</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-bacteria"></video></div><figcaption class="slate slate--long">A bacterium and its explanation card</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/car-t/cart-vr-lab"></video></div><figcaption class="slate slate--long">Making CAR-T cells in the lab</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>2023: shrinking mechanic, puzzles and characters</li><li>Meta SDK to OpenXR, scenes on flow graphs</li><li>Haptics, localization, light baking and teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, then OpenXR, XR Interaction Toolkit, flow graphs, sheet-based localization</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2023–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="car-t/cart-vr-indication" style="--ar:1280/720"><img src="../media/car-t/cart-vr-indication-poster.webp" width="1280" height="720" alt="VR on Quest: a floating panel offers three indications, lupus, polymyositis and systemic sclerosis, beside the guide" loading="lazy" decoding="async"></div><figcaption class="cap">Choosing an indication</figcaption></figure><figure><div class="screen" data-clip="car-t/cart-vr-bacteria" style="--ar:1280/720"><img src="../media/car-t/cart-vr-bacteria-poster.webp" width="1280" height="720" alt="VR on Quest: the player holds a spiky green bacterium with the controller and an explanation card opens beside it" loading="lazy" decoding="async"></div><figcaption class="cap">A bacterium and its explanation card</figcaption></figure><figure><div class="screen" data-clip="car-t/cart-vr-lab" style="--ar:1280/720"><img src="../media/car-t/cart-vr-lab-poster.webp" width="1280" height="720" alt="VR on Quest: in a lab, the player grabs a red blood cell and an antibody next to a CAR-T manufacturing machine" loading="lazy" decoding="async"></div><figcaption class="cap">Making CAR-T cells in the lab</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-cartweb" aria-labelledby="p-cartweb-t">
-<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch CAR-T cell therapy story, web build">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-cartweb" aria-labelledby="p-cartweb-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-cart-web-poster.webp" aria-label="Targeting B cells"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -356,21 +348,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-cartweb-t" data-k data-w="112">CAR-T cell therapy story, web build</h2><p>The CAR-T cell therapy story in the browser, for people without a headset.</p></div>
+<div class="w-list" aria-label="Key sections of CAR-T cell therapy story, web build" role="group">
 <p class="meta">Key sections · 0:24 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-cart-web" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-cart-web-poster.webp" data-dur="23.84" data-audio="" data-title="Targeting B cells" aria-current="true"><span class="w-n">01</span><span class="w-t">Targeting B cells</span><span class="w-d">0:24</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-cartweb-t">CAR-T cell therapy story, web build</h2><p>The CAR-T cell therapy story in the browser, for people without a headset.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>Tech</dt><dd>Unity WebGL</dd></div><div><dt>Platforms</dt><dd>Desktop and phone browsers</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:960/540"><img src="../media/xr-tiles/xr-tile-carT-web-poster.webp" width="960" height="540" alt="Browser build: inside a blood vessel, CAR-T cells hit diseased B cells, which burst into yellow fragments" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-carT-web"></video></div><figcaption class="slate slate--long">CAR-T cells hit diseased B cells</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>Tech</dt><dd>Unity WebGL</dd></div><div><dt>Platforms</dt><dd>Desktop and phone browsers</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-carT-web" style="--ar:960/540"><img src="../media/xr-tiles/xr-tile-carT-web-poster.webp" width="960" height="540" alt="Browser build: inside a blood vessel, CAR-T cells hit diseased B cells, which burst into yellow fragments" loading="lazy" decoding="async"></div><figcaption class="cap">CAR-T cells hit diseased B cells</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-mg" aria-labelledby="p-mg-t">
-<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Myasthenia gravis in VR">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-mg" aria-labelledby="p-mg-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-mg-entry-poster.webp" aria-label="Entering the body"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -384,21 +378,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-mg-t" data-k data-w="112">Myasthenia gravis in VR</h2><p>Patient education about myasthenia gravis, a neuromuscular disease, on a ride through an abstract human body.</p></div>
+<div class="w-list" aria-label="Key sections of Myasthenia gravis in VR" role="group">
 <p class="meta">Key sections · 3:12 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-mg-entry" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-mg-entry-poster.webp" data-dur="29.97" data-audio="" data-title="Entering the body" aria-current="true"><span class="w-n">01</span><span class="w-t">Entering the body</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-mg-junction" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-mg-junction-poster.webp" data-dur="39.97" data-audio="" data-title="The neuromuscular junction"><span class="w-n">02</span><span class="w-t">The neuromuscular junction</span><span class="w-d">0:40</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/key-sections/ks-mg-complement" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-mg-complement-poster.webp" data-dur="41.93" data-audio="" data-title="Complement cascade"><span class="w-n">03</span><span class="w-t">Complement cascade</span><span class="w-d">0:42</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-mg-thymus" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-mg-thymus-poster.webp" data-dur="43.93" data-audio="" data-title="The thymus"><span class="w-n">04</span><span class="w-t">The thymus</span><span class="w-d">0:44</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="../media/key-sections/ks-mg-muscle" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-mg-muscle-poster.webp" data-dur="35.93" data-audio="" data-title="At the muscle"><span class="w-n">05</span><span class="w-t">At the muscle</span><span class="w-d">0:36</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-mg-t">Myasthenia gravis in VR</h2><p>Patient education about myasthenia gravis, a neuromuscular disease, on a ride through an abstract human body.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Designed and built the UI</li><li>Spline-path ride with extensible content stations</li><li>Body tracking, onboarding, smartwatch UI, teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, body tracking</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2024–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/neuromuscular/mg-body-entry"></video></div><figcaption class="slate slate--long">Riding into the body</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/neuromuscular/mg-nerve-terminal"></video></div><figcaption class="slate slate--long">A nerve signals the muscle</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/neuromuscular/mg-complement"></video></div><figcaption class="slate slate--long">Complement proteins on a cell</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Designed and built the UI</li><li>Spline-path ride with extensible content stations</li><li>Body tracking, onboarding, smartwatch UI, teleport</li></ul></dd></div><div><dt>Tech</dt><dd>Unity, Meta XR SDK, body tracking</dd></div><div><dt>Platforms</dt><dd>Meta Quest 3</dd></div><div><dt>Year</dt><dd>2024–2026</dd></div><div><dt>Status</dt><dd>Updated every year</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="neuromuscular/mg-body-entry" style="--ar:1920/1080"><img src="../media/neuromuscular/mg-body-entry-poster.webp" width="1920" height="1080" alt="VR: gliding along a path through a wireframe body toward a glowing portal in the ribcage" loading="lazy" decoding="async"></div><figcaption class="cap">Riding into the body</figcaption></figure><figure><div class="screen" data-clip="neuromuscular/mg-nerve-terminal" style="--ar:1920/1080"><img src="../media/neuromuscular/mg-nerve-terminal-poster.webp" width="1920" height="1080" alt="VR: a glowing nerve ending above a muscle fibre releases vesicles" loading="lazy" decoding="async"></div><figcaption class="cap">A nerve signals the muscle</figcaption></figure><figure><div class="screen" data-clip="neuromuscular/mg-complement" style="--ar:1920/1080"><img src="../media/neuromuscular/mg-complement-poster.webp" width="1920" height="1080" alt="VR: complement proteins split off and gather on a cell surface" loading="lazy" decoding="async"></div><figcaption class="cap">Complement proteins on a cell</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-firstaid" aria-labelledby="p-firstaid-t">
-<div class="pd-bar"><p class="meta">XR · freelance client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch First aid in traffic">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-firstaid" aria-labelledby="p-firstaid-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · freelance client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:720/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-first-aid-crash-watchposter.webp" aria-label="Crash scene"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -412,21 +408,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-firstaid-t" data-k data-w="112">First aid in traffic</h2><p>A VR first-aid trainer for the German certification market, with a randomised accident in every run.</p></div>
+<div class="w-list" aria-label="Key sections of First aid in traffic" role="group">
 <p class="meta">Key sections · 1:21 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-first-aid-crash" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-first-aid-crash-watchposter.webp" data-dur="41.93" data-audio="" data-title="Crash scene" aria-current="true"><span class="w-n">01</span><span class="w-t">Crash scene</span><span class="w-d">0:42</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-first-aid-help" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-first-aid-help-poster.webp" data-dur="39.33" data-audio="" data-title="Calling for help"><span class="w-n">02</span><span class="w-t">Calling for help</span><span class="w-d">0:39</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-firstaid-t">First aid in traffic</h2><p>A VR first-aid trainer for the German certification market, with a randomised accident in every run.</p></div>
-<dl class="pd-facts"><div><dt>What I did</dt><dd><ul><li>Unreal Engine 4 Blueprint prototype</li><li>Randomised scenarios, drivable car, physics collisions</li><li>PCVR to Quest 2 port</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4, Blueprints</dd></div><div><dt>Platforms</dt><dd>PCVR, then Meta Quest 2</dd></div><div><dt>Year</dt><dd>2022</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/xr-tiles/xr-tile-first-aid-help-poster.webp" width="1280" height="720" alt="VR training: a bystander kneels over an injured man lying at a roadside bus shelter" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-first-aid-help"></video></div><figcaption class="slate slate--long">A bystander helps the injured driver</figcaption></figure></div>
+<dl class="pd-facts"><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Unreal Engine 4 Blueprint prototype</li><li>Randomised scenarios, drivable car, physics collisions</li><li>PCVR to Quest 2 port</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4, Blueprints</dd></div><div><dt>Platforms</dt><dd>PCVR, then Meta Quest 2</dd></div><div><dt>Year</dt><dd>2022</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-first-aid-help" style="--ar:1280/720"><img src="../media/xr-tiles/xr-tile-first-aid-help-poster.webp" width="1280" height="720" alt="VR training: a bystander kneels over an injured man lying at a roadside bus shelter" loading="lazy" decoding="async"></div><figcaption class="cap">A bystander helps the injured driver</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-boothmr" aria-labelledby="p-boothmr-t">
-<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Trade-fair booth planner in mixed reality">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-boothmr" aria-labelledby="p-boothmr-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · client work</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:720/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-congress-place-poster.webp" aria-label="Placing objects"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -440,21 +438,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-boothmr-t" data-k data-w="112">Trade-fair booth planner in mixed reality</h2><p>A mixed-reality tool for planning a trade-fair booth in your own room, with a smartwatch menu.</p></div>
+<div class="w-list" aria-label="Key sections of Trade-fair booth planner in mixed reality" role="group">
 <p class="meta">Key sections · 0:53 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-congress-place" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-congress-place-poster.webp" data-dur="37.93" data-audio="" data-title="Placing objects" aria-current="true"><span class="w-n">01</span><span class="w-t">Placing objects</span><span class="w-d">0:38</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-congress-scene" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-congress-scene-poster.webp" data-dur="15.47" data-audio="" data-title="Building a scene"><span class="w-n">02</span><span class="w-t">Building a scene</span><span class="w-d">0:15</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-boothmr-t">Trade-fair booth planner in mixed reality</h2><p>A mixed-reality tool for planning a trade-fair booth in your own room, with a smartwatch menu.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>Tech</dt><dd>Unity, passthrough</dd></div><div><dt>Platforms</dt><dd>Meta Quest</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/xr-tiles/xr-tile-booth-chair-poster.webp" width="1280" height="720" alt="Mixed reality: a chair in a blue bounding box stands on a virtual booth carpet, with a yellow rotation ring around it" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-booth-chair"></video></div><figcaption class="slate slate--long">Rotating a chair on the carpet</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>Tech</dt><dd>Unity, passthrough</dd></div><div><dt>Platforms</dt><dd>Meta Quest</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-booth-chair" style="--ar:1280/720"><img src="../media/xr-tiles/xr-tile-booth-chair-poster.webp" width="1280" height="720" alt="Mixed reality: a chair in a blue bounding box stands on a virtual booth carpet, with a yellow rotation ring around it" loading="lazy" decoding="async"></div><figcaption class="cap">Rotating a chair on the carpet</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-argame" aria-labelledby="p-argame-t">
-<div class="pd-bar"><p class="meta">Mobile game · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Bone Eaters">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-argame" aria-labelledby="p-argame-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Mobile game · client work, a university hospital</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/argame/ks-argame-slingshot-watchposter.webp" aria-label="Slingshot"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -468,21 +468,23 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-argame-t" data-k data-w="112">Bone Eaters</h2><p>A 3D mobile game about bone health and osteoporosis: three levels of timed tasks, then an AR reward.</p><p class="play"><a href="https://apps.apple.com/de/app/bone-eaters/id6744760236" target="_blank" rel="noopener">App Store<span class="sr"> (opens in a new tab)</span></a> <span class="play-i"><span aria-hidden="true">·</span><a href="https://play.google.com/store/apps/details?id=de.onxt.BoneEaters" target="_blank" rel="noopener">Google Play<span class="sr"> (opens in a new tab)</span></a></span> <span class="play-i"><span aria-hidden="true">·</span><a href="https://onliveline.github.io/UKER_BoneEaters_WebGL_Build/" target="_blank" rel="noopener">Play the web version<span class="sr"> (opens in a new tab)</span></a></span></p></div>
+<div class="w-list" aria-label="Key sections of Bone Eaters" role="group">
 <p class="meta">Key sections · 1:13 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/argame/ks-argame-slingshot" data-webm="" data-mobile="1" data-poster="../media/argame/ks-argame-slingshot-watchposter.webp" data-dur="24.97" data-audio="" data-title="Slingshot" aria-current="true"><span class="w-n">01</span><span class="w-t">Slingshot</span><span class="w-d">0:25</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/argame/ks-argame-bacteria" data-webm="" data-mobile="1" data-poster="../media/argame/ks-argame-bacteria-watchposter.webp" data-dur="35.57" data-audio="" data-title="Feed the gut bacteria"><span class="w-n">02</span><span class="w-t">Feed the gut bacteria</span><span class="w-d">0:36</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/argame/ks-argame-reward" data-webm="" data-mobile="1" data-poster="../media/argame/ks-argame-reward-watchposter.webp" data-dur="12.07" data-audio="" data-title="The 3D reward"><span class="w-n">03</span><span class="w-t">The 3D reward</span><span class="w-d">0:12</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-argame-t">Bone Eaters</h2><p>A 3D mobile game about bone health and osteoporosis: three levels of timed tasks, then an AR reward.</p><p class="play"><a href="https://apps.apple.com/de/app/bone-eaters/id6744760236" target="_blank" rel="noopener">App Store<span class="sr"> (opens in a new tab)</span></a> <span class="play-i"><span aria-hidden="true">·</span><a href="https://play.google.com/store/apps/details?id=de.onxt.BoneEaters" target="_blank" rel="noopener">Google Play<span class="sr"> (opens in a new tab)</span></a></span> <span class="play-i"><span aria-hidden="true">·</span><a href="https://onliveline.github.io/UKER_BoneEaters_WebGL_Build/" target="_blank" rel="noopener">Play the web version<span class="sr"> (opens in a new tab)</span></a></span></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Reworked the AR reward, built its web viewer</li><li>Ran the store releases, rebuilt the iOS pipeline</li><li>WebGL port: desktop controls and shader stripping</li></ul></dd></div><div><dt>Tech</dt><dd>Unity 6, URP, AR Foundation, GitHub Actions, Fastlane</dd></div><div><dt>Platforms</dt><dd>iOS, Android, WebGL (desktop browsers)</dd></div><div><dt>Year</dt><dd>2025, web version 2026</dd></div><div><dt>Status</dt><dd>Released on Google Play 31 Oct 2025, App Store 12 Nov 2025</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/xr-tile-argame-slingshot-poster.webp" width="1280" height="720" alt="Bone Eaters: a wooden slingshot aimed across a cave of bone struts at yellow Bone Eater creatures, with a counter and a timer at the top" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/xr-tile-argame-slingshot"></video></div><figcaption class="slate slate--long">Slingshot at the Bone Eaters</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/inline-argame-bacteria-poster.webp" width="1280" height="720" alt="Bone Eaters: rows of round blue bacteria on sandy ground under a Feed all Bacteria task box" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/inline-argame-bacteria"></video></div><figcaption class="slate slate--long">Feeding fibre to gut bacteria</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/argame/inline-argame-reward-poster.webp" width="1280" height="720" alt="Bone Eaters: a cream bone section on a pale blue background, tilted to show a dark lattice inside" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/argame/inline-argame-reward"></video></div><figcaption class="slate slate--long">The bone-section reward</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Reworked the AR reward, built its web viewer</li><li>Ran the store releases, rebuilt the iOS pipeline</li><li>WebGL port: desktop controls and shader stripping</li></ul></dd></div><div><dt>Tech</dt><dd>Unity 6, URP, AR Foundation, GitHub Actions, Fastlane</dd></div><div><dt>Platforms</dt><dd>iOS, Android, WebGL (desktop browsers)</dd></div><div><dt>Year</dt><dd>2025, web version 2026</dd></div><div><dt>Status</dt><dd>Released on Google Play 31 Oct 2025, App Store 12 Nov 2025</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="argame/xr-tile-argame-slingshot" style="--ar:1280/720"><img src="../media/argame/xr-tile-argame-slingshot-poster.webp" width="1280" height="720" alt="Bone Eaters: a wooden slingshot aimed across a cave of bone struts at yellow Bone Eater creatures, with a counter and a timer at the top" loading="lazy" decoding="async"></div><figcaption class="cap">Slingshot at the Bone Eaters</figcaption></figure><figure><div class="screen" data-clip="argame/inline-argame-bacteria" style="--ar:1280/720"><img src="../media/argame/inline-argame-bacteria-poster.webp" width="1280" height="720" alt="Bone Eaters: rows of round blue bacteria on sandy ground under a Feed all Bacteria task box" loading="lazy" decoding="async"></div><figcaption class="cap">Feeding fibre to gut bacteria</figcaption></figure><figure><div class="screen" data-clip="argame/inline-argame-reward" style="--ar:1280/720"><img src="../media/argame/inline-argame-reward-poster.webp" width="1280" height="720" alt="Bone Eaters: a cream bone section on a pale blue background, tilted to show a dark lattice inside" loading="lazy" decoding="async"></div><figcaption class="cap">The bone-section reward</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-assetlib" aria-labelledby="p-assetlib-t">
-<div class="pd-bar"><p class="meta">XR · internal tool</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Asset library">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-assetlib" aria-labelledby="p-assetlib-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">XR · internal tool</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-asset-library-browse-poster.webp" aria-label="Search and orbit"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -496,19 +498,20 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-assetlib-t" data-k data-w="112">Asset library</h2><p>A web viewer and nightly catalogue that index every 3D model across the company’s repositories without cloning them.</p><a class="more" href="../xr/platform.html#assets">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of Asset library" role="group">
 <p class="meta">Key sections · 0:34 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-asset-library-browse" data-webm="1" data-mobile="1" data-poster="../media/key-sections/ks-asset-library-browse-poster.webp" data-dur="14.8" data-audio="" data-title="Search and orbit" aria-current="true"><span class="w-n">01</span><span class="w-t">Search and orbit</span><span class="w-d">0:15</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-asset-library-tags" data-webm="1" data-mobile="1" data-poster="../media/key-sections/ks-asset-library-tags-poster.webp" data-dur="19" data-audio="" data-title="Tags and review"><span class="w-n">02</span><span class="w-t">Tags and review</span><span class="w-d">0:19</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-assetlib-t">Asset library</h2><p>A web viewer and nightly catalogue that index every 3D model across the company’s repositories without cloning them.</p><a class="more" href="../xr/platform.html#assets">Read the deep dive</a></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div><dt>What I did</dt><dd><ul><li>Nightly scan of every branch, no cloning</li><li>Blender renders tagged by a vision model</li><li>Human review, one catalogue for web and Unity</li></ul></dd></div><div><dt>Tech</dt><dd>Python, GitHub Actions, headless Blender, a vision model, Unity editor window</dd></div><div><dt>Platforms</dt><dd>Desktop browsers, Unity Editor</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/xr-tiles/xr-tile-asset-library"></video></div><figcaption class="slate slate--long">A heart model in the web viewer</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Lead developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Nightly scan of every branch, no cloning</li><li>Blender renders tagged by a vision model</li><li>Human review, one catalogue for web and Unity</li></ul></dd></div><div><dt>Tech</dt><dd>Python, GitHub Actions, headless Blender, a vision model, Unity editor window</dd></div><div><dt>Platforms</dt><dd>Desktop browsers, Unity Editor</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="xr-tiles/xr-tile-asset-library" style="--ar:1280/720"><img src="../media/xr-tiles/xr-tile-asset-library-poster.webp" width="1280" height="720" alt="Browser catalogue: a textured anatomical heart turns on a grid beside its size, triangle count and tags" loading="lazy" decoding="async"></div><figcaption class="cap">A heart model in the web viewer</figcaption></figure></div>
+</div>
 </dialog>
 </div>
-<script src="../site.js" defer></script>
-<script src="../motion.js" defer></script>
+<script src="../ui.js" defer></script>
+<script src="../engine.js" defer></script>
 </body>
 </html>

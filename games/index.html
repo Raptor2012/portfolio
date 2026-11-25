@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-media="../media/" data-root="../">
 <head>
 <meta charset="utf-8">
-<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanket Das · Games</title>
 <meta name="description" content="Games by Sanket Das: VETAL 26 in Unreal Engine, Do.Die and Department of Shapes in Unity, and student games including Proximity, Student Game of the Year at Nasscom GDC 2016.">
@@ -14,143 +13,138 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23060709'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece8e2' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
 <link rel="preload" as="image" href="../media/project-mind/hero-vetal-combat-poster.webp" fetchpriority="high">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
-<link rel="stylesheet" href="../fonts.css">
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../motion.css">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/mona-sans.woff2" crossorigin>
+<link rel="stylesheet" href="../style.css">
+<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;d.classList.add(rm?'rm':'js');if(/[?&]capture/.test(location.search))d.classList.add('cap');})();</script>
 </head>
 <body>
-<script>document.documentElement.classList.add('js')</script>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav" aria-label="Main">
-  <div class="wrap nav-in">
-    <a class="brand" href="../index.html">Sanket Das</a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="../games/index.html" aria-current="page">Games</a>
-      <a href="../xr/index.html">XR</a>
-      <a href="../index.html#about">About</a>
-      <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
-      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
-    </div>
-  </div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="vids" aria-hidden="true"></div>
+<nav class="top" aria-label="Main">
+  <a class="brand" href="../">Sanket Das</a>
+  <ul>
+    <li><a href="../games/" aria-current="page">Games</a></li>
+    <li><a href="../xr/">XR</a></li>
+    <li class="n-about"><a href="../#about">About</a></li>
+    <li class="n-res"><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
+    <li><a href="mailto:sanketdas@live.com">Email</a></li>
+    <li><button class="snd" type="button" aria-pressed="false" aria-label="Sound" hidden><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="snd-l">Sound</span></button></li>
+  </ul>
 </nav>
-<header class="hero hero--band" id="top">
-  <div class="reel" data-reel>
-    <div class="clip is-active" style="--pos:0% 50%"><img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/hero-vetal-combat"></video></div>
-    <div class="clip full"><img src="../media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-reel"></video></div>
-    <div class="clip" style="--pos:52% 50%"><img src="../media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-roll"></video></div>
-  </div>
-  <div class="wrap hero-in">
-    <div class="slates" aria-hidden="true">
-      <p class="slate is-active">VETAL 26, combat with Vetal’s powers</p>
-      <p class="slate">Do.Die, boss fight</p>
-      <p class="slate">Department of Shapes, the sphere rolls into the plaza</p>
+<header class="hero hero--pin hero--sub" id="top">
+  <div class="stage">
+    <div class="screen screen--hero" id="hero-screen" data-reel="project-mind/hero-vetal-combat|35% 50%|VETAL 26, combat with Vetal’s powers;dodie/dodie-combat-reel|30% 50%|Do.Die, boss fight;circlejack/dos-roll|52% 50%|Department of Shapes, the sphere rolls into the plaza">
+      <img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" fetchpriority="high" decoding="async" style="object-position:35% 50%">
     </div>
-    <h1 class="display"><span class="h1-name">Sanket Das</span> <span class="h1-sec"><span class="h1-dot">· </span>Games</span></h1>
-    <div class="side">
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <h1 class="name" data-name data-w="116" data-w-phone="100" data-squeeze="30">Games</h1>
       <p class="lede">Gameplay programming in Unity and Unreal</p>
       <div class="actions">
         <a class="btn" href="mailto:sanketdas@live.com">Email me</a>
-        <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
+        <a class="link" href="../resume/Sanket_Das_Resume.pdf">Resume</a>
       </div>
+    </div>
+    <div class="slate" aria-hidden="true">
+      <span class="slate-n"><b>01</b> / 03</span>
+      <span class="slate-t">VETAL 26, combat with Vetal’s powers</span>
+      <span class="slate-bar"><i></i></span>
     </div>
   </div>
 </header>
 <main id="main">
 
-<section class="section" id="work" aria-label="Games">
-  <article class="scene" aria-labelledby="g-vetal">
-    <figure class="clip scope fade wide-m" style="--pos:50% 50%"><img src="../media/project-mind/vetal-forest-hand-poster.webp" width="1920" height="800" alt="VETAL 26: a giant stone hand and a lantern-lit shrine in a blue night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-forest-hand"></video></figure>
-    <div class="wrap scene-copy" data-reveal>
-      <h2 class="display" id="g-vetal">VETAL 26</h2>
-      <div class="side">
+<section class="game" id="vetal" aria-labelledby="g-vetal">
+  <div class="wrap">
+    <div class="screen" data-clip="project-mind/vetal-forest-hand" data-pos="50% 50%" data-reflect=".16" data-glow="1" style="--ar:1920/800"><img src="../media/project-mind/vetal-forest-hand-poster.webp" width="1920" height="800" alt="VETAL 26: a giant stone hand and a lantern-lit shrine in a blue night forest" loading="lazy" decoding="async" style="object-position:50% 50%"></div>
+    <div class="game-copy">
+      <h2 class="display" id="g-vetal"><span data-k>VETAL 26</span></h2>
+      <div data-rise>
         <p class="meta">Unreal Engine · team of four · 2020–2025</p>
         <p class="body">A third-person action-adventure in Unreal Engine. I was the only programmer on a team of four.</p>
+        
         <p class="links"><a class="more" href="project-mind.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-vetal26" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:45</span><span class="sr">: VETAL 26</span></button></p>
       </div>
     </div>
-  </article>
-  <div class="wrap">
-    <div class="three" data-reveal style="margin-top:var(--gap-block)">
-      <figure><div class="clip"><img src="../media/project-mind/pm-gp-2022-warehouse-enemies-poster.webp" width="1280" height="720" alt="Fire-headed enemies attack the player inside a large hall" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2022-warehouse-enemies"></video></div><figcaption class="slate">2022, melee combat</figcaption></figure>
-      <figure><div class="clip"><img src="../media/project-mind/pm-gp-2024-forest-combat-poster.webp" width="1280" height="720" alt="The player fights groups of enemies in a lit forest with green explosions" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-forest-combat"></video></div><figcaption class="slate">2024, combat in the lit forest level</figcaption></figure>
-      <figure><div class="clip"><img src="../media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="VETAL 26: wrapped in Vetal, the player fires bow volleys at glowing spirit enemies in a night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-door-combat"></video></div><figcaption class="slate">2025, bow combat with Vetal</figcaption></figure>
+    <div class="strip" style="--n:3" data-rise>
+      <figure><div class="screen" data-clip="project-mind/pm-gp-2022-warehouse-enemies" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2022-warehouse-enemies-poster.webp" width="1280" height="720" alt="Fire-headed enemies attack the player inside a large hall" loading="lazy" decoding="async"></div><figcaption class="cap">2022, melee combat</figcaption></figure>
+      <figure><div class="screen" data-clip="project-mind/pm-gp-2024-forest-combat" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-forest-combat-poster.webp" width="1280" height="720" alt="The player fights groups of enemies in a lit forest with green explosions" loading="lazy" decoding="async"></div><figcaption class="cap">2024, combat in the lit forest level</figcaption></figure>
+      <figure><div class="screen" data-clip="project-mind/vetal-door-combat" style="--ar:1280/720"><img src="../media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="VETAL 26: wrapped in Vetal, the player fires bow volleys at glowing spirit enemies in a night forest" loading="lazy" decoding="async"></div><figcaption class="cap">2025, bow combat with Vetal</figcaption></figure>
     </div>
   </div>
-  <section class="section--case" aria-labelledby="gcs-h">
-    <div class="wrap">
-      <div class="label"><h2 id="gcs-h">Deep dive</h2><span>VETAL 26</span></div>
-      <div class="cases cases--one" data-reveal>
-      <article class="case" aria-labelledby="cs-vetal26">
-        <a class="case-clip" href="../games/project-mind.html" tabindex="-1" aria-hidden="true"><div class="clip" style="--pos:30% 50%"><img src="../media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: the player runs through a misty night forest wrapped in a violet spirit" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-spirit-run"></video></div></a>
-        <div class="case-copy">
-          <p class="meta">Unreal Engine · 2020–2025 · 4 min read</p>
-          <h3 id="cs-vetal26"><a href="../games/project-mind.html">VETAL 26: how a third-person action game grew over five years</a></h3>
-          <p class="body">Five years of one Unreal Engine game, from the first movement test to a playable level: combat, enemy AI and Vetal’s powers, all in Blueprints.</p>
-          <a class="more" href="../games/project-mind.html">Read the deep dive</a>
-        </div>
-      </article>
-      </div>
-    </div>
-  </section>
+</section>
 
-  <article class="scene scene--clear" style="margin-top:var(--gap-section)" aria-labelledby="g-dodie">
-    <figure class="clip full scope scope--21"><img src="../media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-reel"></video></figure>
-    <div class="wrap scene-copy" data-reveal>
-      <h2 class="display" id="g-dodie">Do.Die</h2>
-      <div class="side">
+<section class="section" aria-labelledby="gcs-h">
+  <div class="wrap">
+    <div class="label"><h2 id="gcs-h">Deep dive</h2><span>VETAL 26</span></div>
+    <article class="case" aria-labelledby="cs-vetal26">
+      <a class="case-screen" href="../games/project-mind.html" tabindex="-1" aria-hidden="true"><div class="screen" data-clip="project-mind/vetal-spirit-run" data-pos="30% 50%" data-reflect=".14" style="--ar:1920/800"><img src="../media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: the player runs through a misty night forest wrapped in a violet spirit" loading="lazy" decoding="async" style="object-position:30% 50%"></div></a>
+      <div class="case-copy" data-rise>
+        <p class="meta">Unreal Engine · 2020–2025 · 4 min read</p>
+        <h3 id="cs-vetal26"><a href="../games/project-mind.html">VETAL 26: how a third-person action game grew over five years</a></h3>
+        <p class="body">Five years of one Unreal Engine game, from the first movement test to a playable level: combat, enemy AI and Vetal’s powers, all in Blueprints.</p>
+        <p class="links"><a class="more" href="../games/project-mind.html">Read the deep dive</a><button class="more open open--watch" type="button" data-open="p-vetal26" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:45</span><span class="sr">: VETAL 26</span></button></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="game" id="dodie" aria-labelledby="g-dodie">
+  <div class="wrap">
+    <div class="screen" data-clip="dodie/dodie-combat-reel" data-reflect=".16" data-glow="1" style="--ar:1920/960"><img src="../media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"></div>
+    <div class="game-copy">
+      <h2 class="display" id="g-dodie"><span data-k>Do.Die</span></h2>
+      <div data-rise>
         <p class="meta">Third-person shooter · weekend jam · Unity · 2026</p>
         <p class="body">A weekend jam mixing Max Payne’s bullet time with Control’s powers. Shipped to the browser with player analytics.</p>
         <p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
         <p class="links"><button class="more open open--watch" type="button" data-open="p-dodie" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">1:37</span><span class="sr">: Do.Die</span></button></p>
       </div>
     </div>
-  </article>
-  <div class="wrap">
-    <div class="quad quad--21" data-reveal>
-      <figure><div class="clip full"><img src="../media/dodie/dodie-laser-dive-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives through the air while the boss fires a laser across the arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-laser-dive"></video></div><figcaption class="slate">A slow-motion dive under the boss’s laser</figcaption></figure>
-      <figure><div class="clip full"><img src="../media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-dive-multikill"></video></div><figcaption class="slate">A dive into a group, with shield spheres and echo afterimages</figcaption></figure>
-      <figure><div class="clip full"><img src="../media/dodie/dodie-combat-shield-blast-poster.webp" width="1920" height="960" alt="Do.Die: a shield bubble around the agent absorbs incoming fire" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-shield-blast"></video></div><figcaption class="slate">The shield absorbs fire, then blast rings go off</figcaption></figure>
-      <figure><div class="clip full"><img src="../media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-boss-volley"></video></div><figcaption class="slate">Trading fire with the boss on his platform</figcaption></figure>
+    <div class="strip strip--quad" style="--n:4" data-rise>
+      <figure><div class="screen" data-clip="dodie/dodie-laser-dive" style="--ar:1920/960"><img src="../media/dodie/dodie-laser-dive-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives through the air while the boss fires a laser across the arena" loading="lazy" decoding="async"></div><figcaption class="cap">A slow-motion dive under the boss’s laser</figcaption></figure>
+      <figure><div class="screen" data-clip="dodie/dodie-combat-dive-multikill" style="--ar:1920/960"><img src="../media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"></div><figcaption class="cap">A dive into a group, with shield spheres and echo afterimages</figcaption></figure>
+      <figure><div class="screen" data-clip="dodie/dodie-combat-shield-blast" style="--ar:1920/960"><img src="../media/dodie/dodie-combat-shield-blast-poster.webp" width="1920" height="960" alt="Do.Die: a shield bubble around the agent absorbs incoming fire" loading="lazy" decoding="async"></div><figcaption class="cap">The shield absorbs fire, then blast rings go off</figcaption></figure>
+      <figure><div class="screen" data-clip="dodie/dodie-combat-boss-volley" style="--ar:1280/640"><img src="../media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"></div><figcaption class="cap">Trading fire with the boss on his platform</figcaption></figure>
     </div>
   </div>
+</section>
 
-  <article class="scene" style="margin-top:var(--gap-section)" aria-labelledby="g-dos">
-    <figure class="clip scope fade wide-m" style="--pos:57% 50%"><img src="../media/circlejack/dos-queue-poster.webp" width="1920" height="800" alt="" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-queue"></video></figure>
-    <div class="wrap scene-copy" data-reveal>
-      <h2 class="display" id="g-dos">Department of Shapes</h2>
-      <div class="side">
+<section class="game" id="dos" aria-labelledby="g-dos">
+  <div class="wrap">
+    <div class="screen" data-clip="circlejack/dos-queue" data-pos="57% 50%" data-reflect=".16" data-glow="1" style="--ar:1920/800"><img src="../media/circlejack/dos-queue-poster.webp" width="1920" height="800" alt="" loading="lazy" decoding="async" style="object-position:57% 50%"></div>
+    <div class="game-copy">
+      <h2 class="display" id="g-dos"><span data-k>Department of Shapes</span></h2>
+      <div data-rise>
         <p class="meta">Unity · game-jam entry · 2026</p>
         <p class="body">A caste satire: shapes rank by their sides. A sphere parent climbs in disguise to rescue their child.</p>
         <p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
         <p class="links"><button class="more open open--watch" type="button" data-open="p-dos" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:17</span><span class="sr">: Department of Shapes</span></button></p>
       </div>
     </div>
-  </article>
-  <div class="wrap pair pair--even" data-reveal>
-    <figure><div class="clip" style="--pos:60% 50%"><img src="../media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-scanner"></video></div><figcaption class="slate">The scanner gate</figcaption></figure>
-    <figure><div class="clip"><img src="../media/circlejack/dos-gatekeeper-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character sways in a purple-lit doorway at the end of a dark corridor" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-gatekeeper"></video></div><figcaption class="slate">A doorway at the end of the corridor</figcaption></figure>
+    <div class="strip strip--top" style="--n:2" data-rise>
+      <figure><div class="screen" data-clip="circlejack/dos-scanner" data-pos="60% 50%" style="--ar:1080/1350"><img src="../media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async" style="object-position:60% 50%"></div><figcaption class="cap">The scanner gate</figcaption></figure>
+      <figure><div class="screen" data-clip="circlejack/dos-gatekeeper" style="--ar:1080/1350"><img src="../media/circlejack/dos-gatekeeper-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character sways in a purple-lit doorway at the end of a dark corridor" loading="lazy" decoding="async"></div><figcaption class="cap">A doorway at the end of the corridor</figcaption></figure>
+    </div>
   </div>
 </section>
 
 <section class="section" id="earlier" aria-labelledby="e-h">
   <div class="wrap">
     <div class="label"><h2 id="e-h">Earlier work</h2><span>Student games, made as a developer in a team</span></div>
-    <div class="earlier" data-reveal>
-      <article class="project">
-        <figure class="clip"><img src="../media/proximity/proximity-arena-poster.webp" width="1280" height="534" alt="Proximity: a flat-colour arena with ladders and bouncing players" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/proximity/proximity-arena"></video></figure>
+    <div class="tiles tiles--two">
+      <article class="tile">
+        <div class="screen" data-clip="proximity/proximity-arena" style="--ar:2.4/1"><img src="../media/proximity/proximity-arena-poster.webp" width="1280" height="534" alt="Proximity: a flat-colour arena with ladders and bouncing players" loading="lazy" decoding="async"></div>
         <h3>Proximity</h3>
         <p class="meta">2016 · student game</p>
         <p class="body">Hot potato as a couch co-op game. Student Game of the Year at Nasscom GDC 2016.</p>
         <button class="more open open--watch" type="button" data-open="p-proximity" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">0:27</span><span class="sr">: Proximity</span></button>
       </article>
-      <article class="project">
-        <figure class="clip pixel"><img src="../media/deranged/deranged-night-poster.webp" width="1264" height="588" alt="Deranged: a pixel-art boy in pyjamas holds a lantern under a full moon at the edge of a forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/deranged/deranged-night"></video></figure>
+      <article class="tile">
+        <div class="screen" data-clip="deranged/deranged-night" data-pixel style="--ar:2.4/1"><img src="../media/deranged/deranged-night-poster.webp" width="1264" height="588" alt="Deranged: a pixel-art boy in pyjamas holds a lantern under a full moon at the edge of a forest" loading="lazy" decoding="async"></div>
         <h3>Deranged</h3>
         <p class="meta">2017 · university game jam</p>
         <p class="body">A pixel-art jam game: a boy in pyjamas walks out into a dark forest with a lantern.</p>
@@ -162,13 +156,11 @@
 
 </main>
 
-<footer class="contact contact--img" id="contact">
-  <div class="clip" style="--pos:74% 50%"><img src="../media/dodie/dodie-red-sky-lg.webp" srcset="../media/dodie/dodie-red-sky-sm.webp 1200w, ../media/dodie/dodie-red-sky-lg.webp 1954w" sizes="100vw" width="1954" height="814" alt="" loading="lazy" decoding="async"></div>
-  <div class="wrap contact-in">
-    <div data-reveal>
-      <h2>Email me about a role or a project</h2>
-      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
-    </div>
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <div class="screen contact-screen" data-still="../media/dodie/dodie-red-sky-lg.webp" data-pos="74% 50%" data-reflect=".32"><img src="../media/dodie/dodie-red-sky-lg.webp" width="1954" height="814" alt="" loading="lazy" decoding="async" style="object-position:74% 50%"></div>
+    <h2 class="contact-h" data-rise>Email me about a role or a project</h2>
+    <a class="mail" href="mailto:sanketdas@live.com"><span class="mail-t">sanketdas@live.com</span></a>
     <div class="foot">
       <ul>
         <li><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
@@ -181,10 +173,11 @@
   </div>
 </footer>
 <div class="dialogs">
-<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t">
-<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch VETAL 26">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-vetal-combat-poster.webp" aria-label="Combat with Vetal"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -198,7 +191,10 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-vetal26-t" data-k data-w="112">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="../games/project-mind.html">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of VETAL 26" role="group">
 <p class="meta">Key sections · 2:45 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-vetal-combat" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-vetal-combat-poster.webp" data-dur="40.4" data-audio="1" data-vtt="../media/key-sections/ks-vetal-combat.vtt" data-cues="WEBVTT
 
@@ -312,17 +308,16 @@ as Vikram cannot endure the Atman dimension
 and Vetal cannot exist in our world.
 " data-title="Forest traversal"><span class="w-n">03</span><span class="w-t">Forest traversal</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-pm-arena-ai" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-pm-arena-ai-poster.webp" data-dur="32" data-audio="1" data-title="Arena AI"><span class="w-n">04</span><span class="w-t">Arena AI</span><span class="w-d">0:32</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="../media/key-sections/ks-pm-evolution" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-pm-evolution-poster.webp" data-dur="41.83" data-audio="" data-title="2021 to 2025"><span class="w-n">05</span><span class="w-t">2021 to 2025</span><span class="w-d">0:42</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-vetal26-t">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="../games/project-mind.html">Read the deep dive</a></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/hero-vetal-combat"></video></div><figcaption class="slate slate--long">Bow and lightning with Vetal, 2025</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-arena-crowd"></video></div><figcaption class="slate slate--long">Attack tickets in a crowd, 2024</figcaption></figure><figure class="pd-fig"><div class="clip" style="--pos:50% 100%;aspect-ratio:1280/680"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2023-ticket-ai"></video></div><figcaption class="slate slate--long">Attack ticket test map, 2023</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="project-mind/hero-vetal-combat" style="--ar:1920/800"><img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"></div><figcaption class="cap">Bow and lightning with Vetal, 2025</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2024-arena-crowd" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"></div><figcaption class="cap">Attack tickets in a crowd, 2024</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2023-ticket-ai" data-pos="50% 100%" style="--ar:1280/680"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async" style="object-position:50% 100%"></div><figcaption class="cap">Attack ticket test map, 2023</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-dodie" aria-labelledby="p-dodie-t">
-<div class="pd-bar"><p class="meta">Game · weekend jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Do.Die">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-dodie" aria-labelledby="p-dodie-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · weekend jam · solo</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-dodie-boss-poster.webp" aria-label="Boss fight"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -336,21 +331,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-dodie-t" data-k data-w="112">Do.Die</h2><p>A weekend-jam shooter inspired by Max Payne and Control, shipped to the browser with analytics on how people play.</p><p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<div class="w-list" aria-label="Key sections of Do.Die" role="group">
 <p class="meta">Key sections · 1:37 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-dodie-boss" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dodie-boss-poster.webp" data-dur="45" data-audio="1" data-title="Boss fight" aria-current="true"><span class="w-n">01</span><span class="w-t">Boss fight</span><span class="w-d">0:45</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-dodie-combat-room" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dodie-combat-room-poster.webp" data-dur="26" data-audio="1" data-title="Combat room"><span class="w-n">02</span><span class="w-t">Combat room</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/key-sections/ks-dodie-echo-shield" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dodie-echo-shield-poster.webp" data-dur="26" data-audio="1" data-title="Echo dash and shield"><span class="w-n">03</span><span class="w-t">Echo dash and shield</span><span class="w-d">0:26</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-dodie-t">Do.Die</h2><p>A weekend-jam shooter inspired by Max Payne and Control, shipped to the browser with analytics on how people play.</p><p class="play"><a href="https://raptor-2012.itch.io/dodie" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Bullet time, echo dash, shield, boss fight</li><li>Player telemetry through a Cloudflare Worker</li><li>Data from 30+ playtests on itch.io</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="../media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-reel"></video></div><figcaption class="slate slate--long">Echo dash and boss fight</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1920/960"><img src="../media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-dive-multikill"></video></div><figcaption class="slate slate--long">A dive into a group</figcaption></figure><figure class="pd-fig"><div class="clip full" style="aspect-ratio:1280/640"><img src="../media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/dodie/dodie-combat-boss-volley"></video></div><figcaption class="slate slate--long">Trading fire with the boss</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Bullet time, echo dash, shield, boss fight</li><li>Player telemetry through a Cloudflare Worker</li><li>Data from 30+ playtests on itch.io</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="dodie/dodie-combat-reel" style="--ar:1920/960"><img src="../media/dodie/dodie-combat-reel-poster.webp" width="1920" height="960" alt="Do.Die: the agent echo-dashes through a red ring in the boss arena, leaving afterimages" loading="lazy" decoding="async"></div><figcaption class="cap">Echo dash and boss fight</figcaption></figure><figure><div class="screen" data-clip="dodie/dodie-combat-dive-multikill" style="--ar:1920/960"><img src="../media/dodie/dodie-combat-dive-multikill-poster.webp" width="1920" height="960" alt="Do.Die: the agent dives into a group of enemies with shield spheres and red afterimages" loading="lazy" decoding="async"></div><figcaption class="cap">A dive into a group</figcaption></figure><figure><div class="screen" data-clip="dodie/dodie-combat-boss-volley" style="--ar:1280/640"><img src="../media/dodie/dodie-combat-boss-volley-poster.webp" width="1280" height="640" alt="Do.Die: the agent trades fire with the boss on his platform under a red triangle" loading="lazy" decoding="async"></div><figcaption class="cap">Trading fire with the boss</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-dos" aria-labelledby="p-dos-t">
-<div class="pd-bar"><p class="meta">Game · game jam · solo</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Department of Shapes">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-dos" aria-labelledby="p-dos-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · game jam · solo</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-dos-opening-poster.webp" aria-label="The queue"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -364,21 +361,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-dos-t" data-k data-w="112">Department of Shapes</h2><p>A game-jam game, also called CircleJack, where shapes with more sides claim more status, much like a caste system.</p><p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
+<div class="w-list" aria-label="Key sections of Department of Shapes" role="group">
 <p class="meta">Key sections · 2:17 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-dos-opening" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dos-opening-poster.webp" data-dur="29" data-audio="1" data-title="The queue" aria-current="true"><span class="w-n">01</span><span class="w-t">The queue</span><span class="w-d">0:29</span></button></li><li><button class="w-sec" type="button" data-i="1" data-src="../media/key-sections/ks-dos-scanner" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dos-scanner-poster.webp" data-dur="38" data-audio="1" data-title="The scanner gate"><span class="w-n">02</span><span class="w-t">The scanner gate</span><span class="w-d">0:38</span></button></li><li><button class="w-sec" type="button" data-i="2" data-src="../media/key-sections/ks-dos-rolling" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dos-rolling-poster.webp" data-dur="30" data-audio="1" data-title="Rolling"><span class="w-n">03</span><span class="w-t">Rolling</span><span class="w-d">0:30</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-dos-floor" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-dos-floor-poster.webp" data-dur="40" data-audio="1" data-title="A floor"><span class="w-n">04</span><span class="w-t">A floor</span><span class="w-d">0:40</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-dos-t">Department of Shapes</h2><p>A game-jam game, also called CircleJack, where shapes with more sides claim more status, much like a caste system.</p><p class="play"><a href="https://raptor-2012.itch.io/department-of-shapes" target="_blank" rel="noopener">Play in browser<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div><dt>What I did</dt><dd><ul><li>Shape-shifting through molding machines</li><li>A unique attack for each shape</li><li>Rock-paper-scissors combat, hexagon boss</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/1080"><img src="../media/circlejack/dos-queue-hero-poster.webp" width="1920" height="1080" alt="Department of Shapes: the sphere character walks a queue toward a sign that reads 6 sides matched, move to floor 4" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-queue-hero"></video></div><figcaption class="slate slate--long">The queue to the scanner</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="../media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-roll"></video></div><figcaption class="slate slate--long">The sphere rolls in</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1080/1350"><img src="../media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/circlejack/dos-scanner"></video></div><figcaption class="slate slate--long">The scanner gate</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Solo developer</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Shape-shifting through molding machines</li><li>A unique attack for each shape</li><li>Rock-paper-scissors combat, hexagon boss</li></ul></dd></div><div><dt>Tech</dt><dd>Unity</dd></div><div><dt>Platforms</dt><dd>WebGL, in the browser</dd></div><div><dt>Year</dt><dd>2026</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="circlejack/dos-queue-hero" style="--ar:1920/1080"><img src="../media/circlejack/dos-queue-hero-poster.webp" width="1920" height="1080" alt="Department of Shapes: the sphere character walks a queue toward a sign that reads 6 sides matched, move to floor 4" loading="lazy" decoding="async"></div><figcaption class="cap">The queue to the scanner</figcaption></figure><figure><div class="screen" data-clip="circlejack/dos-roll" style="--ar:1920/800"><img src="../media/circlejack/dos-roll-poster.webp" width="1920" height="800" alt="Department of Shapes: a pink ball rolls across a dark plaza and bursts into a character" loading="lazy" decoding="async"></div><figcaption class="cap">The sphere rolls in</figcaption></figure><figure><div class="screen" data-clip="circlejack/dos-scanner" style="--ar:1080/1350"><img src="../media/circlejack/dos-scanner-poster.webp" width="1080" height="1350" alt="Department of Shapes: the sphere character stands in a scanner gate under a dot-matrix sign" loading="lazy" decoding="async"></div><figcaption class="cap">The scanner gate</figcaption></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-proximity" aria-labelledby="p-proximity-t">
-<div class="pd-bar"><p class="meta">Student game</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Proximity">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-proximity" aria-labelledby="p-proximity-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Student game</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-proximity-poster.webp" aria-label="Arena gameplay"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -392,21 +391,23 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-proximity-t" data-k data-w="112">Proximity</h2><p>A couch co-op game of hot potato in a flat-colour arena.</p></div>
+<div class="w-list" aria-label="Key sections of Proximity" role="group">
 <p class="meta">Key sections · 0:27 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-proximity" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-proximity-poster.webp" data-dur="26.97" data-audio="" data-title="Arena gameplay" aria-current="true"><span class="w-n">01</span><span class="w-t">Arena gameplay</span><span class="w-d">0:27</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-proximity-t">Proximity</h2><p>A couch co-op game of hot potato in a flat-colour arena.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Developer, in a student team</dd></div><div><dt>Awards</dt><dd><ul><li>Student Game of the Year, Nasscom GDC 2016</li><li>Shown at Casual Connect Asia 2016</li><li>Indie Prize selection, Casual Connect San Francisco 2016</li></ul></dd></div><div><dt>Year</dt><dd>2016</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/534"><img src="../media/proximity/proximity-arena-poster.webp" width="1280" height="534" alt="Proximity: a flat-colour arena with ladders and bouncing players" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/proximity/proximity-arena"></video></div></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Developer, in a student team</dd></div><div class="pd-wide"><dt>Awards</dt><dd><ul><li>Student Game of the Year, Nasscom GDC 2016</li><li>Shown at Casual Connect Asia 2016</li><li>Indie Prize selection, Casual Connect San Francisco 2016</li></ul></dd></div><div><dt>Year</dt><dd>2016</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="proximity/proximity-arena" style="--ar:1280/534"><img src="../media/proximity/proximity-arena-poster.webp" width="1280" height="534" alt="Proximity: a flat-colour arena with ladders and bouncing players" loading="lazy" decoding="async"></div></figure></div>
+</div>
 </dialog>
-<dialog class="pd" id="p-deranged" aria-labelledby="p-deranged-t">
-<div class="pd-bar"><p class="meta">Student game</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch Deranged">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-deranged" aria-labelledby="p-deranged-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Student game</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-deranged-watchposter.webp" aria-label="Night forest"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -420,19 +421,20 @@ and Vetal cannot exist in our world.
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-deranged-t" data-k data-w="112">Deranged</h2><p>A pixel-art game from a university game jam: a boy in pyjamas walks into a dark forest.</p></div>
+<div class="w-list" aria-label="Key sections of Deranged" role="group">
 <p class="meta">Key sections · 0:18 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-deranged" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-deranged-watchposter.webp" data-dur="18.37" data-audio="" data-title="Night forest" aria-current="true"><span class="w-n">01</span><span class="w-t">Night forest</span><span class="w-d">0:18</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-deranged-t">Deranged</h2><p>A pixel-art game from a university game jam: a boy in pyjamas walks into a dark forest.</p></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Developer, in a student team</dd></div><div><dt>Year</dt><dd>2017</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip pixel" style="aspect-ratio:1264/588"><img src="../media/deranged/deranged-night-poster.webp" width="1264" height="588" alt="Deranged: a pixel-art boy in pyjamas holds a lantern under a full moon at the edge of a forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/deranged/deranged-night"></video></div></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Developer, in a student team</dd></div><div><dt>Year</dt><dd>2017</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="deranged/deranged-night" data-pixel style="--ar:1264/588"><img src="../media/deranged/deranged-night-poster.webp" width="1264" height="588" alt="Deranged: a pixel-art boy in pyjamas holds a lantern under a full moon at the edge of a forest" loading="lazy" decoding="async"></div></figure></div>
+</div>
 </dialog>
 </div>
-<script src="../site.js" defer></script>
-<script src="../motion.js" defer></script>
+<script src="../ui.js" defer></script>
+<script src="../engine.js" defer></script>
 </body>
 </html>

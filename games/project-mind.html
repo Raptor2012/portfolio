@@ -1,67 +1,60 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-media="../media/" data-root="../">
 <head>
 <meta charset="utf-8">
-<style>@view-transition{navigation:auto;types:page}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sanket Das · VETAL 26 deep dive</title>
-<meta name="description" content="Deep dive: VETAL 26, a third-person action-adventure in Unreal Engine made by a team of four from 2020 to 2025. Sanket Das was the only programmer.">
-<link rel="preload" as="image" href="../media/project-mind/vetal-spirit-run-poster.webp" fetchpriority="high">
+<title>VETAL 26 · Deep dive · Sanket Das</title>
+<meta name="description" content="VETAL 26, a third-person action-adventure in Unreal Engine by a team of four, 2020 to 2025. How the game grew, one build per year, and the attack ticket system for enemy AI.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Sanket Das · VETAL 26 deep dive">
-<meta property="og:description" content="Deep dive: VETAL 26, a third-person action-adventure in Unreal Engine made by a team of four from 2020 to 2025. Sanket Das was the only programmer.">
+<meta property="og:title" content="VETAL 26 · Deep dive · Sanket Das">
+<meta property="og:description" content="VETAL 26, a third-person action-adventure in Unreal Engine by a team of four, 2020 to 2025. How the game grew, one build per year, and the attack ticket system for enemy AI.">
 <meta property="og:url" content="https://raptor2012.github.io/portfolio/games/project-mind.html">
 <meta property="og:image" content="https://raptor2012.github.io/portfolio/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070708'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece7df' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,300..500&amp;display=swap">
-<link rel="stylesheet" href="../fonts.css">
-<link rel="stylesheet" href="../site.css">
-<link rel="stylesheet" href="../motion.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23060709'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' letter-spacing='-.5' fill='%23ece8e2' text-anchor='middle'%3ESD%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" href="../media/project-mind/vetal-spirit-run-poster.webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" href="../fonts/mona-sans.woff2" crossorigin>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../deep.css">
+<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;d.classList.add(rm?'rm':'js');if(/[?&]capture/.test(location.search))d.classList.add('cap');})();</script>
 </head>
 <body>
-<script>document.documentElement.classList.add('js')</script>
 <a class="skip" href="#main">Skip to content</a>
-
-<nav class="nav" aria-label="Main">
-  <div class="wrap nav-in">
-    <a class="brand" href="../index.html">Sanket Das</a>
-    <div class="nav-links">
-      <a href="../index.html">Home</a>
-      <a href="../games/index.html" aria-current="page">Games</a>
-      <a href="../xr/index.html">XR</a>
-      <a href="../index.html#about">About</a>
-      <a href="../resume/Sanket_Das_Resume.pdf">Resume</a>
-      <a class="btn btn--sm" href="mailto:sanketdas@live.com">Email</a>
-    </div>
-  </div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="vids" aria-hidden="true"></div>
+<nav class="top" aria-label="Main">
+  <a class="brand" href="../">Sanket Das</a>
+  <ul>
+    <li><a href="../games/" aria-current="page">Games</a></li>
+    <li><a href="../xr/">XR</a></li>
+    <li class="n-about"><a href="../#about">About</a></li>
+    <li class="n-res"><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
+    <li><a href="mailto:sanketdas@live.com">Email</a></li>
+    <li><button class="snd" type="button" aria-pressed="false" aria-label="Sound" hidden><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="snd-l">Sound</span></button></li>
+  </ul>
 </nav>
-
-<header class="hero hero--short" id="top">
-  <div class="clip" style="--pos:30% 50%"><img src="../media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: a figure wrapped in a violet spirit runs through a misty night forest" fetchpriority="high" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-spirit-run"></video></div>
-  <div class="wrap hero-in">
-    <div class="hero-copy">
-      <p class="kicker">Deep dive · 4 min read</p>
-      <h1 class="display">VETAL 26</h1>
-      <p class="lede">A third-person action-adventure in Unreal Engine, made by a team of four from 2020 to 2025. I was the only programmer.</p>
-      <p class="links"><button class="more open open--watch" type="button" data-open="p-vetal26" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:45</span><span class="sr">: VETAL 26 pre-alpha playthrough</span></button></p>
-    </div>
-    <p class="slate">Pre-alpha trailer, July 2025</p>
+<header class="dd-head" id="top">
+  <div class="wrap dd-copy">
+    <p class="meta" data-intro>Deep dive · 4 min read</p>
+    <h1 class="dd-title" data-name data-w="112" data-w-phone="104">VETAL 26</h1>
+    <p class="lede" data-intro>A third-person action-adventure in Unreal Engine, made by a team of four from 2020 to 2025. I was the only programmer.</p>
+    <p data-intro class="links"><button class="more open open--watch" type="button" data-open="p-vetal26" aria-haspopup="dialog"><svg class="w-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Watch<span class="w-tot">2:45</span><span class="sr">: VETAL 26 pre-alpha playthrough</span></button></p>
   </div>
+  <figure class="wrap dd-fig">
+    <div class="screen" data-clip="project-mind/vetal-spirit-run" data-pos="30% 50%" data-reflect=".2" data-glow="1" style="--ar:1920/800"><img src="../media/project-mind/vetal-spirit-run-poster.webp" width="1920" height="800" alt="VETAL 26: a figure wrapped in a violet spirit runs through a misty night forest" decoding="async" fetchpriority="high"></div>
+    <figcaption class="cap">Pre-alpha trailer, July 2025</figcaption>
+  </figure>
 </header>
 
-<main id="main">
-
-<section class="section" aria-labelledby="covers-h">
-  <div class="wrap">
-    <div class="cols">
-      <h2 class="display" id="covers-h">What this deep dive covers</h2>
-      <div class="main" data-reveal>
-        <ul class="covers">
+<main id="main" class="dd">
+<section class="l-section" aria-labelledby="covers-h">
+  <div class="l-wrap">
+    <div class="l-cols">
+      <h2 class="l-display" id="covers-h">What this deep dive covers</h2>
+      <div class="l-main" data-rise>
+        <ul class="l-covers">
           <li>What the game is, and the four names it had between 2020 and 2025</li>
           <li>One build per year, in footage: movement, combat and a companion, enemy AI with the attack ticket system, and a showcase level</li>
           <li>My role as the only programmer in a team of four, and where the project stands now</li>
@@ -71,31 +64,31 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="what-h">
-  <div class="wrap">
-    <div class="label"><span>Deep dive</span><span>Unreal Engine 4, then 5</span></div>
-    <div class="cols cols--prose">
-      <h2 class="display" id="what-h">What the game is</h2>
-      <div class="main prose" data-reveal>
+<section class="l-section" aria-labelledby="what-h">
+  <div class="l-wrap">
+    <div class="l-label"><span>Deep dive</span><span>Unreal Engine 4, then 5</span></div>
+    <div class="l-cols l-cols--prose">
+      <h2 class="l-display" id="what-h">What the game is</h2>
+      <div class="l-main l-prose" data-rise>
         <p>You play a police officer who comes home to his village in Himachal, where something strange has started to open. In the jungle he meets Vetal, a spirit, and the two become partners.</p>
         <p>Together they travel through corrupted areas and collect the stories they find there. You feed each story to Vetal, he grants a boon in return, and you use the boons to beat enemies. Runs follow a roguelite structure.</p>
         <p>The project ran from 2020 to 2025 under four names.</p>
       </div>
     </div>
-    <ol class="names" data-reveal aria-label="The four names of the project">
-      <li><span class="meta">2020</span><b>Perfect Me</b></li>
-      <li><span class="meta">2022</span><b>Project Ego</b></li>
-      <li><span class="meta">2023</span><b>Project Mind</b></li>
-      <li><span class="meta">2025</span><b>VETAL 26</b></li>
+    <ol class="l-names" data-rise aria-label="The four names of the project">
+      <li><span class="l-meta">2020</span><b>Perfect Me</b></li>
+      <li><span class="l-meta">2022</span><b>Project Ego</b></li>
+      <li><span class="l-meta">2023</span><b>Project Mind</b></li>
+      <li><span class="l-meta">2025</span><b>VETAL 26</b></li>
     </ol>
   </div>
 </section>
 
-<section class="chapter" aria-label="2020">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2020</b><p class="meta">Perfect Me</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2020">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2020</b><p class="l-meta">Perfect Me</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>A top-down action-horror game</h2>
         <p>The project started as a top-down, isometric action-horror game in Unreal Engine 4, called Perfect Me. The player could turn into other objects to slip past enemies.</p>
       </div>
@@ -103,96 +96,96 @@
   </div>
 </section>
 
-<section class="chapter" aria-label="2021">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2021</b><p class="meta">Perfect Me</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2021">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2021</b><p class="l-meta">Perfect Me</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>Third-person action-adventure</h2>
         <p>The team turned the game into a third-person action-adventure with melee combat and several enemy types. The first third-person build was about movement: running, dashing and side-stepping along a night street, with energy and health bars already on screen.</p>
         <p>The same year the team decided to add Vetal, a spirit companion who travels with the player. He is not in the 2021 footage, and the game was later named after him.</p>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2021-dash-street-poster.webp" width="1280" height="720" alt="A red-suited player runs along a night street leaving red light trails" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2021-dash-street"></video></div><figcaption class="slate slate--long">The first third-person build: running and dashing along a night street, leaving red light trails, while a red vehicle charges through</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2021-dash-dodge-poster.webp" width="1280" height="720" alt="The player dashes and side-steps around obstacles on a night street" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2021-dash-dodge"></video></div><figcaption class="slate slate--long">A locomotion test: dashes and side-steps around obstacles and the charging vehicle</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2021-dash-street" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2021-dash-street-poster.webp" width="1280" height="720" alt="A red-suited player runs along a night street leaving red light trails" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The first third-person build: running and dashing along a night street, leaving red light trails, while a red vehicle charges through</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2021-dash-dodge" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2021-dash-dodge-poster.webp" width="1280" height="720" alt="The player dashes and side-steps around obstacles on a night street" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">A locomotion test: dashes and side-steps around obstacles and the charging vehicle</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="chapter" aria-label="2022">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2022</b><p class="meta">Project Ego</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2022">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2022</b><p class="l-meta">Project Ego</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>Combat, more enemy types and a companion</h2>
         <p>Under its new name, Project Ego, most of 2022 went into combat. Melee gained a blocking shield, hit sparks and fire attacks, and the new enemy types included ones that fire from range.</p>
         <p>Vetal was added this year and given powers. In two of the clips below, a hooded companion floats beside the player.</p>
         <p>At the end of 2022 we replaced melee with a bow and arrow. Every 2022 clip comes from the melee builds, and the bow appears in the 2025 footage further down.</p>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2022-ego-melee-poster.webp" width="1280" height="720" alt="The player trades blows with a fire-headed enemy behind a blocking shield" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2022-ego-melee"></video></div><figcaption class="slate slate--long">Melee combat against a fire-headed enemy, with hit sparks, fire bursts and a blocking shield</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2022-ego-shield-poster.webp" width="1280" height="720" alt="A shield cage surrounds the player while a hooded figure hovers at the left" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2022-ego-shield"></video></div><figcaption class="slate slate--long">A shield cage absorbs a fire-headed enemy’s attacks while the companion hovers at the left</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2022-warehouse-enemies-poster.webp" width="1280" height="720" alt="Fire-headed enemies attack the player inside a large hall" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2022-warehouse-enemies"></video></div><figcaption class="slate slate--long">Fire-headed melee enemies attack in an indoor arena, and the player answers with energy-blade combos</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2022-vetal-ranged-poster.webp" width="1280" height="720" alt="A hooded figure floats beside the player on a desert test map while enemies fire from a distance" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2022-vetal-ranged"></video></div><figcaption class="slate slate--long">On a desert test map the companion stays at the player’s side while ranged enemies fire</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2022-ego-melee" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2022-ego-melee-poster.webp" width="1280" height="720" alt="The player trades blows with a fire-headed enemy behind a blocking shield" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Melee combat against a fire-headed enemy, with hit sparks, fire bursts and a blocking shield</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2022-ego-shield" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2022-ego-shield-poster.webp" width="1280" height="720" alt="A shield cage surrounds the player while a hooded figure hovers at the left" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">A shield cage absorbs a fire-headed enemy’s attacks while the companion hovers at the left</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2022-warehouse-enemies" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2022-warehouse-enemies-poster.webp" width="1280" height="720" alt="Fire-headed enemies attack the player inside a large hall" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Fire-headed melee enemies attack in an indoor arena, and the player answers with energy-blade combos</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2022-vetal-ranged" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2022-vetal-ranged-poster.webp" width="1280" height="720" alt="A hooded figure floats beside the player on a desert test map while enemies fire from a distance" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">On a desert test map the companion stays at the player’s side while ranged enemies fire</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="chapter" aria-label="2023">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2023</b><p class="meta">Project Mind</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2023">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2023</b><p class="l-meta">Project Mind</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>Enemy AI, bosses and the attack ticket system</h2>
         <p>I expanded the enemy AI and built the boss system. Group fights were the hard part: if every enemy in an arena attacks at once, the player cannot read the fight.</p>
         <p>The fix was an attack ticket system. An enemy may attack only while it holds a ticket, and there are fewer tickets than enemies, so the rest hold back until one frees up. The player still faces a crowd, but only a few enemies attack at a time.</p>
-        <figure class="ticket" data-reveal><svg class="tk-d" viewBox="0 0 860 380" role="img" aria-label="Attack ticket system. Eight enemies stand in a ring around the player. Two of them hold attack tickets and attack. The other six have no ticket and hold back. There are fewer tickets than enemies, so the rest wait until a ticket frees up, and only a few enemies attack at a time."><circle class="tk-ring" cx="190" cy="180" r="140"/><circle class="tk-wait" cx="190" cy="40" r="11.25"/><circle class="tk-att" cx="289" cy="81" r="12"/><line class="tk-arrow" x1="274.9" y1="95.1" x2="207" y2="163"/><path class="tk-ah" d="M207 163 L209.8 153.1 L216.9 160.2Z"/><circle class="tk-wait" cx="330" cy="180" r="11.25"/><circle class="tk-wait" cx="289" cy="279" r="11.25"/><circle class="tk-wait" cx="190" cy="320" r="11.25"/><circle class="tk-wait" cx="91" cy="279" r="11.25"/><circle class="tk-att" cx="50" cy="180" r="12"/><line class="tk-arrow" x1="70" y1="180" x2="166" y2="180"/><path class="tk-ah" d="M166 180 L157 185 L157 175Z"/><circle class="tk-wait" cx="91" cy="81" r="11.25"/><circle class="tk-player" cx="190" cy="180" r="14"/><text x="190" y="216" text-anchor="middle">Player</text><circle class="tk-att" cx="432" cy="70" r="12"/><text class="tk-h" x="456" y="75">Holds a ticket: may attack</text><circle class="tk-wait" cx="432" cy="122" r="11.25"/><text class="tk-h" x="456" y="127">No ticket: holds back</text><line class="tk-line" x1="420" y1="156" x2="820" y2="156"/><text class="tk-h" x="420" y="186">Attack tickets</text><rect class="tk-tk tk-tk-on" x="420" y="202" width="56" height="30" rx="3"/><line class="tk-perf" x1="460" y1="206" x2="460" y2="228"/><rect class="tk-tk tk-tk-on" x="488" y="202" width="56" height="30" rx="3"/><line class="tk-perf" x1="528" y1="206" x2="528" y2="228"/><text x="420" y="268">There are fewer tickets than enemies. The rest</text><text x="420" y="290">hold back until a ticket frees up, so only a few</text><text x="420" y="312">enemies attack at a time.</text></svg><svg class="tk-m" viewBox="0 0 360 640" role="img" aria-label="Attack ticket system. Eight enemies stand in a ring around the player. Two of them hold attack tickets and attack. The other six have no ticket and hold back. There are fewer tickets than enemies, so the rest wait until a ticket frees up, and only a few enemies attack at a time."><circle class="tk-ring" cx="180" cy="165" r="125"/><circle class="tk-wait" cx="180" cy="40" r="11.25"/><circle class="tk-att" cx="268.4" cy="76.6" r="12"/><line class="tk-arrow" x1="254.2" y1="90.8" x2="197" y2="148"/><path class="tk-ah" d="M197 148 L199.8 138.1 L206.9 145.2Z"/><circle class="tk-wait" cx="305" cy="165" r="11.25"/><circle class="tk-wait" cx="268.4" cy="253.4" r="11.25"/><circle class="tk-wait" cx="180" cy="290" r="11.25"/><circle class="tk-wait" cx="91.6" cy="253.4" r="11.25"/><circle class="tk-att" cx="55" cy="165" r="12"/><line class="tk-arrow" x1="75" y1="165" x2="156" y2="165"/><path class="tk-ah" d="M156 165 L147 170 L147 160Z"/><circle class="tk-wait" cx="91.6" cy="76.6" r="11.25"/><circle class="tk-player" cx="180" cy="165" r="14"/><text x="180" y="201" text-anchor="middle">Player</text><circle class="tk-att" cx="22" cy="360" r="12"/><text class="tk-h" x="46" y="365">Holds a ticket: may attack</text><circle class="tk-wait" cx="22" cy="412" r="11.25"/><text class="tk-h" x="46" y="417">No ticket: holds back</text><line class="tk-line" x1="10" y1="446" x2="340" y2="446"/><text class="tk-h" x="10" y="476">Attack tickets</text><rect class="tk-tk tk-tk-on" x="10" y="492" width="56" height="30" rx="3"/><line class="tk-perf" x1="50" y1="496" x2="50" y2="518"/><rect class="tk-tk tk-tk-on" x="78" y="492" width="56" height="30" rx="3"/><line class="tk-perf" x1="118" y1="496" x2="118" y2="518"/><text x="10" y="558">There are fewer tickets than enemies.</text><text x="10" y="580">The rest hold back until a ticket</text><text x="10" y="602">frees up, so only a few enemies</text><text x="10" y="624">attack at a time.</text></svg><figcaption class="slate slate--long">The attack ticket system, with two tickets and eight enemies as an example</figcaption></figure>
+        <figure class="l-ticket" data-rise><svg class="l-tk-d" viewBox="0 0 860 380" role="img" aria-label="Attack ticket system. Eight enemies stand in a ring around the player. Two of them hold attack tickets and attack. The other six have no ticket and hold back. There are fewer tickets than enemies, so the rest wait until a ticket frees up, and only a few enemies attack at a time."><circle class="l-tk-ring" cx="190" cy="180" r="140"/><circle class="l-tk-wait" cx="190" cy="40" r="11.25"/><circle class="l-tk-att" cx="289" cy="81" r="12"/><line class="l-tk-arrow" x1="274.9" y1="95.1" x2="207" y2="163"/><path class="l-tk-ah" d="M207 163 L209.8 153.1 L216.9 160.2Z"/><circle class="l-tk-wait" cx="330" cy="180" r="11.25"/><circle class="l-tk-wait" cx="289" cy="279" r="11.25"/><circle class="l-tk-wait" cx="190" cy="320" r="11.25"/><circle class="l-tk-wait" cx="91" cy="279" r="11.25"/><circle class="l-tk-att" cx="50" cy="180" r="12"/><line class="l-tk-arrow" x1="70" y1="180" x2="166" y2="180"/><path class="l-tk-ah" d="M166 180 L157 185 L157 175Z"/><circle class="l-tk-wait" cx="91" cy="81" r="11.25"/><circle class="l-tk-player" cx="190" cy="180" r="14"/><text x="190" y="216" text-anchor="middle">Player</text><circle class="l-tk-att" cx="432" cy="70" r="12"/><text class="l-tk-h" x="456" y="75">Holds a ticket: may attack</text><circle class="l-tk-wait" cx="432" cy="122" r="11.25"/><text class="l-tk-h" x="456" y="127">No ticket: holds back</text><line class="l-tk-line" x1="420" y1="156" x2="820" y2="156"/><text class="l-tk-h" x="420" y="186">Attack tickets</text><rect class="l-tk-tk l-tk-tk-on" x="420" y="202" width="56" height="30" rx="3"/><line class="l-tk-perf" x1="460" y1="206" x2="460" y2="228"/><rect class="l-tk-tk l-tk-tk-on" x="488" y="202" width="56" height="30" rx="3"/><line class="l-tk-perf" x1="528" y1="206" x2="528" y2="228"/><text x="420" y="268">There are fewer tickets than enemies. The rest</text><text x="420" y="290">hold back until a ticket frees up, so only a few</text><text x="420" y="312">enemies attack at a time.</text></svg><svg class="l-tk-m" viewBox="0 0 360 640" role="img" aria-label="Attack ticket system. Eight enemies stand in a ring around the player. Two of them hold attack tickets and attack. The other six have no ticket and hold back. There are fewer tickets than enemies, so the rest wait until a ticket frees up, and only a few enemies attack at a time."><circle class="l-tk-ring" cx="180" cy="165" r="125"/><circle class="l-tk-wait" cx="180" cy="40" r="11.25"/><circle class="l-tk-att" cx="268.4" cy="76.6" r="12"/><line class="l-tk-arrow" x1="254.2" y1="90.8" x2="197" y2="148"/><path class="l-tk-ah" d="M197 148 L199.8 138.1 L206.9 145.2Z"/><circle class="l-tk-wait" cx="305" cy="165" r="11.25"/><circle class="l-tk-wait" cx="268.4" cy="253.4" r="11.25"/><circle class="l-tk-wait" cx="180" cy="290" r="11.25"/><circle class="l-tk-wait" cx="91.6" cy="253.4" r="11.25"/><circle class="l-tk-att" cx="55" cy="165" r="12"/><line class="l-tk-arrow" x1="75" y1="165" x2="156" y2="165"/><path class="l-tk-ah" d="M156 165 L147 170 L147 160Z"/><circle class="l-tk-wait" cx="91.6" cy="76.6" r="11.25"/><circle class="l-tk-player" cx="180" cy="165" r="14"/><text x="180" y="201" text-anchor="middle">Player</text><circle class="l-tk-att" cx="22" cy="360" r="12"/><text class="l-tk-h" x="46" y="365">Holds a ticket: may attack</text><circle class="l-tk-wait" cx="22" cy="412" r="11.25"/><text class="l-tk-h" x="46" y="417">No ticket: holds back</text><line class="l-tk-line" x1="10" y1="446" x2="340" y2="446"/><text class="l-tk-h" x="10" y="476">Attack tickets</text><rect class="l-tk-tk l-tk-tk-on" x="10" y="492" width="56" height="30" rx="3"/><line class="l-tk-perf" x1="50" y1="496" x2="50" y2="518"/><rect class="l-tk-tk l-tk-tk-on" x="78" y="492" width="56" height="30" rx="3"/><line class="l-tk-perf" x1="118" y1="496" x2="118" y2="518"/><text x="10" y="558">There are fewer tickets than enemies.</text><text x="10" y="580">The rest hold back until a ticket</text><text x="10" y="602">frees up, so only a few enemies</text><text x="10" y="624">attack at a time.</text></svg><figcaption class="l-slate l-slate--long">The attack ticket system, with two tickets and eight enemies as an example</figcaption></figure>
         <p>The game also got its final loop this year: you collect stories and trade them to Vetal for boons, run after run. The project was renamed Project Mind, and a new player character with spirit abilities replaced the old one.</p>
-        <figure class="gp" data-reveal><div class="clip" style="aspect-ratio:1280/680;--pos:50% 100%"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2023-ticket-ai"></video></div><figcaption class="slate slate--long">The attack ticket test map: a golden melee enemy attacks while a shooter holds back</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2023-new-hero-poster.webp" width="1280" height="720" alt="An armoured player character with a cyan spirit cape on a grey test map" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2023-new-hero"></video></div><figcaption class="slate slate--long">The new player character, in armour and a cyan spirit cape, tries slow-motion and pistol abilities on a graybox map</figcaption></figure>
+        <figure class="l-gp" data-rise><div class="screen l-clip" data-clip="project-mind/pm-gp-2023-ticket-ai" data-pos="50% 100%" style="aspect-ratio:1280/680"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The attack ticket test map: a golden melee enemy attacks while a shooter holds back</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2023-new-hero" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2023-new-hero-poster.webp" width="1280" height="720" alt="An armoured player character with a cyan spirit cape on a grey test map" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The new player character, in armour and a cyan spirit cape, tries slow-motion and pistol abilities on a graybox map</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="chapter" aria-label="2024">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2024</b><p class="meta">Project Mind</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2024">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2024</b><p class="l-meta">Project Mind</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>Final designs for Vetal and the player</h2>
         <p>The core design stayed the same in 2024, and the work went into finishing it. Vetal and the player character reached their final designs.</p>
         <p>The game also moved off the test maps into a lit forest level. The first clip below is a crowd fight in an arena, with a few enemies closing in at a time while the rest wait.</p>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of mannequin enemies surrounds the player in an arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-arena-crowd"></video></div><figcaption class="slate slate--long">A crowd of test enemies surrounds the player, a few closing in at a time, while the player hits back with ability blasts</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2024-forest-combat-poster.webp" width="1280" height="720" alt="The player fights groups of enemies in a lit forest with green explosions" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-forest-combat"></video></div><figcaption class="slate slate--long">A standalone build of the forest level: the player fights groups of enemies with energy attacks</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2024-forest-boss-poster.webp" width="1280" height="720" alt="A column of fire bursts out in front of the player in a forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-forest-boss"></video></div><figcaption class="slate slate--long">The heat ability: with the Heat meter full, a column of fire bursts out in front of the player</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2024-arena-crowd" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of mannequin enemies surrounds the player in an arena" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">A crowd of test enemies surrounds the player, a few closing in at a time, while the player hits back with ability blasts</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2024-forest-combat" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-forest-combat-poster.webp" width="1280" height="720" alt="The player fights groups of enemies in a lit forest with green explosions" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">A standalone build of the forest level: the player fights groups of enemies with energy attacks</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2024-forest-boss" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-forest-boss-poster.webp" width="1280" height="720" alt="A column of fire bursts out in front of the player in a forest" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The heat ability: with the Heat meter full, a column of fire bursts out in front of the player</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="chapter" aria-label="2025">
-  <div class="wrap">
-    <div class="chapter-in">
-      <div class="when"><b>2025</b><p class="meta">VETAL 26</p></div>
-      <div class="chapter-main prose">
+<section class="l-chapter" aria-label="2025">
+  <div class="l-wrap">
+    <div class="l-chapter-in">
+      <div class="l-when"><b>2025</b><p class="l-meta">VETAL 26</p></div>
+      <div class="l-chapter-main l-prose">
         <h2>A showcase level, playable start to finish</h2>
         <p>The game took its last name, VETAL 26. We built a showcase level that plays from start to finish and cut the pre-alpha trailer from it in July 2025.</p>
         <p>The level uses the systems from the earlier years: bow combat, Vetal’s powers, and a story traded to Vetal for a boon.</p>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="The player fires a bow at spirit enemies in a night forest with Vetal coiled around him" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-door-combat"></video></div><figcaption class="slate slate--long">Bow combat: with Vetal coiled around him, the player fires volleys at spirit enemies in the night forest</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2025-vetal-powers-poster.webp" width="1280" height="720" alt="Lightning strikes a group of enemies in a night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2025-vetal-powers"></video></div><figcaption class="slate slate--long">Vetal’s powers: lightning and spirit strikes hit a group of enemies</figcaption></figure>
-        <figure class="gp" data-reveal><div class="clip"><img src="../media/project-mind/pm-gp-2025-stories-boons-poster.webp" width="1280" height="720" alt="A story card is offered to Vetal, then a menu offers three boons" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2025-stories-boons"></video></div><figcaption class="slate slate--long">The core loop: a story card is fed to Vetal, then Vetal’s Blessing offers boons for defence, health and move speed</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/vetal-door-combat" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/vetal-door-combat-poster.webp" width="1280" height="720" alt="The player fires a bow at spirit enemies in a night forest with Vetal coiled around him" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Bow combat: with Vetal coiled around him, the player fires volleys at spirit enemies in the night forest</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2025-vetal-powers" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2025-vetal-powers-poster.webp" width="1280" height="720" alt="Lightning strikes a group of enemies in a night forest" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Vetal’s powers: lightning and spirit strikes hit a group of enemies</figcaption></figure>
+        <figure class="l-gp" data-rise><div  class="screen l-clip" data-clip="project-mind/pm-gp-2025-stories-boons" data-pos="50% 50%" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2025-stories-boons-poster.webp" width="1280" height="720" alt="A story card is offered to Vetal, then a menu offers three boons" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The core loop: a story card is fed to Vetal, then Vetal’s Blessing offers boons for defence, health and move speed</figcaption></figure>
       </div>
     </div>
   </div>
 </section>
 
-<figure style="margin-top:var(--gap-section)"><div class="clip scope wide-m" style="--pos:50% 50%"><img src="../media/project-mind/vetal-forest-hand-poster.webp" width="1920" height="800" alt="VETAL 26: a giant stone hand and a lantern-lit shrine in a blue night forest" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/vetal-forest-hand"></video></div><figcaption class="wrap"><span class="slate" style="margin-top:12px">The showcase level, from the pre-alpha trailer</span></figcaption></figure>
+<figure style="margin-top:var(--gap-section)"><div class="screen l-clip l-scope l-wide-m" data-clip="project-mind/vetal-forest-hand" data-pos="50% 50%" style="--ar:1920/800"><img src="../media/project-mind/vetal-forest-hand-poster.webp" width="1920" height="800" alt="VETAL 26: a giant stone hand and a lantern-lit shrine in a blue night forest" loading="lazy" decoding="async"></div><figcaption class="l-wrap"><span class="l-slate" style="margin-top:12px">The showcase level, from the pre-alpha trailer</span></figcaption></figure>
 
-<section class="section" aria-labelledby="part-h">
-  <div class="wrap">
-    <div class="label"><span>Team of four</span></div>
-    <div class="cols cols--prose">
-      <h2 class="display" id="part-h">My role</h2>
-      <div class="main prose" data-reveal>
+<section class="l-section" aria-labelledby="part-h">
+  <div class="l-wrap">
+    <div class="l-label"><span>Team of four</span></div>
+    <div class="l-cols l-cols--prose">
+      <h2 class="l-display" id="part-h">My role</h2>
+      <div class="l-main l-prose" data-rise>
         <p>I was the only programmer, and the other three were game designers. Everything was built in Unreal Blueprints: the combat, the enemy AI and bosses, the attack ticket system, Vetal’s powers and the loop of trading stories for boons.</p>
         <p>Outside programming I worked on lighting, characters, animation, locomotion and enemies.</p>
       </div>
@@ -200,29 +193,25 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="end-h">
-  <div class="wrap">
-    <div class="label"><span>Status</span></div>
-    <div class="cols cols--prose">
-      <h2 class="display" id="end-h">Paused</h2>
-      <div class="main prose" data-reveal>
+<section class="l-section" aria-labelledby="end-h">
+  <div class="l-wrap">
+    <div class="l-label"><span>Status</span></div>
+    <div class="l-cols l-cols--prose">
+      <h2 class="l-display" id="end-h">Paused</h2>
+      <div class="l-main l-prose" data-rise>
         <p>Development is paused. The game needed a bigger budget than the team of four could fund.</p>
       </div>
     </div>
   </div>
 </section>
-
 </main>
 
 <footer class="contact contact--plain" id="contact">
-  <div class="wrap contact-in">
-    <div data-reveal>
-      <h2>Email me about a role or a project</h2>
-      <a class="mail" href="mailto:sanketdas@live.com">sanketdas@live.com</a>
-    </div>
+  <div class="wrap">
+    <h2 class="contact-h" data-rise>Email me about a role or a project</h2>
+    <a class="mail" href="mailto:sanketdas@live.com"><span class="mail-t">sanketdas@live.com</span></a>
     <div class="foot">
       <ul>
-        <li><a href="index.html">All games</a></li>
         <li><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
         <li><a href="https://www.linkedin.com/in/sanket-das-929b11120/">LinkedIn</a></li>
         <li><a href="https://github.com/Raptor2012">GitHub</a></li>
@@ -232,13 +221,12 @@
     </div>
   </div>
 </footer>
-
-<!-- Copied from the p-vetal26 dialog that _build/build.mjs writes into games/index.html. Re-copy it if that dialog changes. -->
 <div class="dialogs">
-<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t">
-<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit">Close</button></form></div>
-<section class="watch" data-watch aria-label="Watch VETAL 26">
-<div class="w-stage" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
+<dialog class="pd" id="p-vetal26" aria-labelledby="p-vetal26-t" data-lenis-prevent>
+<div class="pd-in" data-watch>
+<div class="pd-bar"><p class="meta">Game · team of four</p><form method="dialog"><button class="pd-x" type="submit" aria-label="Close"><span class="pd-l" aria-hidden="true">Close</span><span class="pd-xi" aria-hidden="true"></span></button></form></div>
+<figure class="pd-stage" style="--ar:1280/720">
+<div class="w-stage pd-screen" data-reflect=".3" tabindex="0" role="group" aria-label="Video player. Space plays or pauses, the arrow keys skip 5 seconds, F is full screen">
 <video class="w-video" playsinline muted preload="none" poster="../media/key-sections/ks-vetal-combat-poster.webp" aria-label="Combat with Vetal"></video>
 <div class="w-cc" aria-hidden="true"></div>
 <button class="w-big" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
@@ -252,7 +240,10 @@
 <button class="w-btn w-fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
 </div>
 </div>
-<div class="w-list">
+</figure>
+<div class="pd-body">
+<div class="pd-main"><h2 class="pd-title" id="p-vetal26-t" data-k data-w="112">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="../games/project-mind.html">Read the deep dive</a></div>
+<div class="w-list" aria-label="Key sections of VETAL 26" role="group">
 <p class="meta">Key sections · 2:45 in total</p>
 <ol><li><button class="w-sec" type="button" data-i="0" data-src="../media/key-sections/ks-vetal-combat" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-vetal-combat-poster.webp" data-dur="40.4" data-audio="1" data-vtt="../media/key-sections/ks-vetal-combat.vtt" data-cues="WEBVTT
 
@@ -366,15 +357,13 @@ as Vikram cannot endure the Atman dimension
 and Vetal cannot exist in our world.
 " data-title="Forest traversal"><span class="w-n">03</span><span class="w-t">Forest traversal</span><span class="w-d">0:26</span></button></li><li><button class="w-sec" type="button" data-i="3" data-src="../media/key-sections/ks-pm-arena-ai" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-pm-arena-ai-poster.webp" data-dur="32" data-audio="1" data-title="Arena AI"><span class="w-n">04</span><span class="w-t">Arena AI</span><span class="w-d">0:32</span></button></li><li><button class="w-sec" type="button" data-i="4" data-src="../media/key-sections/ks-pm-evolution" data-webm="" data-mobile="1" data-poster="../media/key-sections/ks-pm-evolution-poster.webp" data-dur="41.83" data-audio="" data-title="2021 to 2025"><span class="w-n">05</span><span class="w-t">2021 to 2025</span><span class="w-d">0:42</span></button></li></ol>
 </div>
-</section>
-<div class="pd-body">
-<div class="pd-main"><h2 class="display" id="p-vetal26-t">VETAL 26</h2><p>A third-person action-adventure about a police officer and Vetal, a spirit who trades boons for stories.</p><a class="more" href="../games/project-mind.html">Read the deep dive</a></div>
-<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
 </div>
-<div class="pd-more"><figure class="pd-fig"><div class="clip" style="aspect-ratio:1920/800"><img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/hero-vetal-combat"></video></div><figcaption class="slate slate--long">Bow and lightning with Vetal, 2025</figcaption></figure><figure class="pd-fig"><div class="clip" style="aspect-ratio:1280/720"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2024-arena-crowd"></video></div><figcaption class="slate slate--long">Attack tickets in a crowd, 2024</figcaption></figure><figure class="pd-fig"><div class="clip" style="--pos:50% 100%;aspect-ratio:1280/680"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async"><video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1" data-src="../media/project-mind/pm-gp-2023-ticket-ai"></video></div><figcaption class="slate slate--long">Attack ticket test map, 2023</figcaption></figure></div>
+<dl class="pd-facts"><div><dt>Role</dt><dd>Only programmer, in a team of four</dd></div><div class="pd-wide"><dt>What I did</dt><dd><ul><li>Combat, enemy AI and bosses, in Blueprints</li><li>Attack ticket system and Vetal’s powers</li><li>Locomotion, animation, lighting and characters</li></ul></dd></div><div><dt>Tech</dt><dd>Unreal Engine 4 and 5, Blueprints</dd></div><div><dt>Year</dt><dd>2020–2025</dd></div><div><dt>Status</dt><dd>Paused</dd></div></dl>
+<div class="pd-more"><figure><div class="screen" data-clip="project-mind/hero-vetal-combat" style="--ar:1920/800"><img src="../media/project-mind/hero-vetal-combat-poster.webp" width="1920" height="800" alt="VETAL 26: the player fires a bow with Vetal coiled around him, then lightning tears into a burning enemy" loading="lazy" decoding="async"></div><figcaption class="cap">Bow and lightning with Vetal, 2025</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2024-arena-crowd" style="--ar:1280/720"><img src="../media/project-mind/pm-gp-2024-arena-crowd-poster.webp" width="1280" height="720" alt="A crowd of test enemies surrounds the player in an arena" loading="lazy" decoding="async"></div><figcaption class="cap">Attack tickets in a crowd, 2024</figcaption></figure><figure><div class="screen" data-clip="project-mind/pm-gp-2023-ticket-ai" data-pos="50% 100%" style="--ar:1280/680"><img src="../media/project-mind/pm-gp-2023-ticket-ai-poster.webp" width="1280" height="720" alt="A golden enemy charges the player on a test floor while a second enemy stays back" loading="lazy" decoding="async" style="object-position:50% 100%"></div><figcaption class="cap">Attack ticket test map, 2023</figcaption></figure></div>
+</div>
 </dialog>
 </div>
-<script src="../site.js" defer></script>
-<script src="../motion.js" defer></script>
+<script src="../ui.js" defer></script>
+<script src="../engine.js" defer></script>
 </body>
 </html>
