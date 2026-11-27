@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A content warehouse for building XR faster · Deep dive · Sanket Das</title>
-<meta name="description" content="How a medical XR company builds client apps for Quest, phones and the browser from one Unity project: shared packages, a project template, a flow graph editor and authoring tools.">
+<meta name="description" content="The Unity content warehouse Sanket Das led for Quest, Android, iOS and WebGL. Shared packages, a project template, a flow graph editor and build automation.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="A content warehouse for building XR faster · Deep dive · Sanket Das">
-<meta property="og:description" content="How a medical XR company builds client apps for Quest, phones and the browser from one Unity project: shared packages, a project template, a flow graph editor and authoring tools.">
+<meta property="og:description" content="The Unity content warehouse Sanket Das led for Quest, Android, iOS and WebGL. Shared packages, a project template, a flow graph editor and build automation.">
 <meta property="og:url" content="https://raptor2012.github.io/portfolio/xr/platform.html">
 <meta property="og:image" content="https://raptor2012.github.io/portfolio/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -37,10 +37,12 @@
 </nav>
 <header class="dd-head" id="top">
   <div class="wrap dd-copy">
-    <p class="meta" data-intro>Deep dive · 13 min read</p>
+    <p class="meta" data-intro>Deep dive · 15 min read</p>
     <h1 class="dd-title" data-name data-w="112" data-w-phone="104">A content warehouse for building XR faster</h1>
-    <p class="lede" data-intro>Rooms, interactions and authoring tools that a European medical XR company builds its client projects from. I led the work from 2025 to 2026.</p>
-    <p data-intro class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
+    <p class="lede" data-intro>I lead the three-person team that built and owns this Unity platform at a European medical XR company. It shares rooms, interactions and authoring tools across Quest, Android, iOS and WebGL.</p>
+    <p class="body" data-intro>I designed the architecture and packages and wrote the first flow controller by hand. We built most of the rest by directing coding agents. A playable placeholder build of a new client app now takes about two days from the written concept, where it used to take at least a few weeks.</p>
+    <p data-intro class="play"><a href="#architecture">Architecture</a><a href="#ci">Build and release workflows</a></p>
+    <p data-intro class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the platform demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
   </div>
   <figure class="wrap dd-fig">
     <div class="screen" data-clip="amyloidosis/amy-heart-hands" data-pos="52% 50%" data-reflect=".2" data-glow="1" style="--ar:1920/1080"><img src="../media/amyloidosis/amy-heart-hands-poster.webp" width="1920" height="1080" alt="Mixed reality: two tracked hands hold a cut-open heart in a living room" decoding="async" fetchpriority="high"></div>
@@ -52,13 +54,13 @@
 <section class="l-section" aria-labelledby="covers-h">
   <div class="l-wrap">
     <div class="l-cols">
-      <h2 class="l-display" id="covers-h">What this deep dive covers</h2>
+      <h2 class="l-display" id="covers-h">In this case study</h2>
       <div class="l-main" data-rise>
         <ul class="l-covers">
-          <li>The problem: every client app was built from scratch</li>
-          <li>The shared framework, and the warehouse of rooms, interactions and tools that projects draw from</li>
-          <li>How authoring changed from 2025 to 2026, from Articy:draft to a visual flow graph</li>
-          <li>The editor tools, the localization and voice pipeline, supported platforms, the architecture and CI/CD</li>
+          <li><a href="#why-h">From bespoke apps to shared packages</a></li>
+          <li><a href="#auth-h">Authoring in Unity</a> and <a href="#async-h">the flow runtime</a></li>
+          <li><a href="#mx-h">Devices and input</a> and <a href="#tool-h">editor tools</a></li>
+          <li><a href="#dialogue-review">Dialogue review and voice import</a></li>
         </ul>
       </div>
     </div>
@@ -71,7 +73,7 @@
       <li><b>9</b><span>published packages</span></li>
       <li><b>18+</b><span>project repositories use them</span></li>
       <li><b>4</b><span>build targets: Quest, Android, iOS, WebGL</span></li>
-      <li><b>2,248</b><span>3D models in the asset library</span></li>
+      <li><b>3–4</b><span>weeks from idea to first client build, down from a few months</span></li>
     </ul>
   </div>
 </section>
@@ -82,8 +84,8 @@
     <div class="l-cols l-cols--prose">
       <h2 class="l-display" id="why-h">Every client app was built from scratch</h2>
       <div class="l-main l-prose" data-rise>
-        <p>In 2023 and 2024 I built client apps in Unity one at a time. Each had its own code for dialogue, interactions and teleporting, and the only way to reuse something was to copy it into the next project.</p>
-        <p>Most were mode-of-action stories for pharma clients and a university hospital: guided VR experiences that explain how a disease or a therapy works. Each one started from an empty Unity scene, and every content change needed a developer.</p>
+        <p>In 2023 and 2024 I built client apps in Unity one at a time, mostly as the only developer. Each had its own code for dialogue, interactions and teleporting, and the only way to reuse something was to copy it into the next project.</p>
+        <p>Most were guided VR experiences for pharma clients and a university hospital. They explained disease mechanisms or how a therapy works. Each one started from an empty Unity scene, and every content change needed a developer.</p>
       </div>
     </div>
   </div>
@@ -95,7 +97,8 @@
     <div class="l-cols l-cols--prose">
       <h2 class="l-display" id="frame-h">The same structure in every app</h2>
       <div class="l-main l-prose" data-rise>
-        <p>At the end of 2024 the team saw that these story apps all followed one pattern. The user watches or hears something, is asked to do something, and the story continues once they have done it. The medical subject changed from client to client, but the structure did not, so it could be built once and reused.</p>
+        <p>After about a year of these apps, I noticed they all followed one pattern. A character introduces the topic, animations show the healthy and the diseased state, the user does something to explore it, and the character closes the story. Underneath, the user watches or hears something, is asked to do something, and the story continues once they have done it.</p>
+        <p>The medical subject changed from client to client, but the structure did not, so it could be built once and reused. The apps were also moving beyond Quest to the browser and phones, which made a shared base even more useful.</p>
       </div>
     </div>
   </div>
@@ -108,7 +111,8 @@
       <h2 class="l-display" id="wh-h">One repository that every project draws from</h2>
       <div class="l-main l-prose" data-rise>
         <p>In 2025 we moved everything reusable into one mono-repo and treated it as a warehouse. It holds the rooms, the 3D assets, interactions such as grab, touch and teleport, the authoring tools and the support for each device. A new client project takes what it needs from it instead of starting empty.</p>
-        <p>In practice the warehouse is a set of Unity packages, a library of rooms and a project template that always has the current packages installed. I set these up in mid-2025. Nine published packages are now used by more than 18 project repositories.</p>
+        <p>In practice the warehouse is a set of Unity packages, a library of rooms and a project template that starts new projects on the current packages. I set these up in mid-2025. Nine published packages are now used by more than 18 project repositories.</p>
+        <p>I hired a junior developer in 2025 and a QA and design lead when the warehouse work started in July 2025. The junior developer owned the cross-platform versions of interactions such as the scanner and the slingshot, and helped come up with our package manager. A contractor built the original Articy plugin. Another developer contributed to hand tracking, matchmaking and the Scene Importer interface.</p>
       </div>
     </div>
     <ol class="l-why" data-rise aria-label="From one app per client to one warehouse">
@@ -127,18 +131,22 @@
       <div class="l-main l-prose" data-rise>
         <p>Authoring means deciding what happens in a scene and in what order. It changed twice in about a year: from a writing tool, to a list in code, to a visual graph.</p>
         <h3>2025: stories written in Articy:draft</h3>
-        <p>Stories were first written in Articy:draft, a writing tool made for game dialogue. Writers laid out each story as a chain of dialogue fragments. In January 2025 I wrote the first Articy importer and driver for Unity: it brings a story into the project and plays its chain in the scene. A colleague later built the Designer plugin, which runs inside Articy itself.</p>
+        <p>Writers first laid out stories as chains of dialogue fragments in Articy:draft. In January 2025 I wrote the Unity importer and driver that brought each story into the project and played its chain in the scene. A teammate built the plugin that ran in Articy itself. When I took it over, I added events for objectives and touch interactions.</p>
       </div>
     </div>
     <figure class="l-shot l-figure--in" data-rise><img src="../img/articy-flow.webp" width="1542" height="559" alt="Articy:draft: three dialogue fragments in a row, reading grab the trash, pick up the scanner, scan the brain" loading="lazy" decoding="async"><figcaption class="l-slate l-slate--long">A story in Articy:draft. Each box is one line of dialogue or one instruction to the user</figcaption></figure>
     <div class="l-cols l-cols--prose" style="margin-top:var(--gap-block)">
       <div class="l-main l-prose" data-rise>
         <h3 style="margin-top:0">Why Articy was dropped</h3>
-        <p>Articy stayed in use through 2025. Then the technical manager who had championed it left, and the team decided to build its own system instead. Articy was removed from the warehouse in March 2026.</p>
-        <h3>January 2026: a flow controller in code</h3>
-        <p>The first replacement was a flow controller written in code for a hospital VR project. A developer listed the steps of a scene in order, and each step was one of two kinds. A Moment is something the user witnesses, such as a line of dialogue. An Action is something the user does, such as grabbing an object. The controller could skip steps or start from any step, so a developer could test the end of a long scene without playing the start.</p>
+        <p>Through 2025 I argued that Articy was outdated and that we should build our own tools. Articy needed its own bridge into Unity, which was a lot of work that did not need to exist. The company stayed with Articy for 2025, so I kept working with it and got the automated warehouse idea about a third of the way there.</p>
+        <p>In early 2026 the company changed course. I proposed to the product manager and the onsite team that our team of three, working with coding agents, could build our own system in a few months. They agreed. Articy was removed from the warehouse in March 2026, and the first client project on the new system shipped in April. I also asked for an experienced software architect to be hired, because I had not held that role before.</p>
+        <h3>Early 2026: a flow controller in code</h3>
+        <p>The first replacement was a flow controller I wrote by hand in C# with UniTask, while rebuilding a hospital VR project on XR Interaction Toolkit. A developer listed the steps of a scene in order, and each step was one of two kinds. A Moment is something the user witnesses, such as a line of dialogue or an animation. An Action is something the user does, such as grabbing an object. The controller could skip steps or start from any step, so a developer could test the end of a long scene without playing the start.</p>
         <h3>March 2026: the visual flow graph</h3>
-        <p>In March 2026 I turned that controller into a visual flow graph editor inside Unity. The model stayed the same, Moments and Actions in order, but each step became a block and the order became wires between blocks. A runner plays the graph and a debugger shows which block is active. Because a scene is now data rather than code, people who are not developers can author one.</p>
+        <p>In March 2026 I gave a coding agent that controller and one working scene as the example, and it built a visual flow graph editor inside Unity. Authors arrange Moments and Actions as blocks and wire up the paths between them. Editing a graph requires the Unity project open in the editor. The runner plays the graph and the debugger shows which block is active.</p>
+        <h3>Now: from a concept document to a graph</h3>
+        <p>Once agents could edit graphs, they could also write them. A project manager sends a flow document, with sketches where new animations or rooms are needed, and a sheet with the first dialogue. An agent reads both and builds a first flow graph from the room library, the character creator and the interaction packages. Developers playtest it, fix it and deploy a build for the headset, phones or the browser.</p>
+        <p>From a written concept, a playable placeholder build with all dialogue, characters and interactions now takes about two days. It used to take at least a few weeks. Developers still edit most graphs by hand or through an agent. Project managers have tried editing graphs on their own projects but not yet on a client build.</p>
       </div>
     </div>
 
@@ -146,18 +154,18 @@
     <div class="l-model" data-rise>
       <div class="l-forms">
         <div class="l-form"><p class="l-meta">2025</p><h3>Authored data</h3><ol class="l-seq l-seq--data" aria-label="Say, grab, say, scan"><li class="l-m">Say</li><li class="l-a">Grab</li><li class="l-m">Say</li><li class="l-a">Scan</li></ol><dl class="l-kv"><div><dt>Authored</dt><dd>By writers, in Articy</dd></div><div><dt>Run by</dt><dd>A driver script in Unity</dd></div></dl></div>
-        <div class="l-form"><p class="l-meta">January 2026</p><h3>A list in code</h3><ol class="l-seq l-seq--list" aria-label="Say, grab, say, scan"><li class="l-m">Say<i>Moment</i></li><li class="l-a">Grab<i>Action</i></li><li class="l-m">Say<i>Moment</i></li><li class="l-a">Scan<i>Action</i></li></ol><dl class="l-kv"><div><dt>Authored</dt><dd>By developers</dd></div><div><dt>Run by</dt><dd>A flow controller, with skip and start-at-step</dd></div></dl></div>
-        <div class="l-form l-form--key"><p class="l-meta">March 2026</p><h3>A visual graph</h3><ol class="l-seq l-seq--graph" aria-label="Say, grab, say, scan"><li class="l-m">Say<i>Moment</i></li><li class="l-a">Grab<i>Action</i></li><li class="l-m">Say<i>Moment</i></li><li class="l-a">Scan<i>Action</i></li></ol><dl class="l-kv"><div><dt>Authored</dt><dd>By anyone, in the Unity editor</dd></div><div><dt>Run by</dt><dd>A graph runner, with a debugger</dd></div></dl></div>
+        <div class="l-form"><p class="l-meta">Early 2026</p><h3>A list in code</h3><ol class="l-seq l-seq--list" aria-label="Say, grab, say, scan"><li class="l-m">Say<i>Moment</i></li><li class="l-a">Grab<i>Action</i></li><li class="l-m">Say<i>Moment</i></li><li class="l-a">Scan<i>Action</i></li></ol><dl class="l-kv"><div><dt>Authored</dt><dd>By developers</dd></div><div><dt>Run by</dt><dd>A flow controller, with skip and start-at-step</dd></div></dl></div>
+        <div class="l-form l-form--key"><p class="l-meta">March 2026</p><h3>A visual graph</h3><ol class="l-seq l-seq--graph" aria-label="Say, grab, say, scan"><li class="l-m">Say<i>Moment</i></li><li class="l-a">Grab<i>Action</i></li><li class="l-m">Say<i>Moment</i></li><li class="l-a">Scan<i>Action</i></li></ol><dl class="l-kv"><div><dt>Authored</dt><dd>In the Unity project, using the graph editor</dd></div><div><dt>Run by</dt><dd>A graph runner, with a debugger</dd></div></dl></div>
       </div>
       <p class="l-legend"><span><b>Moment</b> something the user witnesses</span><span><b>Action</b> something the user does</span></p>
     </div>
 
-    <figure class="l-shot" data-rise style="margin-top:var(--gap-block)"><div class="l-pan" tabindex="0" role="group" aria-label="Flow graph, scrolls sideways on small screens"><img src="../img/flow-graph.webp" width="1802" height="612" alt="The flow graph editor: ten blocks from Start through Intro dialogue, Grab the instrument, Place on tray and Placement feedback to a branch with two endings" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The flow graph editor with a ten-block graph for an instrument-handling task. Blue blocks are Moments, orange blocks are Actions, and the grey block branches on whether the user succeeded</figcaption></figure>
+    <figure class="l-shot" data-rise style="margin-top:var(--gap-block)"><div class="l-pan" tabindex="0" role="group" aria-label="Flow graph, scrolls sideways on small screens"><img src="../img/flow-graph.webp" width="1802" height="612" alt="The flow graph editor with an instrument grab, tray placement and placement feedback. The success branch leads to a success message and the other branch leads to coaching." loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">The user grabs an instrument and places it on a tray. After placement feedback, the graph ends with a success message or coaching, depending on the result.</figcaption></figure>
 
     <div class="l-cols l-cols--prose" style="margin-top:var(--gap-block)">
-      <h3 class="l-display l-h3">The same task on three devices</h3>
+      <h3 class="l-display l-h3">Input in the task demo</h3>
       <div class="l-main l-prose" data-rise>
-        <p>A graph is authored once and runs on every supported device. Here one task from the demo runs in a desktop browser, on a phone and in a headset, and only the input changes: a click, a tap or a controller ray.</p>
+        <p>These captures show one demo task on a desktop browser, a phone and a headset. The prompt asks for a mouse click in the browser, a tap on the phone or a controller ray in VR.</p>
       </div>
     </div>
     <div class="l-trio" data-rise>
@@ -176,9 +184,9 @@
       <div class="l-main l-prose" data-rise>
         <p>Each block in a flow graph runs as an asynchronous step built on UniTask, a library for async code in Unity. A step does its work, waits as long as it needs to, and then returns the output port the flow should follow next. The runner walks the whole graph this way, including branches and nested sub-flows, without coroutines.</p>
         <p>Most steps wait on the user or the scene. A step can wait until the user teleports to a marked point, until any Unity event fires, until the thumbstick is turned, or until an animation reaches a set point in its timeline. Other steps play dialogue in time with animation segments, fade an audio source or fly an avatar along a path. Each of these is one block in the graph.</p>
-        <p>One cancellation token runs through the whole flow. When the user skips a moment or leaves the scene, or the debugger holds the flow, every running wait stops at once and cleans up after itself. Nothing is left running in the background.</p>
-        <p>Localised text and voice load the same way. A step looks up the active language, the line in the string table and its audio clip without holding up the frame.</p>
-        <p>We chose UniTask over coroutines and standard C# tasks. Unlike coroutines, it supports cancellation, return values and cleanup that always runs when a step ends early. It allocates almost no memory, which matters on Quest and phones, and it runs in WebGL builds, which have no background threads.</p>
+        <p>One cancellation token runs through the whole flow. Skipping a moment, leaving a scene or holding the flow in the debugger signals cancellation. Each step must pass the token to its waits and clean up the resources it registered before it exits.</p>
+        <p>Localized text and voice load asynchronously. A step looks up the active language, the line in the string table and its audio clip without blocking the frame.</p>
+        <p>We chose UniTask so steps can return the next port, share a cancellation token and run cleanup when they exit early. The same runner works in WebGL.</p>
       </div>
     </div>
     <figure class="l-figure l-async" data-rise>
@@ -188,8 +196,8 @@
         <li class="l-a"><span class="l-meta">Action</span><b>Turn</b><i>Waits for thumbstick input</i></li>
         <li><span class="l-meta">Moment</span><b>Animation</b><i>Waits until the clip reaches a set time</i></li>
       </ol>
-      <div class="l-async-token"><b>One cancellation token through the whole flow</b><span>A skip, leaving the scene or a debugger hold cancels every wait at once</span></div>
-      <figcaption class="l-slate l-slate--long">Each step waits, then returns the port to follow next. One token can stop all of them</figcaption>
+      <div class="l-async-token"><b>One cancellation token through the whole flow</b><span>Skip, scene exit and debugger hold signal the waits to stop</span></div>
+      <figcaption class="l-slate l-slate--long">Each step waits and returns the port to follow next. Waits must cooperate with cancellation.</figcaption>
     </figure>
   </div>
 </section>
@@ -200,36 +208,56 @@
     <div class="l-cols l-cols--prose">
       <h2 class="l-display" id="mx-h">Supported platforms and input</h2>
       <div class="l-main l-prose" data-rise>
-        <p>The warehouse builds for Quest, Android, iOS and WebGL. There is no native desktop build. On a desktop computer the WebGL build runs in the browser, with mouse and keyboard.</p>
-        <p>One 2026 client app adds passthrough with hand tracking, built with parts of the warehouse on a Meta XR hands rig.</p>
+        <p>The warehouse builds for Quest, Android, iOS and WebGL. Desktop access runs in the browser with mouse and keyboard.</p>
+        <p>The table shows input provided by the shared packages. The Quest 3 passthrough row covers the Amyloidosis client build. It used the Meta SDK’s standard hand grab because of the deadline, with the warehouse flow and interactions on top.</p>
+        <h3>Why OpenXR, and what it cost</h3>
+        <p>Our early apps used the Meta SDK, whose building blocks made prototyping fast. To run on more than Quest, and not depend on one headset maker, we moved the warehouse to OpenXR and XR Interaction Toolkit. The cost was hand tracking. The Meta SDK’s grab poses are very good, while the toolkit is built around a pinch, and its pose detection was not accurate enough for our content.</p>
+        <p>We wrote our own finger and pose checks. The first version required the thumb, index and little finger to curl toward the object, which blocked people who grabbed in other ways. The second version only needs the thumb and index finger, and the other fingers can do anything. Our QA lead tested it on headsets, and coding agents ran gesture variations in Unity’s XR simulator through our CI test package. Grab failures became rare. That is my own observation: the test runs include client data, so I can’t publish them.</p>
         <p>The browser build also has to run on phones. One web build ran out of memory in Safari on an iPhone 13. I fixed it with a 384 MB initial heap and remote Addressables that keep the first download under 90 MiB.</p>
       </div>
     </div>
     <table class="l-matrix" data-rise>
-      <caption class="sr">Supported input per platform</caption>
+      <caption class="sr">Shared input support and the project-specific Quest 3 passthrough build</caption>
       <thead>
         <tr><th scope="col"><span class="sr">Platform</span></th><th scope="col"><span>Controllers</span></th><th scope="col"><span>Hands</span></th><th scope="col"><span>Touch</span></th><th scope="col"><span>Mouse and keyboard</span></th><th scope="col"><span>Gyro look</span></th></tr>
       </thead>
       <tbody>
         <tr><th scope="row">Meta Quest, VR</th><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td></tr>
-        <tr><th scope="row">Meta Quest, passthrough<small>Hands: in one client app</small></th><td><i class="l-dot l-wip"></i><span class="sr">In progress</span></td><td><i class="l-dot l-proj"></i><span class="sr">In one client app</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td></tr>
+        <tr><th scope="row">Quest 3, passthrough<small>Amyloidosis app, Meta SDK hand grab</small></th><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot l-proj"></i><span class="sr">Supported in this app</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td></tr>
         <tr><th scope="row">Android phone</th><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td></tr>
         <tr><th scope="row">iPhone and iPad</th><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td></tr>
         <tr><th scope="row">WebGL, desktop browser</th><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-nil"></i><span class="sr">No</span></td></tr>
         <tr><th scope="row">WebGL, phone browser<small>Gyro falls back to drag</small></th><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td><td><i class="l-nil"></i><span class="sr">No</span></td><td><i class="l-dot"></i><span class="sr">Yes</span></td></tr>
       </tbody>
     </table>
-    <p class="l-legend" aria-hidden="true"><span><i class="l-dot"></i>Supported</span><span><i class="l-dot l-wip"></i>In progress</span><span><i class="l-dot l-proj"></i>In one client app</span></p>
+    <p class="l-legend" aria-hidden="true"><span><i class="l-dot"></i>Shared support</span><span><i class="l-dot l-proj"></i>Supported in this app</span></p>
   </div>
 </section>
 
-<section class="l-section" aria-labelledby="tool-h">
+<section class="l-section" id="dialogue-review" aria-labelledby="dialogue-h">
   <div class="l-wrap">
     <div class="l-label"><span>Tools</span></div>
     <div class="l-cols l-cols--prose">
-      <h2 class="l-display" id="tool-h">Editor tools</h2>
+      <h2 class="l-display" id="dialogue-h">Dialogue review and localization</h2>
       <div class="l-main l-prose" data-rise>
-        <p>Five tools, each a window in the Unity editor, let people find what is in the warehouse and use it.</p>
+        <p>Before this, clients sent dialogue changes as a whole new spreadsheet. A developer went through it line by line, regenerated each changed line in the ElevenLabs dashboard and added the clips to Unity by hand. It was slow and messy, and it happened again with every review round.</p>
+        <p>I set up a shared Google Sheet with Apps Script instead. It holds every line with its key, scene, language, approval status and voice. The client reviews and approves lines in the sheet, and the script generates the voice files in batches. Generating audio for a project went from hours to a few minutes.</p>
+        <p>The Unity sync window imports approved lines and their audio into the project. It updates the localization tables and brings in separate audio for VR and mobile. A changed line now takes two buttons, regenerate and import, and a few seconds. We are now moving voice generation to a local model, so it costs nothing.</p>
+      </div>
+    </div>
+    <figure data-rise><div class="l-sheet" tabindex="0" role="group" aria-label="Dialogue sheet, scrolls sideways"><img src="../img/localization-sheet.webp" width="3504" height="454" alt="The dialogue sheet: columns for flow, scene, key, approval status, context, German text, German voice, audio status and English text, with four approved rows from a controls tutorial" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Approved lines, each with a generated voice file</figcaption></figure>
+    <ol class="l-pipe" data-rise aria-label="From the sheet to the headset">
+      <li><h3>Sheet</h3><p>Every line, in each language</p></li>
+      <li><h3>Approval</h3><p>The client approves lines in the sheet</p></li>
+      <li><h3>ElevenLabs voice</h3><p>A voice file for each line</p></li>
+      <li><h3>Unity sync</h3><p>Approved text and audio are pulled into the project</p></li>
+      <li><h3>In-headset playback</h3><p>The active language plays, text and voice</p></li>
+    </ol>
+
+    <div class="l-cols l-cols--prose" style="margin-top:var(--gap-block)">
+      <h3 class="l-display l-h3" id="tool-h">Unity editor tools</h3>
+      <div class="l-main l-prose" data-rise>
+        <p>These Unity windows let people pull rooms, models and packages into a project and prepare characters for a scene.</p>
       </div>
     </div>
 
@@ -237,9 +265,9 @@
       <figure class="l-shot l-shot--native" data-rise><img src="../img/asset-library-heart-v2.webp" width="725" height="468" alt="The asset library window in Unity: the search field and filters, the six most recently added models and a 3D preview of a textured heart cross-section" loading="lazy" decoding="async"></figure>
       <div class="l-side" data-rise>
         <h3>Asset library</h3>
-        <p class="l-body">A searchable catalogue of every 3D model the company has made, 2,248 so far. A nightly job scans the company’s repositories for models, removes duplicates and adds tags from a vision model, which people correct where needed.</p>
-        <p class="l-body">Artists and developers search it on the web or in this Unity window, filter by format, type or tag, and preview a model in 3D before using it.</p>
-        <p class="l-body">The nightly job never clones a repository. It reads each branch’s file list, looks again only at branches that changed, and recognises large files from their pointers. Blender renders each new model from four sides for the vision model, and name or tag fixes made on the web or in Unity are committed back to the catalogue.</p>
+        <p class="l-body">A nightly job checks repositories active in the last 14 days and reads file lists again only when a branch head changes. It deduplicates models by content hash and identifies Git LFS files from their pointers, without cloning repositories.</p>
+        <p class="l-body">Blender renders new models for a vision model to tag. Reviewers can correct names or tags from the browser or Unity, and both write back to the same catalogue.</p>
+        <p class="l-body">Artists and developers can filter models by format, type or tag and preview them in 3D before bringing them into a project.</p>
       </div>
     </article>
 
@@ -266,41 +294,26 @@
       <div class="l-side" data-rise>
         <h3>Package manager</h3>
         <p class="l-body">Projects install the warehouse as packages, so we built our own package manager window for Unity. It lists each package with its installed and available versions, and installs or updates it.</p>
-        <p class="l-body">In July 2026 each package moved to its own install branch. Until then, installing one package fetched the whole 438&nbsp;MB mirror. Now the core package is a 3.2&nbsp;MB fetch.</p>
+        <p class="l-body">Getting installs small took four tries. Installing one package through a Git link first downloaded the whole repository. A branch with only the packages still downloaded all of them. Release archives were quick to install but piled up in the repository and were awkward to manage locally. In July 2026 we settled on one install branch per package, updated by a workflow whenever that package changes on the main branch.</p>
+        <p class="l-body">Until then, installing one package fetched the whole 438&nbsp;MB mirror. Now the core package is a 3.2&nbsp;MB fetch.</p>
         <ul class="l-bars" aria-label="Download size when installing the core package" style="margin-top:24px">
           <li><b>438 MB</b><span>Before: every install fetched the whole mirror</span><i></i></li>
-          <li><b>3.2 MB</b><span>After: each package installs from its own branch</span><i></i></li>
+          <li><b>3.2 MB</b><span>After: fetch for Core alone from its own install branch</span><i></i></li>
         </ul>
       </div>
     </article>
 
-    <div class="l-cols l-cols--prose" style="margin-top:var(--gap-block)">
-      <h3 class="l-display l-h3">Localization and voice pipeline</h3>
-      <div class="l-main l-prose" data-rise>
-        <p>Every dialogue line lives in one Google Sheet: the text in each language, an approval status and a reference to the voice recording generated for that line. The client reviews and approves lines directly in the sheet.</p>
-        <p>A sync window in Unity then pulls only the approved lines. It writes the text into Unity’s localization tables and downloads the matching ElevenLabs voice files, with separate variants for VR and mobile. At runtime the app plays the right text and voice for the active language.</p>
-        <p>Nobody copies text or audio into Unity by hand. That cut a large amount of time between a client reviewing dialogue and the change reaching the build, and iterations got faster.</p>
-      </div>
-    </div>
-    <figure data-rise><div class="l-sheet" tabindex="0" role="group" aria-label="Dialogue sheet, scrolls sideways"><img src="../img/localization-sheet.webp" width="3504" height="454" alt="The dialogue sheet: columns for flow, scene, key, approval status, context, German text, German voice, audio status and English text, with four approved rows from a controls tutorial" loading="lazy" decoding="async"></div><figcaption class="l-slate l-slate--long">Approved lines, each with a generated voice file</figcaption></figure>
-    <ol class="l-pipe" data-rise aria-label="From the sheet to the headset">
-      <li><h3>Sheet</h3><p>Every line, in each language</p></li>
-      <li><h3>Approval</h3><p>The client approves lines in the sheet</p></li>
-      <li><h3>ElevenLabs voice</h3><p>A voice file for each line</p></li>
-      <li><h3>Unity sync</h3><p>Approved text and audio are pulled into the project</p></li>
-      <li><h3>In-headset playback</h3><p>The active language plays, text and voice</p></li>
-    </ol>
   </div>
 </section>
 
-<section class="l-section" aria-labelledby="arch-h">
+<section class="l-section" id="architecture" aria-labelledby="arch-h">
   <div class="l-wrap">
     <div class="l-label"><span>Architecture</span></div>
     <div class="l-cols l-cols--prose">
       <h2 class="l-display" id="arch-h">Architecture of the warehouse</h2>
       <div class="l-main l-prose" data-rise>
         <p>The warehouse has four layers. Content, such as flow graphs, localization sheets, rooms and models, is authored with the editor tools. Scenes built with those tools run on the runtime packages, and the runtime packages rest on a core package that handles devices and input. Below that is the platform layer, which turns one project into four builds.</p>
-        <p>Dependencies point downward only, and an automated layer check enforces that.</p>
+        <p>Dependencies point downward only, and an automated layer check enforces that. The flow runtime can use Core’s input contracts. A dependency from Core back to the flow runtime would fail the check.</p>
       </div>
     </div>
     <figure class="l-figure" data-rise>
@@ -311,14 +324,15 @@
   </div>
 </section>
 
-<section class="l-section" aria-labelledby="ci-h">
+<section class="l-section" id="ci" aria-labelledby="ci-h">
   <div class="l-wrap">
     <div class="l-label"><span>CI/CD</span><span>December 2025 to now</span></div>
     <div class="l-cols l-cols--prose">
-      <h2 class="l-display" id="ci-h">CI/CD: every workflow, grouped by job</h2>
+      <h2 class="l-display" id="ci-h">CI/CD and releases</h2>
       <div class="l-main l-prose" data-rise>
-        <p>The automation grew with the warehouse. It started in December 2025 with one build for one project and is now a pipeline that checks, publishes and distributes every change to the packages.</p>
-        <p>Below is the path a change takes, then every workflow that has existed, grouped by job, including the retired and moved ones.</p>
+        <p>A hospital VR project got the first automated Quest build in December 2025. The shared pipeline now checks and publishes package changes and updates the template. The tests and four-target build workflows run in project repositories, which hold the scenes and platform settings.</p>
+        <p>That hospital project was also the first to move from the Meta XR SDK to OpenXR and XR Interaction Toolkit. Migrating it in place broke almost every interaction, so I rebuilt it in a fresh project in four weeks, while building the packages and flow controller at the same time. The original had taken about eight months. I wrote a migration guide along the way.</p>
+        <p>Since February 2026, automated checks on every pull request have replaced my manual code reviews. I still look over the junior developer’s work informally.</p>
       </div>
     </div>
     <ol class="l-pipe" data-rise aria-label="The path from a commit to a build">
@@ -377,9 +391,10 @@
       <tbody>
         <tr><th scope="row" class="l-what">One mono-repo for every package</th><td class="l-when">2025</td><td>Every client app repeated the same structure</td></tr>
         <tr><th scope="row" class="l-what">Git packages, not copied folders</th><td class="l-when">Jul 2025</td><td>Each project installs and updates by version</td></tr>
-        <tr class=key><th scope="row" class="l-what">Dropped Articy</th><td class="l-when">Jan to Mar 2026</td><td>The technical manager who championed it left, and the team chose to build its own system</td></tr>
-        <tr><th scope="row" class="l-what">Flow controller in code</th><td class="l-when">Jan 2026</td><td>Skip and start-at-step made iteration quick</td></tr>
-        <tr class=key><th scope="row" class="l-what">Visual flow graph</th><td class="l-when">Mar 2026</td><td>The same model as data, so non-developers and AI agents can author</td></tr>
+        <tr class=key><th scope="row" class="l-what">Dropped Articy</th><td class="l-when">Jan to Mar 2026</td><td>It was outdated and needed its own bridge into Unity. A small team with coding agents could build its own tools in months</td></tr>
+        <tr><th scope="row" class="l-what">Rebuilt on OpenXR and XR Interaction Toolkit</th><td class="l-when">Early 2026</td><td>Apps should not depend on one headset maker. Hand tracking had to be reworked</td></tr>
+        <tr><th scope="row" class="l-what">Flow controller in code</th><td class="l-when">Early 2026</td><td>Skip and start-at-step made iteration quick</td></tr>
+        <tr class=key><th scope="row" class="l-what">Visual flow graph</th><td class="l-when">Mar 2026</td><td>Moments, Actions and branches became editable in the Unity editor</td></tr>
         <tr><th scope="row" class="l-what">Template sync</th><td class="l-when">Mar 2026</td><td>New projects start current, with no manifest edits</td></tr>
         <tr><th scope="row" class="l-what">Docs gate on pull requests</th><td class="l-when">Apr 2026</td><td>Docs drifted across more than twenty packages</td></tr>
         <tr><th scope="row" class="l-what">One install branch per package</th><td class="l-when">Jul 2026</td><td>Every install had fetched the whole 438 MB mirror</td></tr>
@@ -399,9 +414,10 @@
     <div class="l-cols l-cols--prose">
       <h2 class="l-display" id="res-h">The result</h2>
       <div class="l-main l-prose" data-rise>
-        <p>New client projects start from the template with the current packages installed, not from an empty scene. One project builds for Quest, Android, iOS and WebGL. Scenes are authored as flow graphs. Dialogue goes from the client’s review into the build through one sheet. Rooms, models and characters come from shared libraries.</p>
-        <p>I led the work from 2025 to 2026. One colleague built the Articy Designer plugin, and another worked on hand tracking, matchmaking and the scene importer interface.</p>
-        <p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the browser demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
+        <p>New client projects start from a template with the current packages installed. Teams can take rooms, models and characters from the shared libraries, generate or wire scene steps in the flow editor and import client-approved dialogue from the sheet.</p>
+        <p>Since 2025 the team has delivered at least seven client projects: four on the Articy-based version and three on the new system since April 2026. The last three went from idea to first client build in 3 to 4 weeks and to final release in another 4 to 6, after the client’s review rounds. Before, that took a few months.</p>
+        <p>Work is split by scene, so while the client reviews one scene, developers are already building the next. A November 2026 version adds shared branding, start and exit menus and standard visual and audio feedback for every interaction. It is in the demo below and will be used for every new project.</p>
+        <p class="play"><a href="https://raptor2012.github.io/onxt-demo/" target="_blank" rel="noopener">Try the platform demo<span class="sr"> (opens in a new tab)</span></a><small>WebGL, runs best on desktop</small></p>
       </div>
     </div>
   </div>
@@ -412,6 +428,7 @@
   <div class="wrap">
     <h2 class="contact-h" data-rise>Email me about a role or a project</h2>
     <a class="mail" href="mailto:sanketdas@live.com"><span class="mail-t">sanketdas@live.com</span></a>
+    <p class="body">Based in Pune, India. I work remotely and am open to full-time and contract roles.</p>
     <div class="foot">
       <ul>
         <li><a href="../resume/Sanket_Das_Resume.pdf">Resume</a></li>
