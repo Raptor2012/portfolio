@@ -384,7 +384,11 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 /* ----------------------------------------------------------------- clips */
 const vids = $('#vids');
 const WEBM = !!document.createElement('video').canPlayType('video/webm; codecs="vp9"');
-const MAX_LIVE = PHONE ? 3 : 6;                     // videos decoding at once
+const MAX_LIVE = PHONE ? 3 : 4;                     // videos decoding at once
+// Starting a video creates or wakes a hardware decoder, which runs on the browser's GPU thread and can hold up
+// a frame. Starts are spaced out, one at a time, and wait while the page scrolls fast.
+const START_GAP = .2;
+let startGate = 0;
 const clips = new Map();
 const parsePos = s => (s || '50% 50%').split(/\s+/).map(v => parseFloat(v) / 100);
 class Clip {
@@ -412,14 +416,18 @@ class Clip {
     const v = document.createElement('video');
     v.muted = true; v.defaultMuted = true; v.playsInline = true; v.loop = true; v.preload = 'auto';
     v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-    v.src = MEDIA + this.base + (PHONE ? '-mobile.mp4' : WEBM ? '.webm' : '.mp4');
+    // a 1080p clip shown on a small screen plays its 720p file: under half the decoding, no visible difference
+    const small = false;
+    v.src = MEDIA + this.base + (PHONE || small ? '-mobile.mp4' : WEBM ? '.webm' : '.mp4');
     v.addEventListener('loadeddata', () => { this.vready = true; this.fresh = true; });
     if ('requestVideoFrameCallback' in v && !CAP) { const cb = () => { this.fresh = true; v.requestVideoFrameCallback(cb); }; v.requestVideoFrameCallback(cb); this.rvfc = true; }
     vids.appendChild(v);
     this.video = v;
   }
-  setActive(on) {
-    if (on && !this.active) { this.active = true; this.t0 = now; this.ensureVideo(); if (!CAP && this.video) { this.video.currentTime = 0; this.video.play().catch(() => {}); } }
+  // restart: begin from the first frame (a footage swap). Otherwise a clip that scrolls back into view resumes
+  // where it paused, so the decoder never has to seek back to a keyframe.
+  setActive(on, restart) {
+    if (on && !this.active) { this.active = true; this.t0 = now; this.ensureVideo(); if (!CAP && this.video) { if (restart && this.played) this.video.currentTime = 0; this.played = true; this.video.play().catch(() => {}); } }
     else if (!on && this.active) { this.active = false; if (this.video && !CAP) this.video.pause(); }
   }
   upload() {
@@ -788,8 +796,14 @@ function update() {
   const want = new Set();
   const pool = dl.el ? dlgPanels.filter(P => !P.closing) : panels;
   const vis = pool.filter(P => P.visible && P.rev > 0).sort((a, b) => b.r.w * b.r.h - a.r.w * a.r.h).slice(0, MAX_LIVE);
-  for (const P of vis) P.clipsInUse().forEach(c => want.add(c));
-  for (const c of want) c.setActive(true);
+  for (const P of vis) P.clipsInUse().forEach(c => { want.add(c); if (!c.video) c.need = Math.max(c.need || 0, P.r.w * DPR); });
+  const calm = Math.abs(vel) < .3;
+  for (const c of want) {
+    if (c.active) continue;
+    if (CAP) { c.setActive(true); continue; }
+    if (now < startGate || (!calm && !c.big)) continue;
+    c.setActive(true); startGate = now + START_GAP;
+  }
   for (const c of clips.values()) if (c.active && !want.has(c)) c.setActive(false);
 
   typeUpdate();
@@ -823,7 +837,7 @@ function stepPanel(P) {
   if (P.revT < 0 && P.a.ready && flyOK && top < vh && r.y + r.h / 2 > 0) P.revT = now;
   if (P.revT >= 0 && !P.hero) P.rev = sine((now - P.revT) / .9);
   // footage swap
-  if (!P.b && P.target !== P.a && P.target.ready && (!P.fly || P.fly.done || now - P.fly.t0 > FLY * .55)) { P.b = P.target; P.mixT = now; P.b.setActive(false); P.b.setActive(true); if (P.visible) Snd.sweep(); }
+  if (!P.b && P.target !== P.a && P.target.ready && (!P.fly || P.fly.done || now - P.fly.t0 > FLY * .55)) { P.b = P.target; P.mixT = now; P.b.setActive(false); P.b.setActive(true, true); startGate = now + START_GAP; if (P.visible) Snd.sweep(); }
   if (P.b) {
     P.mix = sine((now - P.mixT) / (P.hero ? 1.2 : .9));
     if (P.mix >= 1) { const old = P.a; P.a = P.b; P.b = null; P.mix = 0; if (!panels.some(o => o.a === old || o.b === old)) old.setActive(false); }
